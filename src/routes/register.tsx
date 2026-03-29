@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, useNavigate, redirect } from '@tanstack/react-router'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
@@ -13,6 +13,7 @@ import { AuthLayout } from '@/components/auth/AuthLayout'
 import { useTranslation } from 'react-i18next'
 
 const registerSchema = z.object({
+  name: z.string().min(1, 'Vui lòng nhập họ tên'),
   email: z.string().min(1, 'Vui lòng nhập email').email('Địa chỉ email không hợp lệ'),
   password: z.string().min(1, 'Vui lòng nhập mật khẩu').min(6, 'Mật khẩu phải có ít nhất 6 ký tự'),
   confirmPassword: z.string().min(1, 'Vui lòng xác nhận lại mật khẩu'),
@@ -24,6 +25,11 @@ const registerSchema = z.object({
 type RegisterFormValues = z.infer<typeof registerSchema>
 
 export const Route = createFileRoute('/register')({
+  beforeLoad: () => {
+    if (useAuthStore.getState().isAuthenticated) {
+      throw redirect({ to: '/dashboard' })
+    }
+  },
   component: RegisterPage,
 })
 
@@ -37,7 +43,7 @@ function RegisterPage() {
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
-    defaultValues: { email: '', password: '', confirmPassword: '' },
+    defaultValues: { name: '', email: '', password: '', confirmPassword: '' },
     mode: 'onTouched',
   })
 
@@ -46,13 +52,12 @@ function RegisterPage() {
     setError(null)
     try {
       // FE-only logic: confirmPassword is not sent to backend
-      const { email, password } = data
-      await api.post('/auth/register', { email, password })
+      const { name, email, password } = data
+      await api.post('/auth/register', { name, email, password })
       
-      const profileRes = await api.get('/auth/profile')
-      const { user, currentOrg } = profileRes.data
-      setAuth(user, currentOrg)
-      navigate({ to: '/' })
+      const profileRes = await api.get('/users/me')
+      setAuth(profileRes.data, profileRes.data.orgId || null)
+      navigate({ to: '/dashboard' })
     } catch (err: any) {
       setError(err.response?.data?.message || 'Đăng ký thất bại. Email có thể đã tồn tại.')
     } finally {
@@ -72,6 +77,18 @@ function RegisterPage() {
           </div>
         )}
         
+        <div className="space-y-2">
+          <Label htmlFor="name">Họ và tên</Label>
+          <Input
+            id="name"
+            placeholder="Nguyễn Văn A"
+            {...form.register('name')}
+          />
+          {form.formState.errors.name && (form.watch('name') || form.formState.isSubmitted) && (
+            <p className="text-xs text-destructive">{form.formState.errors.name.message}</p>
+          )}
+        </div>
+
         <div className="space-y-2">
           <Label htmlFor="email">Email</Label>
           <Input

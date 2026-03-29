@@ -4,8 +4,10 @@ import { persist, createJSONStorage } from 'zustand/middleware'
 interface User {
   id: string
   email: string
-  fullName: string
-  avatarUrl?: string
+  name: string
+  avatar?: string
+  phoneNumber?: string
+  bio?: string
 }
 
 interface Organization {

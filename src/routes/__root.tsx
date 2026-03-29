@@ -15,8 +15,8 @@ function RootComponent() {
   useEffect(() => {
     const initAuth = async () => {
       try {
-        const res = await api.get('/auth/profile')
-        setAuth(res.data.user, res.data.currentOrg)
+        const res = await api.get('/users/me')
+        setAuth(res.data, res.data.orgId || null)
       } catch (err) {
         logout()
       } finally {

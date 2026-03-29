@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, useNavigate, redirect } from '@tanstack/react-router'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
@@ -20,6 +20,11 @@ const loginSchema = z.object({
 type LoginFormValues = z.infer<typeof loginSchema>
 
 export const Route = createFileRoute('/login')({
+  beforeLoad: () => {
+    if (useAuthStore.getState().isAuthenticated) {
+      throw redirect({ to: '/dashboard' })
+    }
+  },
   component: LoginPage,
 })
 
@@ -40,12 +45,11 @@ function LoginPage() {
   const onSubmit = async (data: LoginFormValues) => {
     setLoading(true)
     setError(null)
-    try {
+      try {
       await api.post('/auth/login', data)
-      const profileRes = await api.get('/auth/profile')
-      const { user, currentOrg } = profileRes.data
-      setAuth(user, currentOrg)
-      navigate({ to: '/' })
+      const profileRes = await api.get('/users/me')
+      setAuth(profileRes.data, profileRes.data.orgId || null)
+      navigate({ to: '/dashboard' })
     } catch (err: any) {
       setError(err.response?.data?.message || 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.')
     } finally {
