@@ -1,25 +1,30 @@
 import type { ReactNode } from 'react'
+import { useState } from 'react'
 import { Link } from '@tanstack/react-router'
-import { Button } from '@/components/ui/button'
 import { useTranslation } from 'react-i18next'
+import { Menu, X } from 'lucide-react'
+import { Logo } from '@/components/elements/Logo'
 import { LanguageToggle } from '@/components/elements/LanguageToggle'
 import { ModeToggle } from '@/components/elements/ModeToggle'
-import { Logo } from '@/components/elements/Logo'
+import { Button } from '@/components/ui/button'
 
 export function MainLayout({ children }: { children: ReactNode }) {
   const { t } = useTranslation()
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
       {/* Header */}
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between">
-          <div className="font-bold text-xl tracking-tight">
-            <Link to="/">
+          <div className="flex-shrink-0 font-bold text-xl tracking-tight">
+            <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>
               <Logo />
             </Link>
           </div>
-          <nav className="flex items-center space-x-6">
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-6">
             <Link to="/" className="text-sm font-medium transition-colors hover:text-primary">
               {t('common.home')}
             </Link>
@@ -29,7 +34,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
             <Link to="/guide" className="text-sm font-medium transition-colors hover:text-primary">
               {t('common.guide')}
             </Link>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 border-l pl-6 ml-2">
               <LanguageToggle />
               <ModeToggle />
             </div>
@@ -37,7 +42,55 @@ export function MainLayout({ children }: { children: ReactNode }) {
               <Link to="/login">{t('common.login')}</Link>
             </Button>
           </nav>
+
+          {/* Mobile Menu Toggle */}
+          <div className="flex md:hidden items-center gap-2">
+            <LanguageToggle />
+            <ModeToggle />
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="ml-2"
+            >
+              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </Button>
+          </div>
         </div>
+
+        {/* Mobile Navigation Drawer */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden border-b bg-background animate-reveal">
+            <nav className="container py-6 flex flex-col gap-4">
+              <Link 
+                to="/" 
+                className="text-lg font-medium px-4 py-2 hover:bg-accent rounded-lg"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {t('common.home')}
+              </Link>
+              <a 
+                href="/#features" 
+                className="text-lg font-medium px-4 py-2 hover:bg-accent rounded-lg"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {t('common.features_section_title')}
+              </a>
+              <Link 
+                to="/guide" 
+                className="text-lg font-medium px-4 py-2 hover:bg-accent rounded-lg"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {t('common.guide')}
+              </Link>
+              <div className="pt-4 mt-2 border-t">
+                <Button className="w-full text-lg h-12" asChild onClick={() => setIsMobileMenuOpen(false)}>
+                  <Link to="/login">{t('common.login')}</Link>
+                </Button>
+              </div>
+            </nav>
+          </div>
+        )}
       </header>
 
       <main className="flex-1">
