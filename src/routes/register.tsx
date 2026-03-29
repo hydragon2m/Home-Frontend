@@ -13,10 +13,9 @@ import { AuthLayout } from '@/components/auth/AuthLayout'
 import { useTranslation } from 'react-i18next'
 
 const registerSchema = z.object({
-  fullName: z.string().min(2, 'Họ tên phải từ 2 ký tự trở lên'),
-  email: z.string().email('Địa chỉ email không hợp lệ'),
-  password: z.string().min(6, 'Mật khẩu phải có ít nhất 6 ký tự'),
-  confirmPassword: z.string().min(6, 'Vui lòng xác nhận lại mật khẩu'),
+  email: z.string().min(1, 'Vui lòng nhập email').email('Địa chỉ email không hợp lệ'),
+  password: z.string().min(1, 'Vui lòng nhập mật khẩu').min(6, 'Mật khẩu phải có ít nhất 6 ký tự'),
+  confirmPassword: z.string().min(1, 'Vui lòng xác nhận lại mật khẩu'),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Mật khẩu xác nhận không khớp",
   path: ["confirmPassword"],
@@ -38,14 +37,18 @@ function RegisterPage() {
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
-    defaultValues: { fullName: '', email: '', password: '', confirmPassword: '' },
+    defaultValues: { email: '', password: '', confirmPassword: '' },
+    mode: 'onTouched',
   })
 
   const onSubmit = async (data: RegisterFormValues) => {
     setLoading(true)
     setError(null)
     try {
-      await api.post('/auth/register', data)
+      // FE-only logic: confirmPassword is not sent to backend
+      const { email, password } = data
+      await api.post('/auth/register', { email, password })
+      
       const profileRes = await api.get('/auth/profile')
       const { user, currentOrg } = profileRes.data
       setAuth(user, currentOrg)
@@ -70,18 +73,6 @@ function RegisterPage() {
         )}
         
         <div className="space-y-2">
-          <Label htmlFor="fullName">Họ và tên</Label>
-          <Input
-            id="fullName"
-            placeholder="Nguyễn Văn A"
-            {...form.register('fullName')}
-          />
-          {form.formState.errors.fullName && (
-            <p className="text-xs text-destructive">{form.formState.errors.fullName.message}</p>
-          )}
-        </div>
-
-        <div className="space-y-2">
           <Label htmlFor="email">Email</Label>
           <Input
             id="email"
@@ -89,7 +80,7 @@ function RegisterPage() {
             placeholder="name@example.com"
             {...form.register('email')}
           />
-          {form.formState.errors.email && (
+          {form.formState.errors.email && (form.watch('email') || form.formState.isSubmitted) && (
             <p className="text-xs text-destructive">{form.formState.errors.email.message}</p>
           )}
         </div>
@@ -111,7 +102,7 @@ function RegisterPage() {
               {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>
           </div>
-          {form.formState.errors.password && (
+          {form.formState.errors.password && (form.watch('password') || form.formState.isSubmitted) && (
             <p className="text-xs text-destructive">{form.formState.errors.password.message}</p>
           )}
         </div>
@@ -123,7 +114,7 @@ function RegisterPage() {
             type={showPassword ? 'text' : 'password'}
             {...form.register('confirmPassword')}
           />
-          {form.formState.errors.confirmPassword && (
+          {form.formState.errors.confirmPassword && (form.watch('confirmPassword') || form.formState.isSubmitted) && (
             <p className="text-xs text-destructive">{form.formState.errors.confirmPassword.message}</p>
           )}
         </div>

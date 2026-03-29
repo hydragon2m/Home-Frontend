@@ -13,8 +13,8 @@ import { AuthLayout } from '@/components/auth/AuthLayout'
 import { useTranslation } from 'react-i18next'
 
 const loginSchema = z.object({
-  email: z.string().email('Địa chỉ email không hợp lệ'),
-  password: z.string().min(6, 'Mật khẩu phải có ít nhất 6 ký tự'),
+  email: z.string().min(1, 'Vui lòng nhập email').email('Địa chỉ email không hợp lệ'),
+  password: z.string().min(1, 'Vui lòng nhập mật khẩu').min(6, 'Mật khẩu phải có ít nhất 6 ký tự'),
 })
 
 type LoginFormValues = z.infer<typeof loginSchema>
@@ -34,6 +34,7 @@ function LoginPage() {
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: '', password: '' },
+    mode: 'onTouched',
   })
 
   const onSubmit = async (data: LoginFormValues) => {
@@ -72,7 +73,7 @@ function LoginPage() {
             placeholder="name@example.com"
             {...form.register('email')}
           />
-          {form.formState.errors.email && (
+          {form.formState.errors.email && (form.watch('email') || form.formState.isSubmitted) && (
             <p className="text-xs text-destructive">{form.formState.errors.email.message}</p>
           )}
         </div>
@@ -97,7 +98,7 @@ function LoginPage() {
               {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>
           </div>
-          {form.formState.errors.password && (
+          {form.formState.errors.password && (form.watch('password') || form.formState.isSubmitted) && (
             <p className="text-xs text-destructive">{form.formState.errors.password.message}</p>
           )}
         </div>
