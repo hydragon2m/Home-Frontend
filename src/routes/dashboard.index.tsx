@@ -16,7 +16,7 @@ function DashboardPage() {
     <div className="space-y-8 animate-reveal">
       <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-bold tracking-tight">
-          Chào buổi tối, {user?.fullName || 'bạn'}! 👋
+          Chào buổi tối, {user?.name || 'bạn'}! 👋
         </h1>
         <p className="text-muted-foreground">
           Dưới đây là tổng quan về ngôi nhà **{currentOrg?.name || 'My Homie'}** của bạn.
