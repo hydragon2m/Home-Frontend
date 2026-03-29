@@ -1,0 +1,14 @@
+{
+  "common": {
+    "home": "Home",
+    "features": "Features",
+    "getStarted": "Get Started",
+    "logout": "Logout",
+    "dashboard": "Dashboard",
+    "users": "Users",
+    "settings": "Settings",
+    "welcome": "Welcome to My Homie",
+    "heroDescription": "A shared space for the whole family to share, plan, and keep everything in daily life organized.",
+    "documentation": "Documentation"
+  }
+}

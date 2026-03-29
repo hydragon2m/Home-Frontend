@@ -1,0 +1,14 @@
+{
+  "common": {
+    "home": "Trang chủ",
+    "features": "Tính năng",
+    "getStarted": "Bắt đầu",
+    "logout": "Đăng xuất",
+    "dashboard": "Bảng điều khiển",
+    "users": "Người dùng",
+    "settings": "Cài đặt",
+    "welcome": "Chào mừng đến với My Homie",
+    "heroDescription": "Không gian chung cho cả gia đình để cùng nhau chia sẻ, lên kế hoạch và giữ mọi thứ trong cuộc sống hằng ngày luôn gọn gàng.",
+    "documentation": "Tài liệu"
+  }
+}
