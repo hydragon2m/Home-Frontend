@@ -1,13 +1,13 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { MainLayout } from '@/layouts/MainLayout'
-import { Users, Heart, Shield, Sparkles } from 'lucide-react'
+import { Logo } from '@/components/elements/Logo'
+import { Users, Heart, Shield } from 'lucide-react'
 
 export const Route = createFileRoute('/about')({
   component: AboutPage,
 })
 
 function AboutPage() {
-
   return (
     <MainLayout>
       <div className="container py-16 md:py-24">
@@ -22,7 +22,7 @@ function AboutPage() {
         </div>
 
         {/* Our Story */}
-        <div className="grid md:grid-cols-2 gap-12 items-center mb-24">
+        <div className="grid md:grid-cols-2 gap-16 items-center mb-24">
           <div className="space-y-6 animate-reveal animate-delay-100">
             <h2 className="text-3xl font-bold">Câu chuyện của chúng tôi</h2>
             <div className="space-y-4 text-lg text-muted-foreground">
@@ -36,8 +36,10 @@ function AboutPage() {
               </p>
             </div>
           </div>
-          <div className="bg-primary/5 rounded-3xl p-12 flex items-center justify-center animate-reveal animate-delay-200">
-            <Sparkles className="w-32 h-32 text-primary/20" />
+          <div className="relative group animate-reveal animate-delay-200 flex justify-center">
+            <div className="relative bg-white dark:bg-muted/10 rounded-[2rem] overflow-hidden aspect-square border shadow-lg transition-transform duration-500 hover:scale-[1.02] max-w-sm w-full p-12 flex items-center justify-center">
+              <Logo className="h-40 w-auto scale-150" />
+            </div>
           </div>
         </div>
 

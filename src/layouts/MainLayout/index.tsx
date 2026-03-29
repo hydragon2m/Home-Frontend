@@ -3,7 +3,6 @@ import { useState } from 'react'
 import { Link } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { Menu, X } from 'lucide-react'
-import { Logo } from '@/components/elements/Logo'
 import { LanguageToggle } from '@/components/elements/LanguageToggle'
 import { ModeToggle } from '@/components/elements/ModeToggle'
 import { Button } from '@/components/ui/button'
@@ -17,9 +16,13 @@ export function MainLayout({ children }: { children: ReactNode }) {
       {/* Header */}
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between">
-          <div className="flex-shrink-0 font-bold text-xl tracking-tight">
-            <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>
-              <Logo />
+          <div className="flex-shrink-0">
+            <Link 
+              to="/" 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="font-bold text-2xl tracking-tighter text-primary hover:opacity-80 transition-opacity"
+            >
+              Homie
             </Link>
           </div>
 
@@ -28,9 +31,9 @@ export function MainLayout({ children }: { children: ReactNode }) {
             <Link to="/" className="text-sm font-medium transition-colors hover:text-primary">
               {t('common.home')}
             </Link>
-            <a href="/#features" className="text-sm font-medium transition-colors hover:text-primary">
+            <Link to="/" hash="features" className="text-sm font-medium transition-colors hover:text-primary">
               {t('common.features_section_title')}
-            </a>
+            </Link>
             <Link to="/about" className="text-sm font-medium transition-colors hover:text-primary">
               {t('common.about')}
             </Link>
@@ -69,13 +72,14 @@ export function MainLayout({ children }: { children: ReactNode }) {
               >
                 {t('common.home')}
               </Link>
-              <a 
-                href="/#features" 
+              <Link 
+                to="/" 
+                hash="features"
                 className="text-lg font-medium px-4 py-2 hover:bg-accent rounded-lg"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {t('common.features_section_title')}
-              </a>
+              </Link>
               <Link 
                 to="/about" 
                 className="text-lg font-medium px-4 py-2 hover:bg-accent rounded-lg"
