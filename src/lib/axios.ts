@@ -1,27 +1,29 @@
-import axios from 'axios';
+import axios from 'axios'
+import { useAuthStore } from '@/stores/auth-store'
 
-export const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000',
-  timeout: 10000,
+const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
+
+const api = axios.create({
+  baseURL,
+  withCredentials: true, // Critical for HttpOnly Cookies
   headers: {
     'Content-Type': 'application/json',
   },
-});
+})
 
-apiClient.interceptors.request.use(
-  (config) => {
-    // Example: append token to request
-    // const token = useAuthStore.getState().token;
-    // if (token) config.headers.Authorization = `Bearer ${token}`;
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
-apiClient.interceptors.response.use(
-  (response) => response.data,
+// Add a response interceptor to handle auth errors
+api.interceptors.response.use(
+  (response) => response,
   (error) => {
-    // Handle 401 logic globally here
-    return Promise.reject(error);
+    if (error.response?.status === 401 || error.response?.status === 403) {
+      // Clear auth store on 401/403
+      useAuthStore.getState().logout()
+      if (window.location.pathname !== '/login') {
+        window.location.href = '/login'
+      }
+    }
+    return Promise.reject(error)
   }
-);
+)
+
+export default api
