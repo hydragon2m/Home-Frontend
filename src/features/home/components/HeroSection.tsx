@@ -24,9 +24,6 @@ export function HeroSection() {
             <Button size="lg" className="px-8 h-12 text-base font-semibold transition-all hover:scale-105" asChild>
               <Link to="/register">{t('common.getStarted')}</Link>
             </Button>
-            <Button variant="outline" size="lg" className="px-8 h-12 text-base font-semibold transition-all hover:bg-accent/50" asChild>
-              <Link to="/guide">{t('common.guide')}</Link>
-            </Button>
           </div>
         </div>
       </div>

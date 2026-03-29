@@ -31,8 +31,8 @@ export function MainLayout({ children }: { children: ReactNode }) {
             <a href="/#features" className="text-sm font-medium transition-colors hover:text-primary">
               {t('common.features_section_title')}
             </a>
-            <Link to="/guide" className="text-sm font-medium transition-colors hover:text-primary">
-              {t('common.guide')}
+            <Link to="/about" className="text-sm font-medium transition-colors hover:text-primary">
+              {t('common.about')}
             </Link>
             <div className="flex items-center gap-2 border-l pl-6 ml-2">
               <LanguageToggle />
@@ -77,11 +77,11 @@ export function MainLayout({ children }: { children: ReactNode }) {
                 {t('common.features_section_title')}
               </a>
               <Link 
-                to="/guide" 
+                to="/about" 
                 className="text-lg font-medium px-4 py-2 hover:bg-accent rounded-lg"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                {t('common.guide')}
+                {t('common.about')}
               </Link>
               <div className="pt-4 mt-2 border-t">
                 <Button className="w-full text-lg h-12" asChild onClick={() => setIsMobileMenuOpen(false)}>
