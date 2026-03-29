@@ -1,6 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useState, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useState } from 'react'
 import { useAuthStore } from '@/stores/auth-store'
 import api from '@/lib/axios'
 import { Button } from '@/components/ui/button'
@@ -14,7 +13,6 @@ export const Route = createFileRoute('/dashboard/settings/organization')({
 })
 
 function OrganizationSettingsPage() {
-  const { t } = useTranslation()
   const { currentOrg } = useAuthStore()
   const [inviteCode, setInviteCode] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
