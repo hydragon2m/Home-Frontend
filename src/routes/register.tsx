@@ -1,0 +1,26 @@
+import { createFileRoute, Link } from '@tanstack/react-router'
+import { MainLayout } from '@/layouts/MainLayout'
+import { Button } from '@/components/ui/button'
+import { useTranslation } from 'react-i18next'
+
+export const Route = createFileRoute('/register')({
+  component: RegisterPage,
+})
+
+function RegisterPage() {
+  const { t } = useTranslation()
+
+  return (
+    <MainLayout>
+      <div className="container flex flex-col items-center justify-center min-h-[60vh] py-12 text-center">
+        <h1 className="text-3xl font-bold mb-4">{t('common.register')}</h1>
+        <p className="text-muted-foreground mb-8 text-lg">
+          Trang đăng ký tài khoản mới đang được phát triển...
+        </p>
+        <Button asChild>
+          <Link to="/">Quay lại trang chủ</Link>
+        </Button>
+      </div>
+    </MainLayout>
+  )
+}

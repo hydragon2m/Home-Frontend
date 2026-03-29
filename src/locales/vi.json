@@ -1,14 +1,67 @@
 {
   "common": {
     "home": "Trang chủ",
-    "features": "Tính năng",
-    "getStarted": "Bắt đầu",
+    "getStarted": "Bắt đầu ngay",
+    "login": "Đăng nhập",
+    "register": "Đăng ký",
     "logout": "Đăng xuất",
     "dashboard": "Bảng điều khiển",
     "users": "Người dùng",
     "settings": "Cài đặt",
-    "welcome": "Chào mừng đến với My Homie",
+    "welcome_prefix": "Chào mừng đến với",
     "heroDescription": "Không gian chung cho cả gia đình để cùng nhau chia sẻ, lên kế hoạch và giữ mọi thứ trong cuộc sống hằng ngày luôn gọn gàng.",
-    "documentation": "Tài liệu"
+    "guide": "Hướng dẫn",
+    "features_section_title": "Tính năng ưu việt cho Gia đình",
+    "features_section_subtitle": "Mọi thứ bạn cần để giữ cho tổ ấm luôn hạnh phúc và ngăn nắp.",
+    "features": {
+      "dashboard": {
+        "title": "Trang tổng quan",
+        "desc": "Nắm bắt tình hình cả ngày chỉ trong một cái nhìn: lịch trình, việc cần làm và chi tiêu."
+      },
+      "finance": {
+        "title": "Quản lý chi tiêu",
+        "desc": "Theo dõi thu nhập, chi tiêu gia đình minh bạch với biểu đồ báo cáo chi tiết."
+      },
+      "calendar": {
+        "title": "Lịch chung",
+        "desc": "Hai người cùng quản lý sự kiện, nhắc nhở và đồng bộ lịch trình cá nhân."
+      },
+      "todo": {
+        "title": "Kế hoạch ngày",
+        "desc": "Danh sách việc cần làm chung hoặc riêng với thời hạn và phân công rõ ràng."
+      },
+      "period": {
+        "title": "Theo dõi chu kỳ",
+        "desc": "Công cụ theo dõi và dự đoán chu kỳ tinh tế, giúp chuẩn bị tốt hơn cho sức khỏe."
+      },
+      "goals": {
+        "title": "Kế hoạch tương lai",
+        "desc": "Lên kế hoạch và theo dõi tiến độ cho các mục tiêu lớn: mua nhà, sắm xe, du lịch."
+      },
+      "shopping": {
+        "title": "Danh sách mua sắm",
+        "desc": "Danh sách đồ cần mua chung, cập nhật trạng thái ngay khi đang ở siêu thị."
+      },
+      "special_days": {
+        "title": "Nhắc ngày đặc biệt",
+        "desc": "Không bao giờ quên ngày kỷ niệm, sinh nhật hay các dịp lễ quan trọng."
+      },
+      "journal": {
+        "title": "Nhật ký & Ghi chú",
+        "desc": "Lưu giữ những khoảnh khắc hạnh phúc hoặc những ý tưởng vụt sáng cùng nhau."
+      },
+      "chores": {
+        "title": "Phân công việc nhà",
+        "desc": "Chia sẻ công việc gia đình công bằng và tự động nhắc nhở lịch thực hiện."
+      },
+      "stats": {
+        "title": "Thống kê cuộc sống",
+        "desc": "Cái nhìn tổng quát về thói quen, mức độ hoàn thành công việc và tiết kiệm."
+      },
+      "notifications": {
+        "title": "Thông báo thông minh",
+        "desc": "Cảnh báo kịp thời: task mới, sắp đến sinh nhật hay cả khi gia đình hết gạo."
+      }
+    }
   }
 }

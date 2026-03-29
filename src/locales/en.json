@@ -1,14 +1,67 @@
 {
   "common": {
     "home": "Home",
-    "features": "Features",
+    "features": {
+      "dashboard": {
+        "title": "Dashboard",
+        "desc": "Get a complete overview of your day at a glance: schedule, todos, and spending."
+      },
+      "finance": {
+        "title": "Finance Management",
+        "desc": "Track family income and expenses transparently with detailed charts and reports."
+      },
+      "calendar": {
+        "title": "Shared Calendar",
+        "desc": "Manage events and reminders together, syncing personal schedules seamlessly."
+      },
+      "todo": {
+        "title": "Daily Tasks",
+        "desc": "Shared or private todo lists with deadlines and clear assignments."
+      },
+      "period": {
+        "title": "Period Tracker",
+        "desc": "Subtle and smart cycle tracking to better prepare for health and well-being."
+      },
+      "goals": {
+        "title": "Future Planning",
+        "desc": "Plan and track progress for big goals: buying a house, a car, or traveling."
+      },
+      "shopping": {
+        "title": "Shopping List",
+        "desc": "Collaborative shopping labels, updated instantly while you're at the store."
+      },
+      "special_days": {
+        "title": "Special Day Reminders",
+        "desc": "Never forget anniversaries, birthdays, or important holidays again."
+      },
+      "journal": {
+        "title": "Journal & Notes",
+        "desc": "Capture happy moments or sudden bright ideas together in one place."
+      },
+      "chores": {
+        "title": "House Chores",
+        "desc": "Share family duties fairly with automated rotation and reminders."
+      },
+      "stats": {
+        "title": "Life Statistics",
+        "desc": "A holistic view of your habits, task completion, and savings progress."
+      },
+      "notifications": {
+        "title": "Smart Notifications",
+        "desc": "Timely alerts for new tasks, upcoming birthdays, or even running out of groceries."
+      }
+    },
     "getStarted": "Get Started",
+    "login": "Login",
+    "register": "Sign Up",
     "logout": "Logout",
+    "features_section_title": "Powerful Features for Your Family",
+    "features_section_subtitle": "Everything you need to keep your home happy and organized.",
     "dashboard": "Dashboard",
     "users": "Users",
     "settings": "Settings",
-    "welcome": "Welcome to My Homie",
-    "heroDescription": "A shared space for the whole family to share, plan, and keep everything in daily life organized.",
-    "documentation": "Documentation"
+    "welcome_prefix": "Welcome to",
+    "heroDescription": "A shared space for the whole family to share, plan, and keep everyday life organized.",
+    "guide": "Guide"
   }
 }

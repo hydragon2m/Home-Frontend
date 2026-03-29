@@ -23,14 +23,19 @@ export function MainLayout({ children }: { children: ReactNode }) {
             <Link to="/" className="text-sm font-medium transition-colors hover:text-primary">
               {t('common.home')}
             </Link>
-            <Link to="/" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
-              {t('common.features')}
+            <a href="/#features" className="text-sm font-medium transition-colors hover:text-primary">
+              {t('common.features_section_title')}
+            </a>
+            <Link to="/guide" className="text-sm font-medium transition-colors hover:text-primary">
+              {t('common.guide')}
             </Link>
             <div className="flex items-center gap-2">
               <LanguageToggle />
               <ModeToggle />
             </div>
-            <Button variant="default" size="sm">{t('common.getStarted')}</Button>
+            <Button size="sm" asChild>
+              <Link to="/login">{t('common.login')}</Link>
+            </Button>
           </nav>
         </div>
       </header>

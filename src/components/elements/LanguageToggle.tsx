@@ -6,10 +6,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
-import { Languages } from 'lucide-react'
+import { Languages, Check } from 'lucide-react'
 
 export function LanguageToggle() {
   const { i18n } = useTranslation()
+  const currentLang = i18n.language
 
   return (
     <DropdownMenu>
@@ -20,11 +21,13 @@ export function LanguageToggle() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => i18n.changeLanguage('vi')}>
-          Tiếng Việt
+        <DropdownMenuItem onClick={() => i18n.changeLanguage('vi')} className="flex items-center justify-between">
+          <span>Tiếng Việt</span>
+          {currentLang === 'vi' && <Check className="ml-2 h-4 w-4" />}
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => i18n.changeLanguage('en')}>
-          English
+        <DropdownMenuItem onClick={() => i18n.changeLanguage('en')} className="flex items-center justify-between">
+          <span>English</span>
+          {currentLang === 'en' && <Check className="ml-2 h-4 w-4" />}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

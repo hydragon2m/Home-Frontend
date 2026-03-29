@@ -1,23 +1,35 @@
 import { Button } from '@/components/ui/button'
 import { useTranslation } from 'react-i18next'
+import { Link } from '@tanstack/react-router'
 
 export function HeroSection() {
   const { t } = useTranslation()
 
   return (
-    <div className="container py-24 lg:py-32">
-      <div className="flex flex-col items-center text-center space-y-8">
-        <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl whitespace-pre-line">
-          {t('common.welcome')}
-        </h1>
-        <p className="text-xl text-muted-foreground max-w-2xl">
-          {t('common.heroDescription')}
-        </p>
-        <div className="flex gap-4">
-          <Button size="lg">{t('common.getStarted')}</Button>
-          <Button size="lg" variant="outline">{t('common.documentation')}</Button>
+    <section className="relative overflow-hidden pt-20 pb-24 lg:pt-32 lg:pb-40">
+      {/* Decorative Blobs */}
+      <div className="bg-blob top-[-10%] left-[-10%] opacity-50 dark:opacity-20" />
+      <div className="bg-blob bottom-[-10%] right-[-10%] opacity-50 dark:opacity-20" />
+
+      <div className="container px-4 mx-auto relative z-10">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-8 animate-reveal">
+            {t('common.welcome_prefix')}{' '}
+            <span className="text-primary whitespace-nowrap">My Homie</span>
+          </h1>
+          <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto animate-reveal animate-delay-100">
+            {t('common.heroDescription')}
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-reveal animate-delay-200">
+            <Button size="lg" className="px-8 h-12 text-base font-semibold transition-all hover:scale-105" asChild>
+              <Link to="/register">{t('common.getStarted')}</Link>
+            </Button>
+            <Button variant="outline" size="lg" className="px-8 h-12 text-base font-semibold transition-all hover:bg-accent/50" asChild>
+              <Link to="/guide">{t('common.guide')}</Link>
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   )
 }
