@@ -44,11 +44,11 @@ export function MainLayout({ children }: { children: ReactNode }) {
               <ModeToggle />
             </div>
             {user ? (
-              <Button size="sm" variant="outline" asChild shadow="sm">
+              <Button size="sm" variant="outline" asChild>
                  <Link to="/dashboard">{t('common.dashboard')}</Link>
               </Button>
             ) : (
-              <Button size="sm" asChild shadow="sm">
+              <Button size="sm" asChild>
                 <Link to="/login">{t('common.login')}</Link>
               </Button>
             )}
