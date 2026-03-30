@@ -97,20 +97,29 @@ function OrganizationSettingsPage() {
         </Card>
 
         {/* Invitation Section */}
-        <Card className={!isAdmin ? "opacity-50 pointer-events-none" : ""}>
+        <Card className={(!isAdmin || !currentOrg) ? "opacity-50" : ""}>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <UserPlus className="h-5 w-5 text-primary" />
               Mời thành viên mới
             </CardTitle>
             <CardDescription>
-              {isAdmin 
-                ? "Tạo mã mời để thêm người thân vào gia đình của bạn." 
-                : "Chỉ chủ nhà mới có quyền tạo mã mời."}
+              {!currentOrg 
+                ? "Vui lòng chọn hoặc tạo gia đình ở thanh bên để bắt đầu mời thành viên."
+                : !isAdmin 
+                  ? "Chỉ chủ nhà mới có quyền tạo mã mời."
+                  : "Tạo mã mời để thêm người thân vào gia đình của bạn."}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {inviteCode ? (
+            {!currentOrg ? (
+               <div className="flex flex-col items-center justify-center py-6 text-center space-y-2">
+                 <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+                   <Users className="h-6 w-6 text-primary" />
+                 </div>
+                 <p className="text-sm text-muted-foreground">Bạn chưa chọn gia đình nào.</p>
+               </div>
+            ) : inviteCode ? (
               <div className="space-y-4">
                 <div className="flex items-center gap-4 bg-muted p-4 rounded-lg border-2 border-dashed border-primary/30">
                   <span className="text-2xl font-mono font-bold tracking-widest text-primary flex-1 text-center">
