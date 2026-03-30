@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button'
 import { useTranslation } from 'react-i18next'
 import { LanguageToggle } from '@/components/elements/LanguageToggle'
 import { ModeToggle } from '@/components/elements/ModeToggle'
+import { OrganizationSwitcher } from '@/components/elements/OrganizationSwitcher'
 import { useAuthStore } from '@/stores/auth-store'
 
 const NAV_ITEMS = [
@@ -25,7 +26,7 @@ const NAV_ITEMS = [
 export function DashboardLayout({ children }: { children: ReactNode }) {
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const { user, currentOrg, logout } = useAuthStore()
+  const { user, logout } = useAuthStore()
 
   const handleLogout = () => {
     logout()
@@ -38,24 +39,13 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
     <div className="flex h-screen overflow-hidden bg-muted/20">
       {/* Sidebar - Desktop */}
       <aside className="hidden md:flex w-64 flex-col border-r bg-background">
-        <div className="flex h-16 items-center border-b px-6">
-          <Link to="/" className="font-bold text-2xl tracking-tighter text-primary">
+        <div className="flex h-16 items-center border-b px-6 text-primary">
+          <Link to="/" className="font-bold text-2xl tracking-tighter">
             Homie
           </Link>
         </div>
         
-        {/* Organization Info / Switcher Placeholder */}
-        <div className="p-4 border-b bg-primary/5">
-          <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold shrink-0">
-              {currentOrg?.name?.charAt(0) || 'H'}
-            </div>
-            <div className="overflow-hidden">
-              <p className="text-xs font-semibold truncate">{currentOrg?.name || 'Gia đình của tôi'}</p>
-              <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{currentOrg?.role || 'ORG_ADMIN'}</p>
-            </div>
-          </div>
-        </div>
+        <OrganizationSwitcher />
 
         <nav className="flex-1 space-y-1 p-4">
           {NAV_ITEMS.map((item) => (

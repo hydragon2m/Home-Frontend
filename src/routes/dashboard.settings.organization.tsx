@@ -26,9 +26,10 @@ function OrganizationSettingsPage() {
     if (!currentOrg) return
     setLoading(true)
     try {
-      const res = await api.post(`/organizations/${currentOrg.id}/invites`, {
-        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+      const res: any = await api.post(`/organizations/${currentOrg.id}/invites`, {
+        expiresInDays: 7,
         maxUses: 5,
+        role: 'ORG_MEMBER'
       })
       setInviteCode(res.data.code)
     } catch (err) {
