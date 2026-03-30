@@ -115,7 +115,7 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
                   <User className="mr-2 h-4 w-4" />
                   <span>Hồ sơ cá nhân</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => navigate({ to: '/dashboard/settings' })}>
+                <DropdownMenuItem onClick={() => navigate({ to: '/dashboard/settings/organization' })}>
                   <Settings className="mr-2 h-4 w-4" />
                   <span>Cài đặt hệ thống</span>
                 </DropdownMenuItem>
