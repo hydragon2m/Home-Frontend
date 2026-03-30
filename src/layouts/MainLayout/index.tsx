@@ -6,9 +6,11 @@ import { Menu, X } from 'lucide-react'
 import { LanguageToggle } from '@/components/elements/LanguageToggle'
 import { ModeToggle } from '@/components/elements/ModeToggle'
 import { Button } from '@/components/ui/button'
+import { useAuthStore } from '@/stores/auth-store'
 
 export function MainLayout({ children }: { children: ReactNode }) {
   const { t } = useTranslation()
+  const { user } = useAuthStore()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   return (
@@ -41,9 +43,15 @@ export function MainLayout({ children }: { children: ReactNode }) {
               <LanguageToggle />
               <ModeToggle />
             </div>
-            <Button size="sm" asChild>
-              <Link to="/login">{t('common.login')}</Link>
-            </Button>
+            {user ? (
+              <Button size="sm" variant="outline" asChild shadow="sm">
+                 <Link to="/dashboard">{t('common.dashboard')}</Link>
+              </Button>
+            ) : (
+              <Button size="sm" asChild shadow="sm">
+                <Link to="/login">{t('common.login')}</Link>
+              </Button>
+            )}
           </nav>
 
           {/* Mobile Menu Toggle */}
@@ -88,9 +96,15 @@ export function MainLayout({ children }: { children: ReactNode }) {
                 {t('common.about')}
               </Link>
               <div className="pt-4 mt-2 border-t">
-                <Button className="w-full text-lg h-12" asChild onClick={() => setIsMobileMenuOpen(false)}>
-                  <Link to="/login">{t('common.login')}</Link>
-                </Button>
+                {user ? (
+                   <Button className="w-full text-lg h-12" variant="outline" asChild onClick={() => setIsMobileMenuOpen(false)}>
+                    <Link to="/dashboard">{t('common.dashboard')}</Link>
+                  </Button>
+                ) : (
+                  <Button className="w-full text-lg h-12" asChild onClick={() => setIsMobileMenuOpen(false)}>
+                    <Link to="/login">{t('common.login')}</Link>
+                  </Button>
+                )}
               </div>
             </nav>
           </div>
