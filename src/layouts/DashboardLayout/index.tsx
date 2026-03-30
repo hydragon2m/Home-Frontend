@@ -15,6 +15,7 @@ import { LanguageToggle } from '@/components/elements/LanguageToggle'
 import { ModeToggle } from '@/components/elements/ModeToggle'
 import { OrganizationSwitcher } from '@/components/elements/OrganizationSwitcher'
 import { useAuthStore } from '@/stores/auth-store'
+import api from '@/lib/axios'
 
 const NAV_ITEMS = [
   { label: 'common.dashboard', icon: LayoutDashboard, to: '/dashboard' },
@@ -28,9 +29,15 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
   const navigate = useNavigate()
   const { user, logout } = useAuthStore()
 
-  const handleLogout = () => {
-    logout()
-    navigate({ to: '/login' })
+  const handleLogout = async () => {
+    try {
+      await api.post('/auth/logout')
+    } catch (err) {
+      console.error('Logout API failed:', err)
+    } finally {
+      logout()
+      navigate({ to: '/login' })
+    }
   }
 
   const userInitial = user?.name?.charAt(0).toUpperCase() || 'U'
