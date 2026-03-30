@@ -52,15 +52,16 @@ function ProfilePage() {
     }
   }, [user, form])
 
-  const onSubmit = async (data: ProfileFormValues) => {
+  const onSubmit = async (formData: ProfileFormValues) => {
     setLoading(true)
     setMessage(null)
     try {
-      const res = await api.patch('/users/me', data)
+      // res is { message, data } thanks to axios interceptor
+      const res: any = await api.patch('/users/me', formData)
       if (res.data) {
         setAuth(res.data, currentOrg)
       }
-      setMessage({ type: 'success', text: 'Cập nhật hồ sơ thành công!' })
+      setMessage({ type: 'success', text: res.message || 'Cập nhật hồ sơ thành công!' })
     } catch (err: any) {
       setMessage({ type: 'error', text: err.response?.data?.message || 'Có lỗi xảy ra khi cập nhật.' })
     } finally {

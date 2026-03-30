@@ -47,17 +47,26 @@ function RegisterPage() {
     mode: 'onTouched',
   })
 
-  const onSubmit = async (data: RegisterFormValues) => {
+  const onSubmit = async (formData: RegisterFormValues) => {
     setLoading(true)
     setError(null)
     try {
-      // FE-only logic: confirmPassword is not sent to backend
-      const { name, email, password } = data
+      const { name, email, password } = formData
+      // 1. Đăng ký tài khoản
       await api.post('/auth/register', { name, email, password })
       
-      const profileRes = await api.get('/users/me')
-      setAuth(profileRes.data, profileRes.data.orgId || null)
-      navigate({ to: '/dashboard' })
+      // 2. Tự động đăng nhập sau khi đăng ký thành công
+      const loginRes: any = await api.post('/auth/login', { email, password })
+      
+      if (loginRes.data?.user) {
+        setAuth(loginRes.data.user, null)
+        navigate({ to: '/dashboard' })
+      } else {
+        // Fallback: Nếu login không trả user, gọi /me
+        const profileRes: any = await api.get('/users/me')
+        setAuth(profileRes.data, profileRes.data.orgId || null)
+        navigate({ to: '/dashboard' })
+      }
     } catch (err: any) {
       setError(err.response?.data?.message || 'Đăng ký thất bại. Email có thể đã tồn tại.')
     } finally {

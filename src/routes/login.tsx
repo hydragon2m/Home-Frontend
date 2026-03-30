@@ -42,14 +42,24 @@ function LoginPage() {
     mode: 'onTouched',
   })
 
-  const onSubmit = async (data: LoginFormValues) => {
+  const onSubmit = async (formData: LoginFormValues) => {
     setLoading(true)
     setError(null)
-      try {
-      await api.post('/auth/login', data)
-      const profileRes = await api.get('/users/me')
-      setAuth(profileRes.data, profileRes.data.orgId || null)
-      navigate({ to: '/dashboard' })
+    try {
+      // Backend /auth/login returns { success: true, message: "...", data: { user, access_token, refresh_token } }
+      // The axios interceptor unwraps this to { message, data }
+      const res: any = await api.post('/auth/login', formData)
+      
+      // Set Auth state using the user data from login response
+      if (res.data?.user) {
+        setAuth(res.data.user, null) // Login Global chưa có orgId
+        navigate({ to: '/dashboard' })
+      } else {
+        // Fallback: Nếu BE không trả user trong login, ta mới gọi /me
+        const profileRes: any = await api.get('/users/me')
+        setAuth(profileRes.data, profileRes.data.orgId || null)
+        navigate({ to: '/dashboard' })
+      }
     } catch (err: any) {
       setError(err.response?.data?.message || 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.')
     } finally {
