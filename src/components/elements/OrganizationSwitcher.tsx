@@ -28,8 +28,10 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { useTranslation } from 'react-i18next'
 
 export function OrganizationSwitcher() {
+  const { t } = useTranslation()
   const { currentOrg, setOrg } = useAuthStore()
   const [orgs, setOrgs] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
@@ -103,9 +105,9 @@ export function OrganizationSwitcher() {
                 {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : (currentOrg?.name?.charAt(0) || <Home className="h-4 w-4" />)}
               </div>
               <div className="text-left overflow-hidden">
-                <p className="text-xs font-bold truncate">{currentOrg?.name || 'Chọn Gia đình'}</p>
+                <p className="text-xs font-bold truncate">{currentOrg?.name || t('org.select_title')}</p>
                 <p className="text-[10px] text-muted-foreground uppercase tracking-widest">
-                  {currentOrg?.role ? (currentOrg.role === 'ORG_ADMIN' ? 'Chủ nhà' : 'Thành viên') : 'Global context'}
+                  {currentOrg?.role ? (currentOrg.role === 'ORG_ADMIN' ? t('org.role_admin') : t('org.role_member')) : t('org.context_global')}
                 </p>
               </div>
             </div>
@@ -114,11 +116,11 @@ export function OrganizationSwitcher() {
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-60" align="start">
           <DropdownMenuLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-2 py-1.5">
-            Gia đình của bạn
+            {t('org.my_orgs')}
           </DropdownMenuLabel>
           {orgs.length === 0 ? (
              <div className="px-2 py-4 text-center">
-                <p className="text-xs text-muted-foreground">Bạn chưa tham gia gia đình nào.</p>
+                <p className="text-xs text-muted-foreground">{t('org.no_orgs')}</p>
              </div>
           ) : (
             orgs.map((org) => (
@@ -144,22 +146,22 @@ export function OrganizationSwitcher() {
             <DialogTrigger asChild>
               <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="cursor-pointer py-2 text-primary focus:text-primary focus:bg-primary/5 font-medium">
                 <PlusCircle className="mr-2 h-4 w-4" />
-                Tạo Gia đình mới
+                {t('org.create_new')}
               </DropdownMenuItem>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Tạo Gia đình mới</DialogTitle>
+                <DialogTitle>{t('org.create_title')}</DialogTitle>
                 <DialogDescription>
-                  Gia đình là không gian riêng tư để bạn chia sẻ tài chính và kế hoạch với người thân.
+                  {t('org.create_description')}
                 </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="name">Tên gia đình</Label>
+                  <Label htmlFor="name">{t('org.name_label')}</Label>
                   <Input 
                     id="name" 
-                    placeholder="Vd: Gia đình Nguyễn" 
+                    placeholder={t('org.name_placeholder')}
                     value={newOrgName}
                     onChange={(e) => setNewOrgName(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleCreate()}
@@ -167,10 +169,10 @@ export function OrganizationSwitcher() {
                 </div>
               </div>
               <DialogFooter>
-                <Button variant="outline" onClick={() => setIsCreateOpen(false)}>Hủy</Button>
+                <Button variant="outline" onClick={() => setIsCreateOpen(false)}>{t('org.cancel')}</Button>
                 <Button onClick={handleCreate} disabled={creating || !newOrgName.trim()}>
                   {creating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  Tạo ngay
+                  {t('org.create_button')}
                 </Button>
               </DialogFooter>
             </DialogContent>

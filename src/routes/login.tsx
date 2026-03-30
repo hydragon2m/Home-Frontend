@@ -13,8 +13,8 @@ import { AuthLayout } from '@/components/auth/AuthLayout'
 import { useTranslation } from 'react-i18next'
 
 const loginSchema = z.object({
-  email: z.string().min(1, 'Vui lòng nhập email').email('Địa chỉ email không hợp lệ'),
-  password: z.string().min(1, 'Vui lòng nhập mật khẩu').min(6, 'Mật khẩu phải có ít nhất 6 ký tự'),
+  email: z.string().min(1, 'auth.validation.email_required').email('auth.validation.email_invalid'),
+  password: z.string().min(1, 'auth.validation.password_required').min(6, 'auth.validation.password_min'),
 })
 
 type LoginFormValues = z.infer<typeof loginSchema>
@@ -61,7 +61,7 @@ function LoginPage() {
         navigate({ to: '/dashboard' })
       }
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.')
+      setError(err.response?.data?.message || t('auth.validation.login_failed'))
     } finally {
       setLoading(false)
     }
@@ -69,8 +69,8 @@ function LoginPage() {
 
   return (
     <AuthLayout 
-      title={t('common.login')} 
-      description="Nhập email và mật khẩu để tiếp tục"
+      title={t('auth.login_title')} 
+      description={t('auth.login_description')}
     >
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         {error && (
@@ -80,7 +80,7 @@ function LoginPage() {
         )}
         
         <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email">{t('auth.email')}</Label>
           <Input
             id="email"
             type="email"
@@ -88,14 +88,14 @@ function LoginPage() {
             {...form.register('email')}
           />
           {form.formState.errors.email && (form.watch('email') || form.formState.isSubmitted) && (
-            <p className="text-xs text-destructive">{form.formState.errors.email.message}</p>
+            <p className="text-xs text-destructive">{t(form.formState.errors.email.message as string)}</p>
           )}
         </div>
 
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <Label htmlFor="password">Mật khẩu</Label>
-            <Button variant="link" className="p-0 h-auto text-xs" type="button">Quên mật khẩu?</Button>
+            <Label htmlFor="password">{t('auth.password')}</Label>
+            <Button variant="link" className="p-0 h-auto text-xs" type="button">{t('auth.forgot_password')}</Button>
           </div>
           <div className="relative">
             <Input
@@ -113,12 +113,12 @@ function LoginPage() {
             </button>
           </div>
           {form.formState.errors.password && (form.watch('password') || form.formState.isSubmitted) && (
-            <p className="text-xs text-destructive">{form.formState.errors.password.message}</p>
+            <p className="text-xs text-destructive">{t(form.formState.errors.password.message as string)}</p>
           )}
         </div>
 
         <Button type="submit" className="w-full" disabled={loading}>
-          {loading ? 'Đang xác thực...' : t('common.login')}
+          {loading ? t('auth.authenticating') : t('auth.login_title')}
         </Button>
 
         <div className="relative my-6">
@@ -126,7 +126,7 @@ function LoginPage() {
             <span className="w-full border-t border-border" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground">Hoặc tiếp tục với</span>
+            <span className="bg-background px-2 text-muted-foreground">{t('auth.or_continue_with')}</span>
           </div>
         </div>
 
@@ -136,13 +136,13 @@ function LoginPage() {
         </div>
 
         <div className="pt-4 text-sm text-center text-muted-foreground">
-          Chưa có tài khoản?{' '}
+          {t('auth.no_account')}{' '}
           <Button 
             variant="link" 
             className="p-0 h-auto font-semibold" 
             onClick={() => navigate({ to: '/register' })}
           >
-            Đăng ký ngay
+            {t('auth.register_now')}
           </Button>
         </div>
       </form>

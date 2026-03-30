@@ -113,11 +113,11 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => navigate({ to: '/dashboard/profile' })}>
                   <User className="mr-2 h-4 w-4" />
-                  <span>Hồ sơ cá nhân</span>
+                  <span>{t('common.profile')}</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => navigate({ to: '/dashboard/settings/organization' })}>
                   <Settings className="mr-2 h-4 w-4" />
-                  <span>Cài đặt hệ thống</span>
+                  <span>{t('common.settings_system')}</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem 

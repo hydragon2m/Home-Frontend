@@ -13,12 +13,12 @@ import { AuthLayout } from '@/components/auth/AuthLayout'
 import { useTranslation } from 'react-i18next'
 
 const registerSchema = z.object({
-  name: z.string().min(1, 'Vui lòng nhập họ tên'),
-  email: z.string().min(1, 'Vui lòng nhập email').email('Địa chỉ email không hợp lệ'),
-  password: z.string().min(1, 'Vui lòng nhập mật khẩu').min(6, 'Mật khẩu phải có ít nhất 6 ký tự'),
-  confirmPassword: z.string().min(1, 'Vui lòng xác nhận lại mật khẩu'),
+  name: z.string().min(1, 'auth.validation.name_required'),
+  email: z.string().min(1, 'auth.validation.email_required').email('auth.validation.email_invalid'),
+  password: z.string().min(1, 'auth.validation.password_required').min(6, 'auth.validation.password_min'),
+  confirmPassword: z.string().min(1, 'auth.validation.confirm_password_required'),
 }).refine((data) => data.password === data.confirmPassword, {
-  message: "Mật khẩu xác nhận không khớp",
+  message: "auth.validation.password_mismatch",
   path: ["confirmPassword"],
 })
 
@@ -68,7 +68,7 @@ function RegisterPage() {
         navigate({ to: '/dashboard' })
       }
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Đăng ký thất bại. Email có thể đã tồn tại.')
+      setError(err.response?.data?.message || t('auth.validation.register_failed'))
     } finally {
       setLoading(false)
     }
@@ -76,8 +76,8 @@ function RegisterPage() {
 
   return (
     <AuthLayout 
-      title={t('common.register')} 
-      description="Tạo tài khoản để bắt đầu xây dựng tổ ấm của bạn"
+      title={t('auth.register_title')} 
+      description={t('auth.register_description')}
     >
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         {error && (
@@ -87,19 +87,19 @@ function RegisterPage() {
         )}
         
         <div className="space-y-2">
-          <Label htmlFor="name">Họ và tên</Label>
+          <Label htmlFor="name">{t('auth.name')}</Label>
           <Input
             id="name"
-            placeholder="Nguyễn Văn A"
+            placeholder={t('auth.name_placeholder')}
             {...form.register('name')}
           />
           {form.formState.errors.name && (form.watch('name') || form.formState.isSubmitted) && (
-            <p className="text-xs text-destructive">{form.formState.errors.name.message}</p>
+            <p className="text-xs text-destructive">{t(form.formState.errors.name.message as string)}</p>
           )}
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email">{t('auth.email')}</Label>
           <Input
             id="email"
             type="email"
@@ -107,12 +107,12 @@ function RegisterPage() {
             {...form.register('email')}
           />
           {form.formState.errors.email && (form.watch('email') || form.formState.isSubmitted) && (
-            <p className="text-xs text-destructive">{form.formState.errors.email.message}</p>
+            <p className="text-xs text-destructive">{t(form.formState.errors.email.message as string)}</p>
           )}
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="password">Mật khẩu</Label>
+          <Label htmlFor="password">{t('auth.password')}</Label>
           <div className="relative">
             <Input
               id="password"
@@ -129,34 +129,34 @@ function RegisterPage() {
             </button>
           </div>
           {form.formState.errors.password && (form.watch('password') || form.formState.isSubmitted) && (
-            <p className="text-xs text-destructive">{form.formState.errors.password.message}</p>
+            <p className="text-xs text-destructive">{t(form.formState.errors.password.message as string)}</p>
           )}
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="confirmPassword">Xác nhận mật khẩu</Label>
+          <Label htmlFor="confirmPassword">{t('auth.confirm_password')}</Label>
           <Input
             id="confirmPassword"
             type={showPassword ? 'text' : 'password'}
             {...form.register('confirmPassword')}
           />
           {form.formState.errors.confirmPassword && (form.watch('confirmPassword') || form.formState.isSubmitted) && (
-            <p className="text-xs text-destructive">{form.formState.errors.confirmPassword.message}</p>
+            <p className="text-xs text-destructive">{t(form.formState.errors.confirmPassword.message as string)}</p>
           )}
         </div>
 
         <Button type="submit" className="w-full mt-2" disabled={loading}>
-          {loading ? 'Đang tạo...' : t('common.register')}
+          {loading ? t('auth.creating_account') : t('auth.register_title')}
         </Button>
 
         <div className="pt-4 text-sm text-center text-muted-foreground">
-          Đã có tài khoản?{' '}
+          {t('auth.already_have_account')}{' '}
           <Button 
             variant="link" 
             className="p-0 h-auto font-semibold" 
             onClick={() => navigate({ to: '/login' })}
           >
-            Đăng nhập
+            {t('auth.login_now')}
           </Button>
         </div>
       </form>

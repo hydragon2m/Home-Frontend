@@ -11,6 +11,8 @@
     "welcome_prefix": "Chào mừng đến với",
     "heroDescription": "Không gian chung cho cả gia đình để cùng nhau chia sẻ, lên kế hoạch và giữ mọi thứ trong cuộc sống hằng ngày luôn gọn gàng.",
     "about": "Về chúng tôi",
+    "profile": "Hồ sơ cá nhân",
+    "settings_system": "Cài đặt hệ thống",
     "features_section_title": "Tính năng ưu việt cho Gia đình",
     "features_section_subtitle": "Mọi thứ bạn cần để giữ cho tổ ấm luôn hạnh phúc và ngăn nắp.",
     "features": {
@@ -63,5 +65,62 @@
         "desc": "Cảnh báo kịp thời: task mới, sắp đến sinh nhật hay cả khi gia đình hết gạo."
       }
     }
+  },
+  "auth": {
+    "login_title": "Đăng nhập",
+    "login_description": "Nhập email và mật khẩu để tiếp tục",
+    "register_title": "Đăng ký",
+    "register_description": "Tạo tài khoản để bắt đầu xây dựng tổ ấm của bạn",
+    "name": "Họ và tên",
+    "name_placeholder": "Nguyễn Văn A",
+    "email": "Email",
+    "password": "Mật khẩu",
+    "confirm_password": "Xác nhận mật khẩu",
+    "forgot_password": "Quên mật khẩu?",
+    "or_continue_with": "Hoặc tiếp tục với",
+    "no_account": "Chưa có tài khoản?",
+    "already_have_account": "Đã có tài khoản?",
+    "register_now": "Đăng ký ngay",
+    "login_now": "Đăng nhập ngay",
+    "authenticating": "Đang xác thực...",
+    "creating_account": "Đang tạo tài khoản...",
+    "validation": {
+      "name_required": "Vui lòng nhập họ tên",
+      "email_required": "Vui lòng nhập email",
+      "email_invalid": "Địa chỉ email không hợp lệ",
+      "password_required": "Vui lòng nhập mật khẩu",
+      "password_min": "Mật khẩu phải có ít nhất 6 ký tự",
+      "password_mismatch": "Mật khẩu xác nhận không khớp"
+    }
+  },
+  "about": {
+    "hero_title": "HomieTech Solutions",
+    "hero_description": "Chúng tôi không chỉ xây dựng phần mềm, chúng tôi xây dựng những nhịp cầu gắn kết cho mọi tổ ấm Việt.",
+    "story_title": "Câu chuyện của chúng tôi",
+    "story_p1": "Được thành lập vào năm 2026 tại TP. Hà Nội, HomieTech Solutions khởi đầu từ một nhóm kỹ sư và cũng là người bận rộn với cuộc sống. Chúng tôi nhận ra rằng cuộc sống hiện đại đang khiến gia đình chúng ta có quá nhiều việc và các công cụ quản lý đang quá phân tán.",
+    "story_p2": "My Homie ra đời với sứ mệnh trở thành 'ngôi nhà số' duy nhất — nơi mọi thành viên có thể cùng nhau chia sẻ chi phí, lên kế hoạch cho những dịp đặc biệt, và giữ cho ngọn lửa hạnh phúc luôn bền vững.",
+    "value1_title": "Kết nối bền chặt",
+    "value1_desc": "Mọi tính năng đều được thiết kế để khuyến khích sự tương tác và sẻ chia giữa các thành viên.",
+    "value2_title": "Thấu hiểu tổ ấm",
+    "value2_desc": "Chúng tôi lắng nghe phản hồi từ hàng nghìn gia đình để mang lại trải nghiệm ấm cúng, thân thiện nhất.",
+    "value3_title": "Bảo mật tuyệt đối",
+    "value3_desc": "Dữ liệu gia đình là tài sản quý giá nhất. Chúng tôi cam kết bảo vệ sự riêng tư của bạn như chính gia đình mình.",
+    "footer_title": "Bạn đã sẵn sàng để gắn kết hơn?",
+    "footer_desc": "Hãy để HomieTech đồng hành cùng bạn trên hành trình xây dựng một tổ ấm hiện đại, ngăn nắp và tràn đầy hạnh phúc."
+  },
+  "org": {
+    "select_title": "Chọn Gia đình",
+    "my_orgs": "Gia đình của bạn",
+    "no_orgs": "Bạn chưa tham gia gia đình nào.",
+    "create_new": "Tạo Gia đình mới",
+    "create_title": "Tạo Gia đình mới",
+    "create_description": "Gia đình là không gian riêng tư để bạn chia sẻ tài chính và kế hoạch với người thân.",
+    "name_label": "Tên gia đình",
+    "name_placeholder": "Vd: Gia đình Nguyễn",
+    "cancel": "Hủy",
+    "create_button": "Tạo ngay",
+    "role_admin": "Chủ nhà",
+    "role_member": "Thành viên",
+    "context_global": "Tổng quan"
   }
 }
