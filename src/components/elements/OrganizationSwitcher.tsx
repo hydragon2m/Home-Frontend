@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { 
   ChevronDown, 
-  Plus, 
   Home, 
   Check, 
   PlusCircle, 
@@ -98,10 +97,10 @@ export function OrganizationSwitcher() {
     <div className="p-4 border-b">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="w-full justify-between h-auto py-2 px-2 hover:bg-accent/50 group">
+          <Button disabled={loading} variant="ghost" className="w-full justify-between h-auto py-2 px-2 hover:bg-accent/50 group">
             <div className="flex items-center gap-2 overflow-hidden">
               <div className="h-8 w-8 rounded bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold shrink-0 shadow-sm group-hover:scale-105 transition-transform">
-                {currentOrg?.name?.charAt(0) || <Home className="h-4 w-4" />}
+                {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : (currentOrg?.name?.charAt(0) || <Home className="h-4 w-4" />)}
               </div>
               <div className="text-left overflow-hidden">
                 <p className="text-xs font-bold truncate">{currentOrg?.name || 'Chọn Gia đình'}</p>
