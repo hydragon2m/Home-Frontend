@@ -15,13 +15,19 @@ import { LanguageToggle } from '@/components/elements/LanguageToggle'
 import { ModeToggle } from '@/components/elements/ModeToggle'
 import { OrganizationSwitcher } from '@/components/elements/OrganizationSwitcher'
 import { useAuthStore } from '@/stores/auth-store'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import api from '@/lib/axios'
 
 const NAV_ITEMS = [
   { label: 'common.dashboard', icon: LayoutDashboard, to: '/dashboard' },
-  { label: 'Hồ sơ cá nhân', icon: User, to: '/dashboard/profile' },
   { label: 'common.users', icon: Users, to: '/dashboard/users' },
-  { label: 'common.settings', icon: Settings, to: '/dashboard/settings' },
 ]
 
 export function DashboardLayout({ children }: { children: ReactNode }) {
@@ -53,7 +59,7 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
         </div>
         
         <OrganizationSwitcher />
-
+        
         <nav className="flex-1 space-y-1 p-4">
           {NAV_ITEMS.map((item) => (
             <Link
@@ -67,17 +73,6 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
             </Link>
           ))}
         </nav>
-        <div className="border-t p-4">
-          <Button 
-            variant="ghost" 
-            className="w-full justify-start gap-3 text-destructive hover:text-destructive hover:bg-destructive/10" 
-            size="sm"
-            onClick={handleLogout}
-          >
-            <LogOut className="h-4 w-4" />
-            {t('common.logout')}
-          </Button>
-        </div>
       </aside>
 
       {/* Main Content */}
@@ -94,15 +89,46 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
               <Bell className="h-5 w-5" />
               <span className="absolute top-2 right-2 flex h-2 w-2 rounded-full bg-destructive" />
             </Button>
-            <div className="flex items-center gap-3 pl-2 border-l">
-              <div className="text-right hidden sm:block">
-                <p className="text-xs font-medium">{user?.name || 'Người dùng'}</p>
-                <p className="text-[10px] text-muted-foreground truncate max-w-[120px]">{user?.email}</p>
-              </div>
-              <div className="h-8 w-8 rounded-full bg-primary/10 border flex items-center justify-center text-xs font-bold text-primary">
-                {userInitial}
-              </div>
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <div className="flex items-center gap-3 pl-2 border-l cursor-pointer hover:bg-muted/50 transition-colors p-1 rounded-lg">
+                  <div className="text-right hidden sm:block">
+                    <p className="text-xs font-medium">{user?.name || 'Người dùng'}</p>
+                    <p className="text-[10px] text-muted-foreground truncate max-w-[120px]">{user?.email}</p>
+                  </div>
+                  <div className="h-8 w-8 rounded-full bg-primary/10 border flex items-center justify-center text-xs font-bold text-primary">
+                    {userInitial}
+                  </div>
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel>
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">{user?.name}</p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      {user?.email}
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => navigate({ to: '/dashboard/profile' })}>
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Hồ sơ cá nhân</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate({ to: '/dashboard/settings' })}>
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span>Cài đặt hệ thống</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem 
+                  className="text-destructive focus:text-destructive focus:bg-destructive/10"
+                  onClick={handleLogout}
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>{t('common.logout')}</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </header>
 
