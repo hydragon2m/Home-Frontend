@@ -12,7 +12,7 @@ export const Route = createFileRoute('/dashboard/homes/$orgId')({
 })
 
 function FamilyHomePage() {
-  const { orgId } = Route.useParams()
+  const { orgId } = Route.useParams() as any
   const { user } = useAuthStore()
   const [org, setOrg] = useState<any>(null)
   const [members, setMembers] = useState<any[]>([])
