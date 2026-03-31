@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState, useEffect } from 'react'
 import { useAuthStore } from '@/stores/auth-store'
 import api from '@/lib/axios'
@@ -10,13 +10,23 @@ import {
   Loader2, 
   Settings,
   LayoutDashboard,
-  Bell
+  Bell,
+  LogOut,
+  User as UserIcon
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { LanguageToggle } from '@/components/elements/LanguageToggle'
 import { ModeToggle } from '@/components/elements/ModeToggle'
 import { useTranslation } from 'react-i18next'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 export const Route = createFileRoute('/homes/$orgId')({
   component: FamilyHomePage,
@@ -25,10 +35,22 @@ export const Route = createFileRoute('/homes/$orgId')({
 function FamilyHomePage() {
   const { t } = useTranslation()
   const { orgId } = Route.useParams() as any
-  const { user, currentOrg, setOrg } = useAuthStore()
+  const navigate = useNavigate()
+  const { user, currentOrg, setOrg, logout } = useAuthStore()
   const [org, setOrgData] = useState<any>(null)
   const [members, setMembers] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+
+  const handleLogout = async () => {
+    try {
+      await api.post('/auth/logout')
+    } catch (err) {
+      console.error('Logout API failed:', err)
+    } finally {
+      logout()
+      window.location.href = '/login'
+    }
+  }
 
   const fetchData = async () => {
     setLoading(true)
@@ -128,14 +150,44 @@ function FamilyHomePage() {
             <ModeToggle />
           </div>
           <div className="h-4 w-px bg-border mx-1" />
-          <Button 
-            variant="ghost" 
-            className="flex items-center gap-2 pl-2 pr-1 h-9 rounded-full border bg-muted/20 hover:bg-muted/40 transition-colors">
-            <span className="text-xs font-bold px-1">{user?.name}</span>
-            <div className="h-7 w-7 rounded-full bg-primary/10 border flex items-center justify-center text-[10px] font-black text-primary">
-              {user?.name?.charAt(0).toUpperCase()}
-            </div>
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button 
+                variant="ghost" 
+                className="flex items-center gap-2 pl-2 pr-1 h-9 rounded-full border bg-muted/20 hover:bg-muted/40 transition-colors"
+              >
+                <span className="text-xs font-bold px-1">{user?.name}</span>
+                <div className="h-7 w-7 rounded-full bg-primary/10 border flex items-center justify-center text-[10px] font-black text-primary">
+                  {user?.name?.charAt(0).toUpperCase()}
+                </div>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuLabel>
+                <div className="flex flex-col space-y-1">
+                  <p className="text-sm font-medium leading-none">{user?.name}</p>
+                  <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
+                </div>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => navigate({ to: '/dashboard/profile' })}>
+                <UserIcon className="mr-2 h-4 w-4" />
+                <span>{t('common.profile')}</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => (window.location.href = '/dashboard')}>
+                <LayoutDashboard className="mr-2 h-4 w-4" />
+                <span>{t('homes.back_to_dashboard')}</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem 
+                className="text-destructive focus:text-destructive focus:bg-destructive/10"
+                onClick={handleLogout}
+              >
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>{t('common.logout')}</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </header>
 
