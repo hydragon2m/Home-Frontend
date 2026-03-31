@@ -131,9 +131,7 @@ function FamilyHomePage() {
           <div className="h-4 w-px bg-border mx-1" />
           <Button 
             variant="ghost" 
-            className="flex items-center gap-2 pl-2 pr-1 h-9 rounded-full border bg-muted/20 hover:bg-muted/40 transition-colors"
-            onClick={() => navigate({ to: '/dashboard/profile' })}
-          >
+            className="flex items-center gap-2 pl-2 pr-1 h-9 rounded-full border bg-muted/20 hover:bg-muted/40 transition-colors">
             <span className="text-xs font-bold px-1">{user?.name}</span>
             <div className="h-7 w-7 rounded-full bg-primary/10 border flex items-center justify-center text-[10px] font-black text-primary">
               {user?.name?.charAt(0).toUpperCase()}
