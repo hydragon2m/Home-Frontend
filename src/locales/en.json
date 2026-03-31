@@ -57,9 +57,9 @@
     "logout": "Logout",
     "features_section_title": "Powerful Features for Your Family",
     "features_section_subtitle": "Everything you need to keep your home happy and organized.",
-    "dashboard":{
+    "dashboard": {
       "welcome": "Welcome to {name}",
-      "enter": "Enter"
+      "enter": "Enter Home"
     },
     "users": "Users",
     "about": "About Us",
@@ -124,5 +124,23 @@
     "role_admin": "Admin",
     "role_member": "Member",
     "context_global": "Overview"
+  },
+  "homes": {
+    "loading": "Preparing your home...",
+    "not_found": "Family not found",
+    "not_found_desc": "Please check the link or your access permissions.",
+    "back_to_dashboard": "Back to Dashboard",
+    "back_to_list": "Back to list",
+    "your_space": "Your Space",
+    "welcome_back": "Welcome back home, {{name}}",
+    "settings": "Settings",
+    "invite": "Invite Relatives",
+    "members_title": "Members",
+    "members_desc": "Shared living in this home",
+    "upcoming_events": "Upcoming Events",
+    "no_events": "No shared schedule yet",
+    "members_list": "Members List",
+    "members_list_desc": "Relatives who are managing this home with you.",
+    "badge_me": "Me"
   }
 }

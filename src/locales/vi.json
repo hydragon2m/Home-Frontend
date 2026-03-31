@@ -7,7 +7,7 @@
     "logout": "Đăng xuất",
     "dashboard": {
       "welcome": "Chào mừng đến với {name}",
-      "enter": "Vào"
+      "enter": "Vào nhà"
     },
     "users": "Người dùng",
     "settings": "Cài đặt",
@@ -125,5 +125,23 @@
     "role_admin": "Chủ nhà",
     "role_member": "Thành viên",
     "context_global": "Tổng quan"
+  },
+  "homes": {
+    "loading": "Đang chuẩn bị tổ ấm cho bạn...",
+    "not_found": "Không tìm thấy gia đình",
+    "not_found_desc": "Vui lòng kiểm tra lại đường dẫn hoặc quyền truy cập của bạn.",
+    "back_to_dashboard": "Quay lại Dashboard",
+    "back_to_list": "Quay lại danh sách",
+    "your_space": "Không gian của bạn",
+    "welcome_back": "Chào mừng bạn trở về nhà, {{name}}",
+    "settings": "Cài đặt",
+    "invite": "Mời người thân",
+    "members_title": "Thành viên",
+    "members_desc": "Đang cùng sinh hoạt trong tổ ấm",
+    "upcoming_events": "Sự kiện sắp tới",
+    "no_events": "Chưa có lịch trình chung nào",
+    "members_list": "Danh sách thành viên",
+    "members_list_desc": "Những người thân đang cùng bạn quản lý tổ ấm này.",
+    "badge_me": "Bạn"
   }
 }
