@@ -26,8 +26,6 @@ function DashboardPage() {
   const navigate = useNavigate()
   const [orgs, setOrgs] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
-  const [joinCode, setJoinCode] = useState('')
-  const [joinLoading, setJoinLoading] = useState(false)
 
   const fetchOrgs = async () => {
     setLoading(true)

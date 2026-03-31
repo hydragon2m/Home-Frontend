@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Users, UserPlus, Link as LinkIcon, Shield, Copy, Check } from 'lucide-react'
+import { Users, Link as LinkIcon, Shield } from 'lucide-react'
 
 export const Route = createFileRoute('/dashboard/settings/organization')({
   component: OrganizationSettingsPage,
@@ -14,38 +14,8 @@ export const Route = createFileRoute('/dashboard/settings/organization')({
 
 function OrganizationSettingsPage() {
   const { currentOrg } = useAuthStore()
-  const [inviteCode, setInviteCode] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [copied, setCopied] = useState(false)
   const [joinCode, setJoinCode] = useState('')
   const [joinLoading, setJoinLoading] = useState(false)
-
-  const isAdmin = currentOrg?.role === 'ORG_ADMIN'
-
-  const generateInvite = async () => {
-    if (!currentOrg) return
-    setLoading(true)
-    try {
-      const res: any = await api.post(`/organizations/${currentOrg.id}/invites`, {
-        expiresInDays: 7,
-        maxUses: 5,
-        role: 'ORG_MEMBER'
-      })
-      setInviteCode(res.data.code)
-    } catch (err) {
-      alert('Không thể tạo mã mời. Vui lòng thử lại.')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const copyToClipboard = () => {
-    if (inviteCode) {
-      navigator.clipboard.writeText(inviteCode)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    }
-  }
 
   const handleJoin = async (e: React.FormEvent) => {
     e.preventDefault()
