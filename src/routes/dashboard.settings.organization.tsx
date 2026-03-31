@@ -97,53 +97,6 @@ function OrganizationSettingsPage() {
         </Card>
 
         {/* Invitation Section */}
-        <Card className={(!isAdmin || !currentOrg) ? "opacity-50" : ""}>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <UserPlus className="h-5 w-5 text-primary" />
-              Mời thành viên mới
-            </CardTitle>
-            <CardDescription>
-              {!currentOrg 
-                ? "Vui lòng chọn hoặc tạo gia đình ở thanh bên để bắt đầu mời thành viên."
-                : !isAdmin 
-                  ? "Chỉ chủ nhà mới có quyền tạo mã mời."
-                  : "Tạo mã mời để thêm người thân vào gia đình của bạn."}
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {!currentOrg ? (
-               <div className="flex flex-col items-center justify-center py-6 text-center space-y-2">
-                 <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-                   <Users className="h-6 w-6 text-primary" />
-                 </div>
-                 <p className="text-sm text-muted-foreground">Bạn chưa chọn gia đình nào.</p>
-               </div>
-            ) : inviteCode ? (
-              <div className="space-y-4">
-                <div className="flex items-center gap-4 bg-muted p-4 rounded-lg border-2 border-dashed border-primary/30">
-                  <span className="text-2xl font-mono font-bold tracking-widest text-primary flex-1 text-center">
-                    {inviteCode}
-                  </span>
-                  <Button size="icon" variant="ghost" onClick={copyToClipboard}>
-                    {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
-                  </Button>
-                </div>
-                <p className="text-xs text-center text-muted-foreground">
-                  Mã này có hiệu lực trong 7 ngày và dùng được cho 5 người.
-                </p>
-                <Button variant="outline" className="w-full" onClick={() => setInviteCode(null)}>
-                  Tạo mã mới
-                </Button>
-              </div>
-            ) : (
-              <Button className="w-full h-24 text-lg border-2 border-dashed" variant="outline" onClick={generateInvite} disabled={loading}>
-                {loading ? 'Đang tạo...' : 'Nhấn để tạo mã mời'}
-              </Button>
-            )}
-          </CardContent>
-        </Card>
-
         {/* Join Section */}
         <Card className="md:col-span-2 border-primary/20 bg-primary/5">
           <CardHeader>

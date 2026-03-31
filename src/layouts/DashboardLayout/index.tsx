@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { LanguageToggle } from '@/components/elements/LanguageToggle'
 import { ModeToggle } from '@/components/elements/ModeToggle'
 import { useAuthStore } from '@/stores/auth-store'
+import { OrganizationSwitcher } from '@/components/elements/OrganizationSwitcher'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -50,6 +51,8 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
           <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground bg-muted px-2 py-1 rounded">
             Dashboard
           </span>
+          <div className="h-4 w-px bg-border mx-1" />
+          <OrganizationSwitcher />
         </div>
 
         <div className="flex items-center gap-4">
