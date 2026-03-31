@@ -1,5 +1,4 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import * as React from 'react'
 import { useState, useEffect } from 'react'
 import { useAuthStore } from '@/stores/auth-store'
 import api from '@/lib/axios'

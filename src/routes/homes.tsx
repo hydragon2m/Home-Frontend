@@ -1,5 +1,4 @@
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
-import * as React from 'react'
 import { useAuthStore } from '@/stores/auth-store'
 
 export const Route = createFileRoute('/homes')({
