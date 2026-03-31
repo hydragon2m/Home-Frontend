@@ -204,7 +204,7 @@ function FamilyHomePage() {
                 {org.name}
               </h1>
               <p className="text-xl text-muted-foreground font-medium">
-                {t('homes.welcome_back', { name: <span className="text-foreground border-b-2 border-primary/30">{user?.name}</span> })}
+                {t('homes.welcome_back', { name: user?.name })}
               </p>
             </div>
             <div className="flex gap-3">
