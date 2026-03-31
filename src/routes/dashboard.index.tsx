@@ -2,11 +2,10 @@ import { useEffect } from 'react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useAuthStore } from '@/stores/auth-store'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Users, ShieldAlert } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { ShieldAlert } from 'lucide-react'
 
 export const Route = createFileRoute('/dashboard/')({
-  component: DashboardPage,
+  component: DashboardPage
 })
 
 function DashboardPage() {
