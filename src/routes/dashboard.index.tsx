@@ -29,20 +29,6 @@ function DashboardPage() {
           Dưới đây là tổng quan về ngôi nhà {currentOrg?.name || 'My Homie'} của bạn.
         </p>
       </div>
-
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="bg-primary/5 border-primary/20">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Thành viên</CardTitle>
-            <Users className="h-4 w-4 text-primary" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">1</div>
-            <p className="text-xs text-muted-foreground">Chỉ mình bạn trong tổ ấm này</p>
-          </CardContent>
-        </Card>
-      </div>
-
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
         <Card className="col-span-4">
           <CardHeader>
@@ -53,14 +39,8 @@ function DashboardPage() {
               Tài khoản của bạn đã được khởi tạo thành công. Bây giờ bạn có thể bắt đầu quản lý chi phí gia đình, 
               lên lịch trình chung hoặc mời người thân tham gia.
             </p>
-            <div className="flex gap-4">
-              <Button onClick={() => navigate({ to: '/dashboard/settings/organization' })}>
-                Mời người thân ngay
-              </Button>
-            </div>
           </CardContent>
         </Card>
-
         <Card className="col-span-3">
           <CardHeader>
             <CardTitle>Mẹo nhỏ</CardTitle>
