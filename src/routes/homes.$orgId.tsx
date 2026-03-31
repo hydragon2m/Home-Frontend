@@ -25,7 +25,6 @@ export const Route = createFileRoute('/homes/$orgId')({
 function FamilyHomePage() {
   const { t } = useTranslation()
   const { orgId } = Route.useParams() as any
-  const navigate = useNavigate()
   const { user, currentOrg, setOrg } = useAuthStore()
   const [org, setOrgData] = useState<any>(null)
   const [members, setMembers] = useState<any[]>([])
