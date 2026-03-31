@@ -5,7 +5,10 @@
     "login": "Đăng nhập",
     "register": "Đăng ký",
     "logout": "Đăng xuất",
-    "dashboard": "Bảng điều khiển",
+    "dashboard": {
+      "welcome": "Chào mừng đến với {name}",
+      "enter": "Vào"
+    },
     "users": "Người dùng",
     "settings": "Cài đặt",
     "welcome_prefix": "Chào mừng đến với",

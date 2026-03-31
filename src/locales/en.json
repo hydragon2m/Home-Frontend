@@ -57,7 +57,10 @@
     "logout": "Logout",
     "features_section_title": "Powerful Features for Your Family",
     "features_section_subtitle": "Everything you need to keep your home happy and organized.",
-    "dashboard": "Dashboard",
+    "dashboard":{
+      "welcome": "Welcome to {name}",
+      "enter": "Enter"
+    },
     "users": "Users",
     "about": "About Us",
     "profile": "Personal Profile",
