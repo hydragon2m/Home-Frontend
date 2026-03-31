@@ -15,6 +15,7 @@ import {
   DropdownMenuTrigger 
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
+import { useNavigate } from '@tanstack/react-router'
 import { useAuthStore } from '@/stores/auth-store'
 import api from '@/lib/axios'
 import { 
@@ -32,6 +33,7 @@ import { useTranslation } from 'react-i18next'
 
 export function OrganizationSwitcher() {
   const { t } = useTranslation()
+  const navigate = useNavigate()
   const { currentOrg, setOrg } = useAuthStore()
   const [orgs, setOrgs] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
@@ -66,7 +68,7 @@ export function OrganizationSwitcher() {
           role: res.data.role
         })
       }
-      window.location.reload() // Reload to apply new permissions and tokens
+      navigate({ to: '/dashboard/homes/$orgId', params: { orgId } })
     } catch (err) {
       console.error('Failed to swap organization', err)
     } finally {

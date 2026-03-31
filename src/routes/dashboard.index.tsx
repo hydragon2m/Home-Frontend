@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useAuthStore } from '@/stores/auth-store'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -11,6 +12,12 @@ export const Route = createFileRoute('/dashboard/')({
 function DashboardPage() {
   const { user, currentOrg } = useAuthStore()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (currentOrg?.id) {
+      navigate({ to: '/dashboard/homes/$orgId', params: { orgId: currentOrg.id } })
+    }
+  }, [currentOrg, navigate])
 
   return (
     <div className="space-y-8 animate-reveal">

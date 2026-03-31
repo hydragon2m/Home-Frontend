@@ -25,15 +25,26 @@ import {
 } from "@/components/ui/dropdown-menu"
 import api from '@/lib/axios'
 
-const NAV_ITEMS = [
-  { label: 'common.dashboard', icon: LayoutDashboard, to: '/dashboard' },
-  { label: 'common.users', icon: Users, to: '/dashboard/users' },
+const getNavItems = (orgId?: string) => [
+  { 
+    label: 'common.dashboard', 
+    icon: LayoutDashboard, 
+    to: orgId ? '/dashboard/homes/$orgId' : '/dashboard',
+    params: orgId ? { orgId } : undefined
+  },
+  { 
+    label: 'common.users', 
+    icon: Users, 
+    to: orgId ? '/dashboard/homes/$orgId' : '/dashboard', // For now, point to the same family home as it has members
+    params: orgId ? { orgId } : undefined
+  },
 ]
 
 export function DashboardLayout({ children }: { children: ReactNode }) {
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const { user, logout } = useAuthStore()
+  const { user, currentOrg, logout } = useAuthStore()
+  const navItems = getNavItems(currentOrg?.id)
 
   const handleLogout = async () => {
     try {
@@ -61,10 +72,11 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
         <OrganizationSwitcher />
         
         <nav className="flex-1 space-y-1 p-4">
-          {NAV_ITEMS.map((item) => (
+          {navItems.map((item) => (
             <Link
               key={item.label}
               to={item.to}
+              params={item.params as any}
               className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all hover:bg-accent hover:text-accent-foreground"
               activeProps={{ className: 'bg-accent text-accent-foreground' }}
             >
