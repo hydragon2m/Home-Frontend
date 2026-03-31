@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, Link } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState, useEffect } from 'react'
 import { useAuthStore } from '@/stores/auth-store'
 import api from '@/lib/axios'
@@ -10,7 +10,6 @@ import {
   Loader2, 
   Settings,
   LayoutDashboard,
-  User as UserIcon,
   Bell
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
