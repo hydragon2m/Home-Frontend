@@ -14,7 +14,7 @@ function DashboardPage() {
 
   useEffect(() => {
     if (currentOrg?.id) {
-      navigate({ to: '/dashboard/homes/$orgId', params: { orgId: currentOrg.id } })
+      navigate({ to: '/homes/$orgId', params: { orgId: currentOrg.id } })
     }
   }, [currentOrg, navigate])
 

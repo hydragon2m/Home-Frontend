@@ -68,7 +68,7 @@ export function OrganizationSwitcher() {
           role: res.data.role
         })
       }
-      navigate({ to: '/dashboard/homes/$orgId', params: { orgId } })
+      navigate({ to: '/homes/$orgId', params: { orgId } })
     } catch (err) {
       console.error('Failed to swap organization', err)
     } finally {

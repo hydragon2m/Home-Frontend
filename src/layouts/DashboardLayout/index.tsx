@@ -4,14 +4,12 @@ import {
   Settings, 
   LogOut, 
   Bell, 
-  User,
-  Home
+  User
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useTranslation } from 'react-i18next'
 import { LanguageToggle } from '@/components/elements/LanguageToggle'
 import { ModeToggle } from '@/components/elements/ModeToggle'
-import { OrganizationSwitcher } from '@/components/elements/OrganizationSwitcher'
 import { useAuthStore } from '@/stores/auth-store'
 import {
   DropdownMenu,
@@ -23,20 +21,10 @@ import {
 } from "@/components/ui/dropdown-menu"
 import api from '@/lib/axios'
 
-const getNavItems = (orgId?: string) => [
-  { 
-    label: 'common.home', 
-    icon: Home, 
-    to: orgId ? '/dashboard/homes/$orgId' : '/dashboard',
-    params: orgId ? { orgId } : undefined
-  },
-]
-
 export function DashboardLayout({ children }: { children: ReactNode }) {
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const { user, currentOrg, logout } = useAuthStore()
-  const navItems = getNavItems(currentOrg?.id)
+  const { user, logout } = useAuthStore()
 
   const handleLogout = async () => {
     try {
@@ -53,30 +41,15 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-muted/20">
-      {/* Topbar */}
+      {/* Dashboard Global Topbar */}
       <header className="flex h-16 items-center justify-between border-b bg-background px-6 shrink-0 shadow-sm z-10">
         <div className="flex items-center gap-6">
           <Link to="/" className="font-bold text-xl tracking-tighter text-primary">
             Homie
           </Link>
-          
-          <div className="hidden md:block h-6 w-px bg-border mx-2" />
-          
-          <OrganizationSwitcher />
-
-          <nav className="hidden lg:flex items-center gap-1 ml-4 text-sm font-medium">
-            {navItems.map((item) => (
-              <Link
-                key={item.label}
-                to={item.to}
-                params={item.params as any}
-                className="px-3 py-2 rounded-md transition-colors hover:bg-accent hover:text-accent-foreground"
-                activeProps={{ className: 'bg-accent text-accent-foreground' }}
-              >
-                {item.label.startsWith('common.') ? t(item.label) : item.label}
-              </Link>
-            ))}
-          </nav>
+          <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground bg-muted px-2 py-1 rounded">
+            Dashboard
+          </span>
         </div>
 
         <div className="flex items-center gap-4">
@@ -92,7 +65,7 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
             <DropdownMenuTrigger asChild>
               <div className="flex items-center gap-3 pl-2 border-l cursor-pointer hover:bg-muted/50 transition-colors p-1 rounded-lg">
                 <div className="text-right hidden sm:block">
-                  <p className="text-xs font-medium">{user?.name || 'Người dùng'}</p>
+                  <p className="text-xs font-medium">{user?.name || 'User'}</p>
                   <p className="text-[10px] text-muted-foreground truncate max-w-[120px]">{user?.email}</p>
                 </div>
                 <div className="h-8 w-8 rounded-full bg-primary/10 border flex items-center justify-center text-xs font-bold text-primary">
@@ -133,7 +106,7 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
 
       {/* Page Content */}
       <main className="flex-1 overflow-y-auto p-6 md:p-8">
-        <div className="mx-auto w-full max-w-[1800px]">
+        <div className="mx-auto w-full max-w-5xl">
           {children}
         </div>
       </main>
