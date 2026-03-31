@@ -1,9 +1,10 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import * as React from 'react'
 import { useState, useEffect } from 'react'
 import { useAuthStore } from '@/stores/auth-store'
 import api from '@/lib/axios'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Users, Shield, Mail, Calendar, Home as HomeIcon, Loader2, LogOut, ArrowLeft, Settings } from 'lucide-react'
+import { Users, Calendar, Home as HomeIcon, Loader2, ArrowLeft, Settings } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { LanguageToggle } from '@/components/elements/LanguageToggle'
@@ -79,8 +80,10 @@ function FamilyHomePage() {
         </div>
         
         <div className="flex items-center gap-4">
-          <LanguageToggle />
-          <ModeToggle />
+          <div className="hidden sm:flex items-center gap-2">
+            <LanguageToggle />
+            <ModeToggle />
+          </div>
           <div className="h-4 w-px bg-border mx-1" />
           <Button variant="ghost" size="sm" onClick={() => navigate({ to: '/dashboard/profile' })}>
             {user?.name}
@@ -163,7 +166,9 @@ function FamilyHomePage() {
                           <p className="font-bold flex items-center gap-2 truncate">
                             {membership.user.name}
                             {membership.user.id === user?.id && (
-                              <Badge key="me" variant="secondary" className="text-[9px] h-4 uppercase font-black px-1.5 leading-none">Bạn</Badge>
+                              <Badge key="me" variant="secondary" className="text-[9px] h-4 uppercase font-black px-1.5 leading-none">
+                                Bạn
+                              </Badge>
                             )}
                           </p>
                           <p className="text-xs text-muted-foreground flex items-center gap-1 truncate">

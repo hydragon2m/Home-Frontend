@@ -9,29 +9,17 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as HomesRouteImport } from './routes/homes'
-import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as HomesRouteImport } from './routes/homes'
 import { Route as GuideRouteImport } from './routes/guide'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as HomesOrgIdRouteImport } from './routes/homes.$orgId'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard.index'
 import { Route as DashboardProfileRouteImport } from './routes/dashboard.profile'
 import { Route as DashboardSettingsOrganizationRouteImport } from './routes/dashboard.settings.organization'
-
-const HomesRoute = HomesRouteImport.update({
-  id: '/homes',
-  path: '/homes',
-  getParentRoute: () => rootRouteImport,
-} as any)
-
-const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -45,9 +33,21 @@ const LoginRoute = LoginRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 
+const HomesRoute = HomesRouteImport.update({
+  id: '/homes',
+  path: '/homes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+
 const GuideRoute = GuideRouteImport.update({
   id: '/guide',
   path: '/guide',
+  getParentRoute: () => rootRouteImport,
+} as any)
+
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -67,18 +67,24 @@ const HomesOrgIdRoute = HomesOrgIdRouteImport.update({
   id: '/$orgId',
   path: '/$orgId',
   getParentRoute: () => HomesRoute,
+} as any).update({
+  id: '/homes/$orgId',
 } as any)
 
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => DashboardRoute,
+} as any).update({
+  id: '/dashboard/',
 } as any)
 
 const DashboardProfileRoute = DashboardProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
   getParentRoute: () => DashboardRoute,
+} as any).update({
+  id: '/dashboard/profile',
 } as any)
 
 const DashboardSettingsOrganizationRoute =
@@ -86,7 +92,91 @@ const DashboardSettingsOrganizationRoute =
     id: '/settings/organization',
     path: '/settings/organization',
     getParentRoute: () => DashboardRoute,
+  } as any).update({
+    id: '/dashboard/settings/organization',
   } as any)
+
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/guide': {
+      id: '/guide'
+      path: '/guide'
+      fullPath: '/guide'
+      preLoaderRoute: typeof GuideRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/homes': {
+      id: '/homes'
+      path: '/homes'
+      fullPath: '/homes'
+      preLoaderRoute: typeof HomesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/profile': {
+      id: '/dashboard/profile'
+      path: '/profile'
+      fullPath: '/dashboard/profile'
+      preLoaderRoute: typeof DashboardProfileRouteImport
+      parentRoute: typeof DashboardRouteImport
+    }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof DashboardRouteImport
+    }
+    '/homes/$orgId': {
+      id: '/homes/$orgId'
+      path: '/$orgId'
+      fullPath: '/homes/$orgId'
+      preLoaderRoute: typeof HomesOrgIdRouteImport
+      parentRoute: typeof HomesRouteImport
+    }
+    '/dashboard/settings/organization': {
+      id: '/dashboard/settings/organization'
+      path: '/settings/organization'
+      fullPath: '/dashboard/settings/organization'
+      preLoaderRoute: typeof DashboardSettingsOrganizationRouteImport
+      parentRoute: typeof DashboardRouteImport
+    }
+  }
+}
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -182,102 +272,6 @@ export interface RootRouteChildren {
   RegisterRoute: typeof RegisterRoute
 }
 
-declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/homes': {
-      id: '/homes'
-      path: '/homes'
-      fullPath: '/homes'
-      preLoaderRoute: typeof HomesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/register': {
-      id: '/register'
-      path: '/register'
-      fullPath: '/register'
-      preLoaderRoute: typeof RegisterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard/': {
-      id: '/dashboard/'
-      path: '/'
-      fullPath: '/dashboard/'
-      preLoaderRoute: typeof DashboardIndexRouteImport
-      parentRoute: typeof DashboardRoute
-    }
-    '/dashboard/profile': {
-      id: '/dashboard/profile'
-      path: '/profile'
-      fullPath: '/dashboard/profile'
-      preLoaderRoute: typeof DashboardProfileRouteImport
-      parentRoute: typeof DashboardRoute
-    }
-    '/dashboard/settings/organization': {
-      id: '/dashboard/settings/organization'
-      path: '/settings/organization'
-      fullPath: '/dashboard/settings/organization'
-      preLoaderRoute: typeof DashboardSettingsOrganizationRouteImport
-      parentRoute: typeof DashboardRoute
-    }
-    '/homes/$orgId': {
-      id: '/homes/$orgId'
-      path: '/$orgId'
-      fullPath: '/homes/$orgId'
-      preLoaderRoute: typeof HomesOrgIdRouteImport
-      parentRoute: typeof HomesRoute
-    }
-  }
-}
-
-interface DashboardRouteChildren {
-  DashboardIndexRoute: typeof DashboardIndexRoute
-  DashboardProfileRoute: typeof DashboardProfileRoute
-  DashboardSettingsOrganizationRoute: typeof DashboardSettingsOrganizationRoute
-}
-
-const DashboardRouteChildren: DashboardRouteChildren = {
-  DashboardIndexRoute: DashboardIndexRoute,
-  DashboardProfileRoute: DashboardProfileRoute,
-  DashboardSettingsOrganizationRoute: DashboardSettingsOrganizationRoute,
-}
-
-const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
-  DashboardRouteChildren,
-)
-
-interface HomesRouteChildren {
-  HomesOrgIdRoute: typeof HomesOrgIdRoute
-}
-
-const HomesRouteChildren: HomesRouteChildren = {
-  HomesOrgIdRoute: HomesOrgIdRoute,
-}
-
-const HomesRouteWithChildren = HomesRoute._addFileChildren(
-  HomesRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
@@ -287,6 +281,24 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
 }
+
+const DashboardRouteChildren = {
+  DashboardIndexRoute: DashboardIndexRoute,
+  DashboardProfileRoute: DashboardProfileRoute,
+  DashboardSettingsOrganizationRoute: DashboardSettingsOrganizationRoute,
+}
+
+const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
+  DashboardRouteChildren,
+)
+
+const HomesRouteChildren = {
+  HomesOrgIdRoute: HomesOrgIdRoute,
+}
+
+const HomesRouteWithChildren = HomesRoute._addFileChildren(
+  HomesRouteChildren,
+)
 
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
