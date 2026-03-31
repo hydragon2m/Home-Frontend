@@ -86,7 +86,7 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => navigate({ to: '/dashboard/profile' })}>
+              <DropdownMenuItem>
                 <User className="mr-2 h-4 w-4" />
                 <span>{t('common.profile')}</span>
               </DropdownMenuItem>
