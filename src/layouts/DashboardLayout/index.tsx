@@ -1,13 +1,12 @@
 import type { ReactNode } from 'react'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { 
-  LayoutDashboard, 
-  Users, 
   Settings, 
   LogOut, 
   Bell, 
   Menu,
-  User 
+  User,
+  Home
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useTranslation } from 'react-i18next'
@@ -27,15 +26,9 @@ import api from '@/lib/axios'
 
 const getNavItems = (orgId?: string) => [
   { 
-    label: 'common.dashboard', 
-    icon: LayoutDashboard, 
+    label: 'common.home', 
+    icon: Home, 
     to: orgId ? '/dashboard/homes/$orgId' : '/dashboard',
-    params: orgId ? { orgId } : undefined
-  },
-  { 
-    label: 'common.users', 
-    icon: Users, 
-    to: orgId ? '/dashboard/homes/$orgId' : '/dashboard', // For now, point to the same family home as it has members
     params: orgId ? { orgId } : undefined
   },
 ]
