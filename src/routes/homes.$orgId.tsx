@@ -137,25 +137,31 @@ function FamilyHomePage() {
     }
   }
 
-  // Improved Wheel Scroll Logic for Horizontal Pagination
+  // Improved Wheel Scroll Logic: Scroll per page (next/prev) on each notch
+  const lastWheelTime = useRef(0)
   useEffect(() => {
     const el = scrollRef.current
     if (!el || !isDockOpen) return
 
     const wheelHandler = (e: WheelEvent) => {
-      // If user is actually scrolling horizontally (like on a trackpad), let it be
       if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return
+      e.preventDefault()
 
-      if (e.deltaY !== 0) {
-        e.preventDefault()
-        // Use a smoother scroll multiplier
-        el.scrollLeft += e.deltaY * 2
+      const now = Date.now()
+      if (now - lastWheelTime.current < 400) return // Debounce for smooth page turns
+
+      if (e.deltaY > 0) {
+        scrollToPage(Math.min(currentPage + 1, totalPages - 1))
+        lastWheelTime.current = now
+      } else if (e.deltaY < 0) {
+        scrollToPage(Math.max(currentPage - 1, 0))
+        lastWheelTime.current = now
       }
     }
 
     el.addEventListener('wheel', wheelHandler, { passive: false })
     return () => el.removeEventListener('wheel', wheelHandler)
-  }, [isDockOpen])
+  }, [isDockOpen, currentPage, totalPages])
 
   const scrollToPage = (pageIdx: number) => {
     if (scrollRef.current) {
@@ -444,51 +450,53 @@ function FamilyHomePage() {
       </div>
 
       <div className={`fixed inset-x-0 bottom-6 z-[90] flex flex-col items-center gap-3 transition-all duration-500 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] ${isDockOpen ? "translate-y-0 opacity-100" : "translate-y-32 opacity-0 pointer-events-none"}`}>
-        <div className="bg-background/40 backdrop-blur-2xl border border-white/20 rounded-[2.5rem] p-3 shadow-2xl relative w-[500px] max-w-[calc(100vw-48px)] overflow-hidden flex flex-col items-center ring-1 ring-black/5">
-          <div ref={scrollRef} className="flex items-center w-full overflow-x-auto snap-x snap-mandatory no-scrollbar" onScroll={handleScroll}>
-            {[...Array(totalPages)].map((_, pageIdx) => (
-               <div key={pageIdx} className="flex-none w-full grid grid-cols-7 gap-1.5 px-1.5 snap-start">
-                 {/* Open Launcher Button in first page */}
-                 {pageIdx === 0 && (
-                    <Button 
-                      variant="ghost" 
-                      className="h-auto flex flex-col items-center gap-1.5 p-1 group ring-offset-background transition-all hover:bg-transparent" 
-                      onClick={() => setIsAllAppsOpen(true)}
-                    >
-                      <div className="h-14 w-14 rounded-2xl bg-primary/10 border-2 border-primary/20 flex items-center justify-center text-primary shadow-lg group-hover:scale-105 group-active:scale-95 transition-all duration-300 relative overflow-hidden backdrop-blur-md">
-                        <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                        <ChevronUp className="h-6 w-6 animate-bounce-slow" />
-                      </div>
-                      <span className="text-[7px] font-black uppercase tracking-widest text-primary/60 group-hover:text-primary transition-colors px-1 truncate w-full text-center">Tất cả</span>
-                    </Button>
-                 )}
-
-                 {apps.slice(pageIdx * (pageIdx === 0 ? 6 : 7), (pageIdx + 1) * (pageIdx === 0 ? 6 : 7)).map((app) => (
-                   <Button key={app.id} variant="ghost" className="h-auto flex flex-col items-center gap-1.5 p-1 group ring-offset-background transition-all hover:bg-transparent" onClick={() => setIsDockOpen(false)}>
-                     <div className={`h-14 w-14 rounded-2xl ${app.color} flex items-center justify-center text-white shadow-lg group-hover:scale-105 group-active:scale-95 transition-all duration-300 relative overflow-hidden`}>
-                       <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                       <app.icon className="h-6 w-6 shadow-sm" />
-                     </div>
-                     <span className="text-[8px] font-black uppercase tracking-widest text-muted-foreground group-hover:text-foreground transition-colors px-1 truncate w-full text-center">{app.label}</span>
-                   </Button>
-                 ))}
-               </div>
-            ))}
+        <div className="bg-background/40 backdrop-blur-2xl border border-white/20 rounded-[2.5rem] p-2.5 shadow-2xl relative w-[540px] max-w-[calc(100vw-48px)] flex items-center ring-1 ring-black/5">
+          {/* Fixed "Tất cả" Button */}
+          <div className="shrink-0 pr-2 mr-2 border-r border-white/10">
+            <Button 
+              variant="ghost" 
+              className="h-auto flex flex-col items-center gap-1.5 p-1 group ring-offset-background transition-all hover:bg-transparent" 
+              onClick={() => setIsAllAppsOpen(true)}
+            >
+              <div className="h-14 w-14 rounded-2xl bg-primary/10 border-2 border-primary/20 flex items-center justify-center text-primary shadow-lg group-hover:scale-105 group-active:scale-95 transition-all duration-300 relative overflow-hidden backdrop-blur-md">
+                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <ChevronUp className="h-5 w-5 animate-bounce-slow" />
+              </div>
+              <span className="text-[7px] font-black uppercase tracking-widest text-primary/60 group-hover:text-primary transition-colors px-1 truncate w-full text-center">Mở rộng</span>
+            </Button>
           </div>
 
-          {totalPages > 1 && (
-            <div className="flex gap-1.5 mt-2 pb-1.5">
-              {[...Array(totalPages)].map((_, i) => (
-                <button 
-                  key={i} 
-                  onClick={() => scrollToPage(i)}
-                  className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer hover:bg-primary/50 relative group ${currentPage === i ? "bg-primary w-4" : "bg-muted-foreground/30 w-1.5"}`}
-                >
-                  <span className="absolute -inset-2" title={`Page ${i + 1}`} />
-                </button>
+          <div className="flex-1 flex flex-col items-center overflow-hidden">
+            <div ref={scrollRef} className="flex items-center w-full overflow-x-auto snap-x snap-mandatory no-scrollbar" onScroll={handleScroll}>
+              {[...Array(totalPages)].map((_, pageIdx) => (
+                <div key={pageIdx} className="flex-none w-full grid grid-cols-6 gap-2 px-1 snap-start">
+                  {apps.slice(pageIdx * 6, (pageIdx + 1) * 6).map((app) => (
+                    <Button key={app.id} variant="ghost" className="h-auto flex flex-col items-center gap-1.5 p-1 group ring-offset-background transition-all hover:bg-transparent" onClick={() => setIsDockOpen(false)}>
+                      <div className={`h-14 w-14 rounded-2xl ${app.color} flex items-center justify-center text-white shadow-lg group-hover:scale-105 group-active:scale-95 transition-all duration-300 relative overflow-hidden`}>
+                        <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <app.icon className="h-6 w-6 shadow-sm" />
+                      </div>
+                      <span className="text-[8px] font-black uppercase tracking-widest text-muted-foreground group-hover:text-foreground transition-colors px-1 truncate w-full text-center">{app.label}</span>
+                    </Button>
+                  ))}
+                </div>
               ))}
             </div>
-          )}
+
+            {totalPages > 1 && (
+              <div className="flex gap-1.5 mt-2 pb-0.5">
+                {[...Array(totalPages)].map((_, i) => (
+                  <button 
+                    key={i} 
+                    onClick={() => scrollToPage(i)}
+                    className={`h-1 rounded-full transition-all duration-300 cursor-pointer hover:bg-primary/50 relative group ${currentPage === i ? "bg-primary w-4" : "bg-muted-foreground/20 w-1"}`}
+                  >
+                    <span className="absolute -inset-2" title={`Page ${i + 1}`} />
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -499,8 +507,8 @@ function FamilyHomePage() {
            setSearchQuery('');
         }} />
         
-        <div className={`absolute inset-0 flex items-center justify-center p-4 transition-all duration-500 transform-gpu ease-[cubic-bezier(0.34,1.56,0.64,1)] ${isAllAppsOpen ? "scale-100 opacity-100 translate-y-0" : "scale-75 opacity-0 translate-y-20"}`}>
-          <div className="bg-background/40 backdrop-blur-3xl border border-white/20 rounded-[3rem] p-8 shadow-2xl relative w-full max-w-4xl max-h-[85vh] overflow-hidden flex flex-col items-center ring-1 ring-black/5">
+        <div className={`absolute inset-0 flex items-center justify-center p-4 transition-all duration-500 transform-gpu ease-[cubic-bezier(0.34,1.56,0.64,1)] will-change-transform ${isAllAppsOpen ? "scale-100 opacity-100 translate-y-0" : "scale-75 opacity-0 translate-y-20"}`}>
+          <div className="bg-background/40 backdrop-blur-2xl border border-white/20 rounded-[3rem] p-8 shadow-2xl relative w-full max-w-4xl max-h-[85vh] overflow-hidden flex flex-col items-center ring-1 ring-black/5 transform-gpu backface-visibility-hidden">
             {/* Close Button */}
             <Button 
               variant="ghost" 
