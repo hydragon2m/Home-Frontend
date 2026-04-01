@@ -62,7 +62,6 @@ function FamilyHomePage() {
     setIsDragging(false)
     const clientX = e.clientX || e.touches?.[0]?.clientX
     const clientY = e.clientY || e.touches?.[0]?.clientY
-    setDragStart({ x: clientX - pos.x, y: clientY - pos.y })
     
     const moveHandler = (moveEvent: any) => {
       setIsDragging(true)
