@@ -442,7 +442,7 @@ function FamilyHomePage() {
           onTouchStart={handleMouseDown}
           onClick={() => !isDragging && setIsDockOpen(!isDockOpen)}
         >
-          <div className="absolute inset-0 bg-background/40 backdrop-blur-xl" />
+          <div className="absolute inset-0 bg-background/60 shadow-inner" />
           <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
           <LayoutGrid className={`relative z-10 h-6 w-6 transition-transform duration-500 will-change-transform transform-gpu ease-[cubic-bezier(0.34,1.56,0.64,1)] ${isDockOpen ? "rotate-90 text-primary scale-110" : "text-muted-foreground"}`} />
           {!isDockOpen && !isAllAppsOpen && <div className="absolute inset-0 rounded-full border-2 border-primary/30 animate-ping opacity-20" />}
@@ -450,11 +450,11 @@ function FamilyHomePage() {
       </div>
 
       <div className={`fixed inset-x-0 bottom-6 z-[90] flex flex-col items-center gap-3 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${isDockOpen && !isAllAppsOpen ? "translate-y-0 opacity-100 visible" : "translate-y-32 opacity-0 invisible pointer-events-none"} ${isAllAppsOpen ? "hidden" : ""}`}>
-        <div className="bg-background/10 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] p-2.5 shadow-2xl relative w-[500px] max-w-[calc(100vw-48px)] flex flex-col items-center ring-1 ring-black/5 transform-gpu">
+        <div className="bg-background/80 border border-white/20 rounded-[2.5rem] p-2.5 shadow-2xl relative w-[500px] max-w-[calc(100vw-48px)] flex flex-col items-center ring-1 ring-black/5 transform-gpu">
           {/* Subtle Expand Trigger Button (Center-Top) */}
           <Button 
             variant="ghost" 
-            className="absolute -top-3 left-1/2 -translate-x-1/2 h-6 w-10 p-0 rounded-full bg-background/60 backdrop-blur-md border border-white/20 shadow-lg group-hover:scale-110 group-active:scale-95 transition-all duration-500 hover:bg-background/80 flex items-center justify-center z-20"
+            className="absolute -top-3 left-1/2 -translate-x-1/2 h-6 w-10 p-0 rounded-full bg-background border border-white/20 shadow-lg group-hover:scale-110 group-active:scale-95 transition-all duration-500 hover:bg-background/80 flex items-center justify-center z-20"
             onClick={() => setIsAllAppsOpen(true)}
           >
             <ChevronUp className="h-3 w-3 text-primary animate-bounce-slow" />
@@ -525,7 +525,7 @@ function FamilyHomePage() {
           }}
         >
           <div 
-            className="bg-background/10 backdrop-blur-md border border-white/10 rounded-[2.5rem] p-8 shadow-xl relative w-full max-w-5xl h-[75vh] flex flex-col items-center ring-1 ring-black/5 transform-gpu backface-visibility-hidden"
+            className="bg-background/90 border border-white/10 rounded-[2.5rem] p-8 shadow-2xl relative w-full max-w-5xl h-[75vh] flex flex-col items-center ring-1 ring-black/5 transform-gpu backface-visibility-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button */}
@@ -547,7 +547,7 @@ function FamilyHomePage() {
                   type="text" 
                   autoFocus={isAllAppsOpen}
                   placeholder={t('homes.search_apps')}
-                  className="w-full h-14 pl-12 pr-4 bg-background/20 border-2 border-white/10 rounded-2xl outline-none focus:border-primary/40 focus:bg-background/40 transition-all text-lg font-medium shadow-xl backdrop-blur-md"
+                  className="w-full h-14 pl-12 pr-4 bg-background border-2 border-white/10 rounded-2xl outline-none focus:border-primary/40 focus:bg-background/90 transition-all text-lg font-medium shadow-xl"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
