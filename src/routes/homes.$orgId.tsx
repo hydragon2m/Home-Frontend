@@ -337,7 +337,7 @@ function FamilyHomePage() {
       >
         <div className="absolute inset-0 bg-background/40 backdrop-blur-xl" />
         <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-        <LayoutGrid className={`relative z-10 h-6 w-6 transition-all duration-300 ${isDockOpen ? 'rotate-90 text-primary scale-110' : 'text-muted-foreground'}`} />
+        <LayoutGrid className={`relative z-10 h-6 w-6 transition-transform duration-500 will-change-transform transform-gpu ease-[cubic-bezier(0.34,1.56,0.64,1)] ${isDockOpen ? 'rotate-90 text-primary scale-110' : 'text-muted-foreground'}`} />
         
         {/* Pulsing Ring when closed */}
         {!isDockOpen && (
