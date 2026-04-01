@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useAuthStore } from '@/stores/auth-store'
 import api from '@/lib/axios'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -49,6 +49,7 @@ function FamilyHomePage() {
   const [pos, setPos] = useState({ x: window.innerWidth - 80, y: window.innerHeight - 150 })
   const [isDragging, setIsDragging] = useState(false)
   const [currentPage, setCurrentPage] = useState(0)
+  const scrollRef = useRef<HTMLDivElement>(null)
 
   const apps = [
     { id: 'dashboard', icon: LayoutGrid, label: t('org.context_global'), color: 'bg-blue-500' },
@@ -61,8 +62,8 @@ function FamilyHomePage() {
     { id: 'more', icon: LayoutDashboard, label: 'Thêm...', color: 'bg-indigo-500' },
   ]
 
-  // Pagination config (4 apps per page for mobile feel)
-  const itemsPerPage = 4
+  // Pagination config (6 apps per page)
+  const itemsPerPage = 6
   const totalPages = Math.ceil(apps.length / itemsPerPage)
 
   const handleScroll = (e: any) => {
@@ -70,6 +71,12 @@ function FamilyHomePage() {
     const width = e.target.clientWidth
     const newPage = Math.round(scrollLeft / width)
     if (newPage !== currentPage) setCurrentPage(newPage)
+  }
+
+  const handleWheel = (e: React.WheelEvent) => {
+    if (scrollRef.current && e.deltaY !== 0) {
+      scrollRef.current.scrollLeft += e.deltaY
+    }
   }
 
   const handleMouseDown = (e: any) => {
@@ -156,7 +163,7 @@ function FamilyHomePage() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen space-y-4">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        <p className="text-muted-foreground animate-pulse font-medium tracking-tight">{t('homes.loading')}</p>
+        <p className="text-muted-foreground animate-pulse font-medium tracking-tight">{t("homes.loading")}</p>
       </div>
     )
   }
@@ -164,9 +171,9 @@ function FamilyHomePage() {
   if (!org) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen text-center px-4">
-        <h2 className="text-2xl font-bold">{t('homes.not_found')}</h2>
-        <p className="text-muted-foreground mt-2 max-w-md">{t('homes.not_found_desc')}</p>
-        <Button variant="ghost" className="mt-6" onClick={() => (window.location.href = '/dashboard')}>
+        <h2 className="text-2xl font-bold">{t("homes.not_found")}</h2>
+        <p className="text-muted-foreground mt-2 max-w-md">{t("homes.not_found_desc")}</p>
+        <Button variant="ghost" className="mt-6" onClick={() => (window.location.href = "/dashboard")}>
           {t('homes.back_to_dashboard')}
         </Button>
       </div>
@@ -222,11 +229,11 @@ function FamilyHomePage() {
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => navigate({ to: '/dashboard/profile' })}>
                 <UserIcon className="mr-2 h-4 w-4" />
-                <span className="text-sm">{t('common.profile')}</span>
+                <span className="text-sm">{t("common.profile")}</span>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => (window.location.href = '/dashboard')}>
                 <LayoutDashboard className="mr-2 h-4 w-4" />
-                <span className="text-sm">{t('homes.back_to_dashboard')}</span>
+                <span className="text-sm">{t("homes.back_to_dashboard")}</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem 
@@ -234,7 +241,7 @@ function FamilyHomePage() {
                 onClick={handleLogout}
               >
                 <LogOut className="mr-2 h-4 w-4" />
-                <span className="text-sm">{t('common.logout')}</span>
+                <span className="text-sm">{t("common.logout")}</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -248,7 +255,7 @@ function FamilyHomePage() {
             <div className="space-y-2">
               <div className="flex items-center gap-1.5 text-primary">
                 <Layout className="h-4 w-4" />
-                <span className="text-[11px] font-black uppercase tracking-widest">{t('homes.your_space')}</span>
+                <span className="text-[11px] font-black uppercase tracking-widest">{t("homes.your_space")}</span>
               </div>
               <h1 className="text-3xl font-black tracking-tight capitalize lg:text-4xl">
                 {org.name}
@@ -259,7 +266,7 @@ function FamilyHomePage() {
             </div>
             <div className="flex gap-2">
               <Button variant="outline" className="h-10 px-4 font-bold rounded-lg border-2">
-                <Settings className="mr-2 h-3.5 w-3.5" /> {t('homes.settings')}
+                <Settings className="mr-2 h-3.5 w-3.5" /> {t("homes.settings")}
               </Button>
               <Button className="h-10 px-6 font-black rounded-lg shadow-lg shadow-primary/20 bg-primary hover:scale-[1.02] transition-transform">
                 {t('homes.invite')}
@@ -278,7 +285,7 @@ function FamilyHomePage() {
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-black">{members.length}</div>
-                <p className="text-[10px] text-muted-foreground mt-1 font-bold uppercase tracking-wider">{t('homes.members_desc')}</p>
+                <p className="text-[10px] text-muted-foreground mt-1 font-bold uppercase tracking-wider">{t("homes.members_desc")}</p>
               </CardContent>
             </Card>
 
@@ -291,15 +298,15 @@ function FamilyHomePage() {
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-black">0</div>
-                <p className="text-[10px] text-muted-foreground mt-1 font-bold uppercase tracking-wider">{t('homes.no_events')}</p>
+                <p className="text-[10px] text-muted-foreground mt-1 font-bold uppercase tracking-wider">{t("homes.no_events")}</p>
               </CardContent>
             </Card>
 
             {/* Members List Section */}
             <Card className="md:col-span-2 lg:col-span-3 border-none bg-muted/20">
               <CardHeader className="px-6 pt-6 text-center sm:text-left">
-                <CardTitle className="text-xl font-bold tracking-tight">{t('homes.members_list')}</CardTitle>
-                <CardDescription className="text-sm font-medium">{t('homes.members_list_desc')}</CardDescription>
+                <CardTitle className="text-xl font-bold tracking-tight">{t("homes.members_list")}</CardTitle>
+                <CardDescription className="text-sm font-medium">{t("homes.members_list_desc")}</CardDescription>
               </CardHeader>
               <CardContent className="px-6 pb-6">
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -327,7 +334,7 @@ function FamilyHomePage() {
                         </div>
                       </div>
                       <div className="shrink-0">
-                        <Badge variant={membership.role === 'ORG_ADMIN' ? 'default' : 'outline'} className="rounded-md font-bold px-2 py-0.5 text-[10px]">
+                        <Badge variant={membership.role === 'ORG_ADMIN' ? 'default' : 'outline'} className='rounded-md font-bold px-2 py-0.5 text-[10px]'>
                           {membership.role === 'ORG_ADMIN' ? t('org.role_admin') : t('org.role_member')}
                         </Badge>
                       </div>
@@ -343,7 +350,7 @@ function FamilyHomePage() {
       {/* Assistive Button (shadcn Integrated) */}
       <Button 
         variant="ghost"
-        className={`fixed z-[100] h-14 w-14 p-0 rounded-full cursor-pointer group transition-transform ${isDragging ? '' : 'duration-500 ease-out'} active:scale-95 border-2 border-white/20 shadow-2xl overflow-hidden hover:bg-background/60`}
+        className={`fixed z-[100] h-14 w-14 p-0 rounded-full cursor-pointer group transition-transform ${isDragging ? `` : `duration-500 ease-out`} active:scale-95 border-2 border-white/20 shadow-2xl overflow-hidden hover:bg-background/60`}
         style={{ left: pos.x, top: pos.y, touchAction: 'none' }}
         onMouseDown={handleMouseDown}
         onTouchStart={handleMouseDown}
@@ -351,7 +358,7 @@ function FamilyHomePage() {
       >
         <div className="absolute inset-0 bg-background/40 backdrop-blur-xl" />
         <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-        <LayoutGrid className={`relative z-10 h-6 w-6 transition-transform duration-500 will-change-transform transform-gpu ease-[cubic-bezier(0.34,1.56,0.64,1)] ${isDockOpen ? 'rotate-90 text-primary scale-110' : 'text-muted-foreground'}`} />
+        <LayoutGrid className={`relative z-10 h-6 w-6 transition-transform duration-500 will-change-transform transform-gpu ease-[cubic-bezier(0.34,1.56,0.64,1)] ${isDockOpen ? `rotate-90 text-primary scale-110` : `text-muted-foreground`}`} />
         
         {/* Pulsing Ring when closed */}
         {!isDockOpen && (
@@ -361,21 +368,23 @@ function FamilyHomePage() {
 
       {/* Glassmorphism Home DOCK with Pagination */}
       <div 
-        className={`fixed inset-x-0 bottom-6 z-[90] flex flex-col items-center gap-3 transition-all duration-500 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] ${isDockOpen ? 'translate-y-0 opacity-100' : 'translate-y-32 opacity-0 pointer-events-none'}`}
+        className={`fixed inset-x-0 bottom-6 z-[90] flex flex-col items-center gap-3 transition-all duration-500 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] ${isDockOpen ? `translate-y-0 opacity-100` : `translate-y-32 opacity-0 pointer-events-none`}`}
       >
         <div 
-          className="bg-background/40 backdrop-blur-2xl border border-white/20 rounded-[2.5rem] p-3 shadow-2xl relative w-[340px] overflow-hidden flex flex-col items-center ring-1 ring-black/5"
+          className="bg-background/40 backdrop-blur-2xl border border-white/20 rounded-[2.5rem] p-3 shadow-2xl relative w-[500px] max-w-[calc(100vw-48px)] overflow-hidden flex flex-col items-center ring-1 ring-black/5"
         >
           {/* Draggable/Scrollable Container */}
           <div 
+            ref={scrollRef}
             className="flex items-center w-full overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth"
             onScroll={handleScroll}
+            onWheel={handleWheel}
           >
             {/* Pages of Apps */}
             {[...Array(totalPages)].map((_, pageIdx) => (
                <div 
                  key={pageIdx} 
-                 className="flex-none w-full grid grid-cols-4 gap-2 px-1 snap-start"
+                 className="flex-none w-full grid grid-cols-6 gap-2 px-1 snap-start"
                >
                  {apps.slice(pageIdx * itemsPerPage, (pageIdx + 1) * itemsPerPage).map((app) => (
                    <Button
@@ -403,7 +412,7 @@ function FamilyHomePage() {
               {[...Array(totalPages)].map((_, i) => (
                 <div 
                   key={i} 
-                  className={`h-1.5 w-1.5 rounded-full transition-all duration-300 ${currentPage === i ? 'bg-primary w-3' : 'bg-muted-foreground/30'}`}
+                  className={`h-1.5 w-1.5 rounded-full transition-all duration-300 ${currentPage === i ? `bg-primary w-3` : `bg-muted-foreground/30`}`}
                 />
               ))}
             </div>
