@@ -449,7 +449,7 @@ function FamilyHomePage() {
         </Button>
       </div>
 
-      <div className={`fixed inset-x-0 bottom-6 z-[90] flex flex-col items-center gap-3 transition-all duration-500 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] ${isDockOpen ? "translate-y-0 opacity-100" : "translate-y-32 opacity-0 pointer-events-none"}`}>
+      <div className={`fixed inset-x-0 bottom-6 z-[90] flex flex-col items-center gap-3 transition-all duration-300 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] ${isDockOpen ? "translate-y-0 opacity-100" : "translate-y-32 opacity-0 pointer-events-none"} ${isAllAppsOpen ? "opacity-0 scale-95 pointer-events-none" : ""}`}>
         <div className="bg-background/40 backdrop-blur-2xl border border-white/20 rounded-[2.5rem] p-2.5 shadow-2xl relative w-[540px] max-w-[calc(100vw-48px)] flex items-center ring-1 ring-black/5">
           {/* Fixed "Tất cả" Button */}
           <div className="shrink-0 pr-2 mr-2 border-r border-white/10">
@@ -502,14 +502,14 @@ function FamilyHomePage() {
 
       <div className={`fixed inset-0 z-[110] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${isAllAppsOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"}`}>
         <div 
-          className="absolute inset-0 bg-black/10 backdrop-blur-sm flex items-center justify-center p-4 transition-all duration-500 transform-gpu ease-[cubic-bezier(0.34,1.56,0.64,1)] will-change-transform origin-bottom"
+          className="absolute inset-0 bg-black/5 flex items-center justify-center p-4 transition-all duration-500 transform-gpu ease-[cubic-bezier(0.34,1.56,0.64,1)] will-change-transform origin-bottom"
           onClick={() => {
              setIsAllAppsOpen(false);
              setSearchQuery('');
           }}
         >
           <div 
-            className={`bg-background/40 backdrop-blur-2xl border border-white/20 rounded-[2.5rem] p-8 shadow-2xl relative w-full max-w-5xl max-h-[85vh] overflow-hidden flex flex-col items-center ring-1 ring-black/5 transform-gpu backface-visibility-hidden ${isAllAppsOpen ? "scale-100 opacity-100 translate-y-0" : "scale-50 opacity-0 translate-y-32"}`}
+            className={`bg-background/40 backdrop-blur-xl border border-white/20 rounded-[2.5rem] p-8 shadow-2xl relative w-full max-w-5xl max-h-[85vh] overflow-hidden flex flex-col items-center ring-1 ring-black/5 transform-gpu backface-visibility-hidden ${isAllAppsOpen ? "scale-100 opacity-100 translate-y-0" : "scale-50 opacity-0 translate-y-32"}`}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button */}
