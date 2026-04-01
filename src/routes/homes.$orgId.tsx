@@ -494,16 +494,28 @@ function FamilyHomePage() {
         </div>
       </div>
 
-      <div className={`fixed inset-0 z-[110] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${isAllAppsOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"}`}>
+      {/* All Apps Launcher Overlay (Magnified DOCK style) */}
+      <div className={`fixed inset-0 z-[110] ${isAllAppsOpen ? "visible" : "invisible pointer-events-none"}`}>
+        {/* Faster Backdrop Fade */}
         <div 
-          className="absolute inset-0 bg-black/5 flex items-center justify-center p-4 transition-all duration-500 transform-gpu ease-[cubic-bezier(0.34,1.56,0.64,1)] will-change-transform origin-bottom"
+          className={`absolute inset-0 bg-black/15 transition-opacity duration-200 ease-out ${isAllAppsOpen ? "opacity-100" : "opacity-0"}`}
+          onClick={() => {
+             setIsAllAppsOpen(false);
+             setSearchQuery('');
+          }}
+        />
+        
+        {/* Smooth Launcher Zoom Expansion */}
+        <div 
+          className={`absolute inset-0 flex items-center justify-center p-4 transition-all duration-400 transform-gpu ease-[cubic-bezier(0.34,1.56,0.64,1)] will-change-transform origin-bottom ${isAllAppsOpen ? "scale-100 opacity-100 translate-y-0" : "scale-50 opacity-0 translate-y-32"}`}
+          style={{ pointerEvents: isAllAppsOpen ? "auto" : "none" }}
           onClick={() => {
              setIsAllAppsOpen(false);
              setSearchQuery('');
           }}
         >
           <div 
-            className={`bg-background/40 backdrop-blur-xl border border-white/20 rounded-[2.5rem] p-8 shadow-2xl relative w-full max-w-5xl max-h-[85vh] overflow-hidden flex flex-col items-center ring-1 ring-black/5 transform-gpu backface-visibility-hidden ${isAllAppsOpen ? "scale-100 opacity-100 translate-y-0" : "scale-50 opacity-0 translate-y-32"}`}
+            className="bg-background/40 backdrop-blur-2xl border border-white/20 rounded-[2.5rem] p-8 shadow-2xl relative w-full max-w-5xl max-h-[85vh] overflow-hidden flex flex-col items-center ring-1 ring-black/5 transform-gpu backface-visibility-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button */}
