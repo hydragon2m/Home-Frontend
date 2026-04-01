@@ -515,7 +515,7 @@ function FamilyHomePage() {
           }}
         >
           <div 
-            className="bg-background/20 backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-8 shadow-xl relative w-full max-w-5xl max-h-[85vh] overflow-hidden flex flex-col items-center ring-1 ring-black/5 transform-gpu backface-visibility-hidden"
+            className="bg-background/30 backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-8 shadow-xl relative w-full max-w-5xl h-[75vh] flex flex-col items-center ring-1 ring-black/5 transform-gpu backface-visibility-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button */}
@@ -547,11 +547,10 @@ function FamilyHomePage() {
             {/* App Grid inside the expanded DOCK */}
             <div className="w-full overflow-y-auto px-4 custom-scrollbar relative z-10">
               <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-x-4 gap-y-8 pb-4">
-                {filteredApps.map((app, idx) => (
+                {filteredApps.map((app) => (
                   <button
                     key={app.id}
-                    className={`flex flex-col items-center gap-2 group transition-all hover:scale-110 active:scale-95 ${isAllAppsOpen ? "animate-reveal opacity-100" : "opacity-0"}`}
-                    style={{ animationDelay: `${250 + idx * 10}ms` }}
+                    className="flex flex-col items-center gap-2 group transition-all hover:scale-110 active:scale-95"
                     onClick={() => {
                       setIsAllAppsOpen(false);
                       // Handle app click...
@@ -577,9 +576,9 @@ function FamilyHomePage() {
         </div>
       </div>
 
-      {isDockOpen && (
+      {isDockOpen && !isAllAppsOpen && (
         <div 
-          className="fixed inset-0 z-[80] bg-black/5 backdrop-blur-[2px]" 
+          className="fixed inset-0 z-[80]" 
           onClick={() => {
             setIsDockOpen(false);
             setIsAllAppsOpen(false);
