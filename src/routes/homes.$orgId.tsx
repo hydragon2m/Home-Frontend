@@ -6,13 +6,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { 
   Users, 
   Calendar, 
-  Home as HomeIcon, 
   Loader2, 
   Settings,
   LayoutDashboard,
   Bell,
   LogOut,
-  User as UserIcon
+  User as UserIcon,
+  LayoutGrid,
+  Wallet,
+  CheckSquare,
+  Layout
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -40,6 +43,51 @@ function FamilyHomePage() {
   const [org, setOrgData] = useState<any>(null)
   const [members, setMembers] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+
+  // --- Assistive DOCK Logic ---
+  const [isDockOpen, setIsDockOpen] = useState(false)
+  const [pos, setPos] = useState({ x: window.innerWidth - 80, y: window.innerHeight - 150 })
+  const [isDragging, setIsDragging] = useState(false)
+
+  const apps = [
+    { id: 'dashboard', icon: LayoutGrid, label: t('org.context_global'), color: 'bg-blue-500' },
+    { id: 'members', icon: Users, label: t('homes.members_title'), color: 'bg-green-500' },
+    { id: 'finance', icon: Wallet, label: t('common.features.finance.title'), color: 'bg-orange-500' },
+    { id: 'calendar', icon: Calendar, label: t('common.features.calendar.title'), color: 'bg-purple-500' },
+    { id: 'tasks', icon: CheckSquare, label: t('common.features.todo.title'), color: 'bg-pink-500' },
+    { id: 'settings', icon: Settings, label: t('homes.settings'), color: 'bg-gray-500' },
+  ]
+
+  const handleMouseDown = (e: any) => {
+    setIsDragging(false)
+    const clientX = e.clientX || e.touches?.[0]?.clientX
+    const clientY = e.clientY || e.touches?.[0]?.clientY
+    setDragStart({ x: clientX - pos.x, y: clientY - pos.y })
+    
+    const moveHandler = (moveEvent: any) => {
+      setIsDragging(true)
+      const mX = moveEvent.clientX || moveEvent.touches?.[0]?.clientX
+      const mY = moveEvent.clientY || moveEvent.touches?.[0]?.clientY
+      setPos({ x: mX - (clientX - pos.x), y: mY - (clientY - pos.y) })
+    }
+
+    const upHandler = () => {
+      // Snap to edge
+      setPos(current => {
+        const snapX = current.x < window.innerWidth / 2 ? 16 : window.innerWidth - 76
+        return { x: snapX, y: Math.max(80, Math.min(window.innerHeight - 80, current.y)) }
+      })
+      window.removeEventListener('mousemove', moveHandler)
+      window.removeEventListener('mouseup', upHandler)
+      window.removeEventListener('touchmove', moveHandler)
+      window.removeEventListener('touchend', upHandler)
+    }
+
+    window.addEventListener('mousemove', moveHandler)
+    window.addEventListener('mouseup', upHandler)
+    window.addEventListener('touchmove', moveHandler)
+    window.addEventListener('touchend', upHandler)
+  }
 
   const handleLogout = async () => {
     try {
@@ -113,7 +161,7 @@ function FamilyHomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col relative overflow-hidden">
       {/* Standalone Home Header */}
       <header className="h-16 border-b flex items-center justify-between px-6 bg-background/80 backdrop-blur-md sticky top-0 z-50">
         <div className="flex items-center gap-6">
@@ -128,18 +176,7 @@ function FamilyHomePage() {
            </div>
         </div>
 
-        {/* Central Navigation Menu */}
-        <nav className="hidden md:flex items-center bg-muted/40 p-0.5 rounded-lg border">
-          <Button variant="ghost" size="sm" className="bg-background shadow-sm h-7 px-3 font-bold text-[11px] rounded-md">
-            <LayoutDashboard className="mr-1.5 h-3 w-3" /> {t('org.context_global')}
-          </Button>
-          <Button variant="ghost" size="sm" className="h-7 px-3 font-bold text-[11px] text-muted-foreground hover:text-foreground rounded-md">
-            <Users className="mr-1.5 h-3 w-3" /> {t('homes.members_title')}
-          </Button>
-          <Button variant="ghost" size="sm" className="h-7 px-3 font-bold text-[11px] text-muted-foreground hover:text-foreground rounded-md">
-            <Settings className="mr-1.5 h-3 w-3" /> {t('homes.settings')}
-          </Button>
-        </nav>
+        {/* Navigation moved to Assistive DOCK */}
         
         <div className="flex items-center gap-1.5">
           <div className="flex items-center gap-0.5">
@@ -191,13 +228,13 @@ function FamilyHomePage() {
         </div>
       </header>
 
-      <main className="flex-1 p-4 md:p-8">
+      <main className="flex-1 p-4 md:p-8 pb-32">
         <div className="max-w-6xl mx-auto space-y-6 animate-reveal">
           {/* Hero Header Section */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b pb-6">
             <div className="space-y-2">
               <div className="flex items-center gap-1.5 text-primary">
-                <HomeIcon className="h-4 w-4" />
+                <Layout className="h-4 w-4" />
                 <span className="text-[11px] font-black uppercase tracking-widest">{t('homes.your_space')}</span>
               </div>
               <h1 className="text-3xl font-black tracking-tight capitalize lg:text-4xl">
@@ -289,6 +326,70 @@ function FamilyHomePage() {
           </div>
         </div>
       </main>
+
+      {/* Assistive Button */}
+      <div 
+        className={`fixed z-[100] cursor-pointer group transition-transform ${isDragging ? '' : 'duration-500 ease-out'} active:scale-95`}
+        style={{ left: pos.x, top: pos.y, touchAction: 'none' }}
+        onMouseDown={handleMouseDown}
+        onTouchStart={handleMouseDown}
+        onClick={() => !isDragging && setIsDockOpen(!isDockOpen)}
+      >
+        <div className="relative h-14 w-14 rounded-full bg-background/40 backdrop-blur-xl border-2 border-white/20 shadow-2xl flex items-center justify-center overflow-hidden hover:bg-background/60 transition-colors">
+            <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            <LayoutGrid className={`h-6 w-6 transition-all duration-300 ${isDockOpen ? 'rotate-90 text-primary scale-110' : 'text-muted-foreground'}`} />
+            
+            {/* Pulsing Ring when closed */}
+            {!isDockOpen && (
+                 <div className="absolute inset-0 rounded-full border-2 border-primary/30 animate-ping opacity-20" />
+            )}
+        </div>
+      </div>
+
+      {/* Glassmorphism Home DOCK */}
+      <div 
+        className={`fixed inset-x-0 bottom-6 z-[90] flex justify-center px-4 transition-all duration-500 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] ${isDockOpen ? 'translate-y-0 opacity-100' : 'translate-y-24 opacity-0 pointer-events-none'}`}
+      >
+        <div className="bg-background/40 backdrop-blur-2xl border border-white/20 rounded-[2.5rem] p-3 shadow-2xl flex items-center gap-2 max-w-full overflow-x-auto no-scrollbar ring-1 ring-black/5">
+          {apps.map((app) => (
+            <button
+               key={app.id}
+               className="flex flex-col items-center gap-1.5 p-1 group focus:outline-none"
+               onClick={() => setIsDockOpen(false)}
+            >
+              <div className={`h-14 w-14 rounded-2xl ${app.color} flex items-center justify-center text-white shadow-lg group-hover:scale-110 group-active:scale-90 transition-all duration-300 relative overflow-hidden`}>
+                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <app.icon className="h-6 w-6 shadow-sm" />
+              </div>
+              <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground group-hover:text-foreground transition-colors px-1">
+                {app.label}
+              </span>
+            </button>
+          ))}
+          
+          <div className="w-px h-10 bg-white/10 mx-1" />
+          
+          <button 
+            className="flex flex-col items-center gap-1.5 p-1 group focus:outline-none"
+            onClick={() => setIsDockOpen(false)}
+          >
+            <div className="h-14 w-14 rounded-full bg-destructive/10 border-2 border-destructive/20 flex items-center justify-center text-destructive group-hover:bg-destructive group-hover:text-white transition-all duration-300">
+               <LogOut className="h-6 w-6" />
+            </div>
+            <span className="text-[10px] font-black uppercase tracking-widest text-destructive/60 group-hover:text-destructive transition-colors px-1">
+              Thoát
+            </span>
+          </button>
+        </div>
+      </div>
+
+      {/* Click-outside Backdrop */}
+      {isDockOpen && (
+        <div 
+          className="fixed inset-0 z-[80] bg-black/5 backdrop-blur-[2px]"
+          onClick={() => setIsDockOpen(false)}
+        />
+      )}
     </div>
   )
 }
