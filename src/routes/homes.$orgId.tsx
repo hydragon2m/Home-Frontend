@@ -351,12 +351,31 @@ function FamilyHomePage() {
               </p>
             </div>
             <div className="flex gap-2">
-              <Button variant="outline" className="h-10 px-4 font-bold rounded-lg border-2">
+              <Button variant="outline" className="h-10 px-4 font-bold rounded-lg border-2 hover:bg-primary/5 transition-colors" onClick={() => navigate({ to: `/homes/${orgId}/settings` as any })}>
                 <Settings className="mr-2 h-3.5 w-3.5" /> {t("homes.settings")}
               </Button>
-              <Button className="h-10 px-6 font-black rounded-lg shadow-lg shadow-primary/20 bg-primary hover:scale-[1.02] transition-transform">
+              <Button className="h-10 px-6 font-black rounded-lg shadow-lg shadow-primary/20 bg-primary hover:scale-[1.02] active:scale-95 transition-all">
                 {t('homes.invite')}
               </Button>
+            </div>
+          </div>
+
+          {/* New Feature: Quick Action / Welcome Banner */}
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary/10 via-background to-background border-2 border-primary/10 p-8 group">
+            <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+              <LayoutGrid className="h-32 w-32 rotate-12" />
+            </div>
+            <div className="relative z-10 space-y-4 max-w-2xl">
+              <Badge className="bg-primary/20 text-primary border-none font-black px-3 py-1">FEATURED v1.2</Badge>
+              <h2 className="text-2xl md:text-3xl font-black tracking-tight">{t('homes.your_space_title', { defaultValue: 'Không gian sống thông minh của bạn' })}</h2>
+              <p className="text-muted-foreground font-medium leading-relaxed">
+                Quản lý mọi khía cạnh của gia đình bạn từ một nơi duy nhất. Từ tài chính, lịch trình cho đến các thiết bị thông minh. 
+                Mọi thứ đều nằm trong tầm tay với **Assistive DOCK**.
+              </p>
+              <div className="flex flex-wrap gap-3 pt-2">
+                <Button size="sm" className="font-bold rounded-xl" onClick={() => setIsDockOpen(true)}>{t('homes.explore_dock', { defaultValue: 'Khám phá DOCK' })}</Button>
+                <Button size="sm" variant="ghost" className="font-bold rounded-xl">{t('homes.learn_more', { defaultValue: 'Tìm hiểu thêm' })}</Button>
+              </div>
             </div>
           </div>
 
@@ -465,7 +484,17 @@ function FamilyHomePage() {
               {[...Array(totalPages)].map((_, pageIdx) => (
                 <div key={pageIdx} className="flex-none w-full grid grid-cols-6 gap-2 px-1 snap-start">
                   {apps.slice(pageIdx * 6, (pageIdx + 1) * 6).map((app) => (
-                    <Button key={app.id} variant="ghost" className="h-auto flex flex-col items-center gap-1.5 p-1 group ring-offset-background transition-all hover:bg-transparent" onClick={() => setIsDockOpen(false)}>
+                    <Button 
+                      key={app.id} 
+                      variant="ghost" 
+                      className="h-auto flex flex-col items-center gap-1.5 p-1 group ring-offset-background transition-all hover:bg-transparent" 
+                      onClick={() => {
+                        setIsDockOpen(false);
+                        if (app.id === 'dashboard') navigate({ to: '/dashboard' });
+                        else if (app.id === 'settings') navigate({ to: `/homes/${orgId}/settings` as any });
+                        // Add more navigation routes as needed
+                      }}
+                    >
                       <div className={`h-14 w-14 rounded-2xl ${app.color} flex items-center justify-center text-white shadow-lg group-hover:scale-105 group-active:scale-95 transition-all duration-300 relative overflow-hidden`}>
                         <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                         <app.icon className="h-6 w-6 shadow-sm" />
@@ -553,7 +582,9 @@ function FamilyHomePage() {
                     className="flex flex-col items-center gap-2 group transition-all hover:scale-110 active:scale-95"
                     onClick={() => {
                       setIsAllAppsOpen(false);
-                      // Handle app click...
+                      if (app.id === 'dashboard') navigate({ to: '/dashboard' });
+                      else if (app.id === 'settings') navigate({ to: `/homes/${orgId}/settings` as any });
+                      // Add more navigation routes as needed
                     }}
                   >
                     <div className={`h-14 w-14 rounded-2xl ${app.color} flex items-center justify-center text-white shadow-xl relative overflow-hidden ring-2 ring-white/10 group-hover:ring-primary/40 transition-all`}>
