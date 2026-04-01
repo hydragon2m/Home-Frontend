@@ -432,7 +432,7 @@ function FamilyHomePage() {
       </main>
 
       <div 
-        className={`fixed z-[100] flex flex-col items-center group transition-transform ${isDragging ? "" : "duration-500 ease-out"}`}
+        className={`fixed z-[100] flex flex-col items-center group transition-transform ${isDragging ? "" : "duration-500 ease-out"} ${isAllAppsOpen ? "opacity-0 pointer-events-none" : ""}`}
         style={{ left: pos.x, top: pos.y, touchAction: 'none' }}
       >
         <Button 
@@ -451,18 +451,17 @@ function FamilyHomePage() {
 
       <div className={`fixed inset-x-0 bottom-6 z-[90] flex flex-col items-center gap-3 transition-all duration-300 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] ${isDockOpen ? "translate-y-0 opacity-100" : "translate-y-32 opacity-0 pointer-events-none"} ${isAllAppsOpen ? "opacity-0 scale-95 pointer-events-none" : ""}`}>
         <div className="bg-background/40 backdrop-blur-2xl border border-white/20 rounded-[2.5rem] p-2.5 shadow-2xl relative w-[540px] max-w-[calc(100vw-48px)] flex items-center ring-1 ring-black/5">
-          {/* Fixed "Tất cả" Button */}
-          <div className="shrink-0 pr-2 mr-2 border-r border-white/10">
+          {/* Tiny Fixed Expand Button */}
+          <div className="shrink-0 pr-1.5 mr-1.5 border-r border-white/10">
             <Button 
               variant="ghost" 
-              className="h-auto flex flex-col items-center gap-1.5 p-1 group ring-offset-background transition-all hover:bg-transparent" 
+              className="h-14 w-8 p-0 group ring-offset-background transition-all hover:bg-transparent" 
               onClick={() => setIsAllAppsOpen(true)}
             >
-              <div className="h-14 w-14 rounded-2xl bg-primary/10 border-2 border-primary/20 flex items-center justify-center text-primary shadow-lg group-hover:scale-105 group-active:scale-95 transition-all duration-300 relative overflow-hidden backdrop-blur-md">
+              <div className="h-8 w-8 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shadow-sm group-hover:scale-110 group-active:scale-95 transition-all duration-300 relative overflow-hidden backdrop-blur-md">
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                <ChevronUp className="h-5 w-5 animate-bounce-slow" />
+                <ChevronUp className="h-3.5 w-3.5 animate-bounce-slow" />
               </div>
-              <span className="text-[7px] font-black uppercase tracking-widest text-primary/60 group-hover:text-primary transition-colors px-1 truncate w-full text-center">{t('homes.expand_dock')}</span>
             </Button>
           </div>
 
