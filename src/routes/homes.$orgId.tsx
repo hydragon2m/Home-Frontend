@@ -449,7 +449,7 @@ function FamilyHomePage() {
         </Button>
       </div>
 
-      <div className={`fixed inset-x-0 bottom-6 z-[90] flex flex-col items-center gap-3 transition-all ease-[cubic-bezier(0.175,0.885,0.32,1.275)] ${isDockOpen && !isAllAppsOpen ? "translate-y-0 opacity-100 visible" : "translate-y-32 opacity-0 invisible pointer-events-none"} ${isAllAppsOpen ? "hidden" : "duration-300"}`}>
+      <div className={`fixed inset-x-0 bottom-6 z-[90] flex flex-col items-center gap-3 transition-all duration-300 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] ${isDockOpen ? "translate-y-0 opacity-100 visible" : "translate-y-32 opacity-0 invisible pointer-events-none"}`}>
         <div className="bg-background/30 backdrop-blur-2xl border border-white/20 rounded-[2.5rem] p-2.5 shadow-2xl relative w-[500px] max-w-[calc(100vw-48px)] flex flex-col items-center ring-1 ring-black/5 transform-gpu">
           {/* Subtle Expand Trigger Button (Center-Top) */}
           <Button 
