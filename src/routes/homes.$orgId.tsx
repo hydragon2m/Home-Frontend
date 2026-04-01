@@ -360,25 +360,6 @@ function FamilyHomePage() {
             </div>
           </div>
 
-          {/* New Feature: Quick Action / Welcome Banner */}
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary/10 via-background to-background border-2 border-primary/10 p-8 group">
-            <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
-              <LayoutGrid className="h-32 w-32 rotate-12" />
-            </div>
-            <div className="relative z-10 space-y-4 max-w-2xl">
-              <Badge className="bg-primary/20 text-primary border-none font-black px-3 py-1">FEATURED v1.2</Badge>
-              <h2 className="text-2xl md:text-3xl font-black tracking-tight">{t('homes.your_space_title', { defaultValue: 'Không gian sống thông minh của bạn' })}</h2>
-              <p className="text-muted-foreground font-medium leading-relaxed">
-                Quản lý mọi khía cạnh của gia đình bạn từ một nơi duy nhất. Từ tài chính, lịch trình cho đến các thiết bị thông minh. 
-                Mọi thứ đều nằm trong tầm tay với **Assistive DOCK**.
-              </p>
-              <div className="flex flex-wrap gap-3 pt-2">
-                <Button size="sm" className="font-bold rounded-xl" onClick={() => setIsDockOpen(true)}>{t('homes.explore_dock', { defaultValue: 'Khám phá DOCK' })}</Button>
-                <Button size="sm" variant="ghost" className="font-bold rounded-xl">{t('homes.learn_more', { defaultValue: 'Tìm hiểu thêm' })}</Button>
-              </div>
-            </div>
-          </div>
-
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             <Card className="bg-primary/5 border-primary/20 shadow-none hover:shadow-md transition-all duration-300 border-2">
               <CardHeader className="pb-1.5">
@@ -534,10 +515,10 @@ function FamilyHomePage() {
           }}
         />
         
-        {/* Pro Launcher Zoom Expansion (Optimized for GPU) */}
+        {/* Perfect Launcher Zoom Expansion (Optimized for GPU) */}
         <div 
-          className={`absolute inset-0 flex items-center justify-center p-4 transition-all duration-400 transform-gpu ease-[cubic-bezier(0.23,1,0.32,1)] will-change-transform origin-bottom ${isAllAppsOpen ? "scale-100 opacity-100 translate-y-0" : "scale-50 opacity-0 translate-y-24"}`}
-          style={{ pointerEvents: isAllAppsOpen ? "auto" : "none", transform: isAllAppsOpen ? 'translateZ(0) scale(1)' : 'translateZ(0) scale(0.5) translateY(24px)' }}
+          className={`absolute inset-0 flex items-center justify-center p-4 transition-all duration-500 transform-gpu ease-[cubic-bezier(0.34,1.56,0.64,1)] will-change-transform origin-bottom ${isAllAppsOpen ? "scale-100 opacity-100 translate-y-0" : "scale-[0.7] opacity-0 translate-y-24"}`}
+          style={{ pointerEvents: isAllAppsOpen ? "auto" : "none" }}
           onClick={() => {
              setIsAllAppsOpen(false);
              setSearchQuery('');
