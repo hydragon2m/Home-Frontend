@@ -15,7 +15,34 @@ import {
   LayoutGrid,
   Wallet,
   CheckSquare,
-  Layout
+  Layout,
+  Music,
+  Camera,
+  Folder,
+  Phone,
+  Mail,
+  MessageSquare,
+  Heart,
+  Shield,
+  ShoppingBag,
+  Zap,
+  Gamepad2,
+  Cloud,
+  Video,
+  Map,
+  Mic,
+  Languages,
+  Activity,
+  Package,
+  Coffee,
+  Car,
+  Plane,
+  Target,
+  Star,
+  Palette,
+  Search,
+  ShoppingCart,
+  Wind
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -59,7 +86,33 @@ function FamilyHomePage() {
     { id: 'tasks', icon: CheckSquare, label: t('common.features.todo.title'), color: 'bg-pink-500' },
     { id: 'settings', icon: Settings, label: t('homes.settings'), color: 'bg-gray-500' },
     { id: 'devices', icon: Layout, label: t('common.features.devices.title') || 'Thiết bị', color: 'bg-cyan-500' },
-    { id: 'more', icon: LayoutDashboard, label: 'Thêm...', color: 'bg-indigo-500' },
+    { id: 'music', icon: Music, label: 'Nhạc', color: 'bg-rose-500' },
+    { id: 'camera', icon: Camera, label: 'Ảnh', color: 'bg-orange-400' },
+    { id: 'folder', icon: Folder, label: 'Tệp', color: 'bg-blue-400' },
+    { id: 'phone', icon: Phone, label: 'Gọi điện', color: 'bg-emerald-500' },
+    { id: 'mail', icon: Mail, label: 'Email', color: 'bg-sky-500' },
+    { id: 'message', icon: MessageSquare, label: 'Tin nhắn', color: 'bg-green-400' },
+    { id: 'health', icon: Heart, label: 'Sức khỏe', color: 'bg-red-500' },
+    { id: 'security', icon: Shield, label: 'Bảo mật', color: 'bg-indigo-600' },
+    { id: 'shop', icon: ShoppingBag, label: 'Cửa hàng', color: 'bg-amber-500' },
+    { id: 'energy', icon: Zap, label: 'Điện năng', color: 'bg-yellow-400' },
+    { id: 'games', icon: Gamepad2, label: 'Trò chơi', color: 'bg-purple-400' },
+    { id: 'cloud', icon: Cloud, label: 'Lưu trữ', color: 'bg-blue-300' },
+    { id: 'video', icon: Video, label: 'Video', color: 'bg-red-400' },
+    { id: 'map', icon: Map, label: 'Bản đồ', color: 'bg-emerald-400' },
+    { id: 'mic', icon: Mic, label: 'Ghi âm', color: 'bg-orange-600' },
+    { id: 'lang', icon: Languages, label: 'Ngôn ngữ', color: 'bg-teal-500' },
+    { id: 'activity', icon: Activity, label: 'Hoạt động', color: 'bg-fuchsia-500' },
+    { id: 'package', icon: Package, label: 'Kiện hàng', color: 'bg-amber-600' },
+    { id: 'coffee', icon: Coffee, label: 'Cà phê', color: 'bg-amber-800' },
+    { id: 'car', icon: Car, label: 'Xe cộ', color: 'bg-slate-700' },
+    { id: 'plane', icon: Plane, label: 'Du lịch', color: 'bg-sky-400' },
+    { id: 'target', icon: Target, label: 'Mục tiêu', color: 'bg-rose-600' },
+    { id: 'star', icon: Star, label: 'Yêu thích', color: 'bg-yellow-500' },
+    { id: 'paint', icon: Palette, label: 'Chủ đề', color: 'bg-indigo-400' },
+    { id: 'search', icon: Search, label: 'Tìm kiếm', color: 'bg-gray-400' },
+    { id: 'cart', icon: ShoppingCart, label: 'Giỏ hàng', color: 'bg-orange-500' },
+    { id: 'wind', icon: Wind, label: 'Thời tiết', color: 'bg-blue-200' },
   ]
 
   // Pagination config (6 apps per page)
@@ -69,15 +122,31 @@ function FamilyHomePage() {
   const handleScroll = (e: any) => {
     const scrollLeft = e.target.scrollLeft
     const width = e.target.clientWidth
-    const newPage = Math.round(scrollLeft / width)
-    if (newPage !== currentPage) setCurrentPage(newPage)
-  }
-
-  const handleWheel = (e: React.WheelEvent) => {
-    if (scrollRef.current && e.deltaY !== 0) {
-      scrollRef.current.scrollLeft += e.deltaY
+    if (width > 0) {
+      const newPage = Math.round(scrollLeft / width)
+      if (newPage !== currentPage) setCurrentPage(newPage)
     }
   }
+
+  // Improved Wheel Scroll Logic for Horizontal Pagination
+  useEffect(() => {
+    const el = scrollRef.current
+    if (!el || !isDockOpen) return
+
+    const wheelHandler = (e: WheelEvent) => {
+      // If user is actually scrolling horizontally (like on a trackpad), let it be
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return
+
+      if (e.deltaY !== 0) {
+        e.preventDefault()
+        // Use a smoother scroll multiplier
+        el.scrollLeft += e.deltaY * 2
+      }
+    }
+
+    el.addEventListener('wheel', wheelHandler, { passive: false })
+    return () => el.removeEventListener('wheel', wheelHandler)
+  }, [isDockOpen])
 
   const handleMouseDown = (e: any) => {
     setIsDragging(false)
@@ -92,7 +161,6 @@ function FamilyHomePage() {
     }
 
     const upHandler = () => {
-      // Snap to edge
       setPos(current => {
         const snapX = current.x < window.innerWidth / 2 ? 16 : window.innerWidth - 76
         return { x: snapX, y: Math.max(80, Math.min(window.innerHeight - 80, current.y)) }
@@ -123,18 +191,14 @@ function FamilyHomePage() {
   const fetchData = async () => {
     setLoading(true)
     try {
-      // Correctly swap token if current store org doesn't match URL
       if (currentOrg?.id !== orgId) {
         const swapRes: any = await api.post('/auth/swap-token', { orgId })
-        // After swap, the cookie is updated, now fetch data
         const [orgRes, membersRes] = await Promise.all([
           api.get(`/organizations/${orgId}`),
           api.get(`/organizations/${orgId}/members`)
         ])
         setOrgData(orgRes.data)
         setMembers(membersRes.data)
-        
-        // Sync store for this tab's actions
         setOrg({
           id: orgRes.data.id,
           name: orgRes.data.name,
@@ -182,7 +246,6 @@ function FamilyHomePage() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col relative overflow-hidden">
-      {/* Standalone Home Header */}
       <header className="h-16 border-b flex items-center justify-between px-6 bg-background/80 backdrop-blur-md sticky top-0 z-50">
         <div className="flex items-center gap-6">
            <div className="flex items-center gap-2 group cursor-default">
@@ -195,8 +258,6 @@ function FamilyHomePage() {
               </div>
            </div>
         </div>
-
-        {/* Navigation moved to Assistive DOCK */}
         
         <div className="flex items-center gap-1.5">
           <div className="flex items-center gap-0.5">
@@ -250,7 +311,6 @@ function FamilyHomePage() {
 
       <main className="flex-1 p-4 md:p-8 pb-32">
         <div className="max-w-6xl mx-auto space-y-6 animate-reveal">
-          {/* Hero Header Section */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b pb-6">
             <div className="space-y-2">
               <div className="flex items-center gap-1.5 text-primary">
@@ -275,7 +335,6 @@ function FamilyHomePage() {
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {/* Stats Cards */}
             <Card className="bg-primary/5 border-primary/20 shadow-none hover:shadow-md transition-all duration-300 border-2">
               <CardHeader className="pb-1.5">
                 <CardTitle className="text-[10px] font-black uppercase tracking-widest flex items-center justify-between opacity-50">
@@ -302,7 +361,6 @@ function FamilyHomePage() {
               </CardContent>
             </Card>
 
-            {/* Members List Section */}
             <Card className="md:col-span-2 lg:col-span-3 border-none bg-muted/20">
               <CardHeader className="px-6 pt-6 text-center sm:text-left">
                 <CardTitle className="text-xl font-bold tracking-tight">{t("homes.members_list")}</CardTitle>
@@ -347,10 +405,9 @@ function FamilyHomePage() {
         </div>
       </main>
 
-      {/* Assistive Button (shadcn Integrated) */}
       <Button 
         variant="ghost"
-        className={`fixed z-[100] h-14 w-14 p-0 rounded-full cursor-pointer group transition-transform ${isDragging ? `` : `duration-500 ease-out`} active:scale-95 border-2 border-white/20 shadow-2xl overflow-hidden hover:bg-background/60`}
+        className={`fixed z-[100] h-14 w-14 p-0 rounded-full cursor-pointer group transition-transform ${isDragging ? "" : "duration-500 ease-out"} active:scale-95 border-2 border-white/20 shadow-2xl overflow-hidden hover:bg-background/60`}
         style={{ left: pos.x, top: pos.y, touchAction: 'none' }}
         onMouseDown={handleMouseDown}
         onTouchStart={handleMouseDown}
@@ -358,75 +415,39 @@ function FamilyHomePage() {
       >
         <div className="absolute inset-0 bg-background/40 backdrop-blur-xl" />
         <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-        <LayoutGrid className={`relative z-10 h-6 w-6 transition-transform duration-500 will-change-transform transform-gpu ease-[cubic-bezier(0.34,1.56,0.64,1)] ${isDockOpen ? `rotate-90 text-primary scale-110` : `text-muted-foreground`}`} />
-        
-        {/* Pulsing Ring when closed */}
-        {!isDockOpen && (
-             <div className="absolute inset-0 rounded-full border-2 border-primary/30 animate-ping opacity-20" />
-        )}
+        <LayoutGrid className={`relative z-10 h-6 w-6 transition-transform duration-500 will-change-transform transform-gpu ease-[cubic-bezier(0.34,1.56,0.64,1)] ${isDockOpen ? "rotate-90 text-primary scale-110" : "text-muted-foreground"}`} />
+        {!isDockOpen && <div className="absolute inset-0 rounded-full border-2 border-primary/30 animate-ping opacity-20" />}
       </Button>
 
-      {/* Glassmorphism Home DOCK with Pagination */}
-      <div 
-        className={`fixed inset-x-0 bottom-6 z-[90] flex flex-col items-center gap-3 transition-all duration-500 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] ${isDockOpen ? `translate-y-0 opacity-100` : `translate-y-32 opacity-0 pointer-events-none`}`}
-      >
-        <div 
-          className="bg-background/40 backdrop-blur-2xl border border-white/20 rounded-[2.5rem] p-3 shadow-2xl relative w-[500px] max-w-[calc(100vw-48px)] overflow-hidden flex flex-col items-center ring-1 ring-black/5"
-        >
-          {/* Draggable/Scrollable Container */}
-          <div 
-            ref={scrollRef}
-            className="flex items-center w-full overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth"
-            onScroll={handleScroll}
-            onWheel={handleWheel}
-          >
-            {/* Pages of Apps */}
+      <div className={`fixed inset-x-0 bottom-6 z-[90] flex flex-col items-center gap-3 transition-all duration-500 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] ${isDockOpen ? "translate-y-0 opacity-100" : "translate-y-32 opacity-0 pointer-events-none"}`}>
+        <div className="bg-background/40 backdrop-blur-2xl border border-white/20 rounded-[2.5rem] p-3 shadow-2xl relative w-[500px] max-w-[calc(100vw-48px)] overflow-hidden flex flex-col items-center ring-1 ring-black/5">
+          <div ref={scrollRef} className="flex items-center w-full overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth" onScroll={handleScroll}>
             {[...Array(totalPages)].map((_, pageIdx) => (
-               <div 
-                 key={pageIdx} 
-                 className="flex-none w-full grid grid-cols-6 gap-2 px-1 snap-start"
-               >
+               <div key={pageIdx} className="flex-none w-full grid grid-cols-6 gap-2 px-1 snap-start">
                  {apps.slice(pageIdx * itemsPerPage, (pageIdx + 1) * itemsPerPage).map((app) => (
-                   <Button
-                      key={app.id}
-                      variant="ghost"
-                      className="h-auto flex flex-col items-center gap-1.5 p-1 group ring-offset-background transition-all hover:bg-transparent"
-                      onClick={() => setIsDockOpen(false)}
-                   >
+                   <Button key={app.id} variant="ghost" className="h-auto flex flex-col items-center gap-1.5 p-1 group ring-offset-background transition-all hover:bg-transparent" onClick={() => setIsDockOpen(false)}>
                      <div className={`h-14 w-14 rounded-2xl ${app.color} flex items-center justify-center text-white shadow-lg group-hover:scale-105 group-active:scale-95 transition-all duration-300 relative overflow-hidden`}>
                        <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                        <app.icon className="h-6 w-6 shadow-sm" />
                      </div>
-                     <span className="text-[8px] font-black uppercase tracking-widest text-muted-foreground group-hover:text-foreground transition-colors px-1 truncate w-full text-center">
-                       {app.label}
-                     </span>
+                     <span className="text-[8px] font-black uppercase tracking-widest text-muted-foreground group-hover:text-foreground transition-colors px-1 truncate w-full text-center">{app.label}</span>
                    </Button>
                  ))}
                </div>
             ))}
           </div>
 
-          {/* Pagination Dots */}
           {totalPages > 1 && (
             <div className="flex gap-1.5 mt-1 pb-1">
               {[...Array(totalPages)].map((_, i) => (
-                <div 
-                  key={i} 
-                  className={`h-1.5 w-1.5 rounded-full transition-all duration-300 ${currentPage === i ? `bg-primary w-3` : `bg-muted-foreground/30`}`}
-                />
+                <div key={i} className={`h-1.5 w-1.5 rounded-full transition-all duration-300 ${currentPage === i ? "bg-primary w-3" : "bg-muted-foreground/30"}`} />
               ))}
             </div>
           )}
         </div>
       </div>
 
-      {/* Click-outside Backdrop */}
-      {isDockOpen && (
-        <div 
-          className="fixed inset-0 z-[80] bg-black/5 backdrop-blur-[2px]"
-          onClick={() => setIsDockOpen(false)}
-        />
-      )}
+      {isDockOpen && <div className="fixed inset-0 z-[80] bg-black/5 backdrop-blur-[2px]" onClick={() => setIsDockOpen(false)} />}
     </div>
   )
 }
