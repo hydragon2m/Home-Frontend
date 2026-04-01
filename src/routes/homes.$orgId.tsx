@@ -432,7 +432,7 @@ function FamilyHomePage() {
       </main>
 
       <div 
-        className={`fixed z-[100] flex flex-col items-center group transition-transform ${isDragging ? "" : "duration-500 ease-out"} ${isAllAppsOpen ? "opacity-0 pointer-events-none" : ""}`}
+        className={`fixed z-[100] flex flex-col items-center group transition-all ${isDragging ? "" : "duration-500 ease-out"} ${isAllAppsOpen ? "opacity-0 invisible pointer-events-none duration-0" : "opacity-100 visible"}`}
         style={{ left: pos.x, top: pos.y, touchAction: 'none' }}
       >
         <Button 
@@ -449,7 +449,7 @@ function FamilyHomePage() {
         </Button>
       </div>
 
-      <div className={`fixed inset-x-0 bottom-6 z-[90] flex flex-col items-center gap-3 transition-all duration-300 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] ${isDockOpen ? "translate-y-0 opacity-100" : "translate-y-32 opacity-0 pointer-events-none"} ${isAllAppsOpen ? "opacity-0 scale-95 pointer-events-none" : ""}`}>
+      <div className={`fixed inset-x-0 bottom-6 z-[90] flex flex-col items-center gap-3 transition-all ease-[cubic-bezier(0.175,0.885,0.32,1.275)] ${isDockOpen ? "translate-y-0 opacity-100 visible" : "translate-y-32 opacity-0 invisible pointer-events-none"} ${isAllAppsOpen ? "!opacity-0 !invisible !duration-0 pointer-events-none" : "duration-300"}`}>
         <div className="bg-background/40 backdrop-blur-2xl border border-white/20 rounded-[2.5rem] p-2.5 shadow-2xl relative w-[500px] max-w-[calc(100vw-48px)] flex flex-col items-center ring-1 ring-black/5">
           {/* Subtle Expand Trigger Button (Center-Top) */}
           <Button 
