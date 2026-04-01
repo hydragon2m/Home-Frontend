@@ -450,22 +450,17 @@ function FamilyHomePage() {
       </div>
 
       <div className={`fixed inset-x-0 bottom-6 z-[90] flex flex-col items-center gap-3 transition-all duration-300 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] ${isDockOpen ? "translate-y-0 opacity-100" : "translate-y-32 opacity-0 pointer-events-none"} ${isAllAppsOpen ? "opacity-0 scale-95 pointer-events-none" : ""}`}>
-        <div className="bg-background/40 backdrop-blur-2xl border border-white/20 rounded-[2.5rem] p-2.5 shadow-2xl relative w-[540px] max-w-[calc(100vw-48px)] flex items-center ring-1 ring-black/5">
-          {/* Tiny Fixed Expand Button */}
-          <div className="shrink-0 pr-1.5 mr-1.5 border-r border-white/10">
-            <Button 
-              variant="ghost" 
-              className="h-14 w-8 p-0 group ring-offset-background transition-all hover:bg-transparent" 
-              onClick={() => setIsAllAppsOpen(true)}
-            >
-              <div className="h-8 w-8 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shadow-sm group-hover:scale-110 group-active:scale-95 transition-all duration-300 relative overflow-hidden backdrop-blur-md">
-                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                <ChevronUp className="h-3.5 w-3.5 animate-bounce-slow" />
-              </div>
-            </Button>
-          </div>
+        <div className="bg-background/40 backdrop-blur-2xl border border-white/20 rounded-[2.5rem] p-2.5 shadow-2xl relative w-[500px] max-w-[calc(100vw-48px)] flex flex-col items-center ring-1 ring-black/5">
+          {/* Subtle Expand Trigger Button (Center-Top) */}
+          <Button 
+            variant="ghost" 
+            className="absolute -top-3 left-1/2 -translate-x-1/2 h-6 w-10 p-0 rounded-full bg-background/60 backdrop-blur-md border border-white/20 shadow-lg group-hover:scale-110 group-active:scale-95 transition-all duration-500 hover:bg-background/80 flex items-center justify-center z-20"
+            onClick={() => setIsAllAppsOpen(true)}
+          >
+            <ChevronUp className="h-3 w-3 text-primary animate-bounce-slow" />
+          </Button>
 
-          <div className="flex-1 flex flex-col items-center overflow-hidden">
+          <div className="w-full flex flex-col items-center overflow-hidden">
             <div ref={scrollRef} className="flex items-center w-full overflow-x-auto snap-x snap-mandatory no-scrollbar" onScroll={handleScroll}>
               {[...Array(totalPages)].map((_, pageIdx) => (
                 <div key={pageIdx} className="flex-none w-full grid grid-cols-6 gap-2 px-1 snap-start">
