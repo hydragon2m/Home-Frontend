@@ -143,6 +143,10 @@
     "no_events": "Chưa có lịch trình chung nào",
     "members_list": "Danh sách thành viên",
     "members_list_desc": "Những người thân đang cùng bạn quản lý tổ ấm này.",
-    "badge_me": "Bạn"
+    "badge_me": "Bạn",
+    "all_apps": "Tất cả ứng dụng",
+    "search_apps": "Tìm kiếm nhanh...",
+    "no_apps_found": "Không tìm thấy kết quả phù hợp",
+    "expand_dock": "Mở rộng"
   }
 }

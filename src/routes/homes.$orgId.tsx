@@ -462,7 +462,7 @@ function FamilyHomePage() {
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                 <ChevronUp className="h-5 w-5 animate-bounce-slow" />
               </div>
-              <span className="text-[7px] font-black uppercase tracking-widest text-primary/60 group-hover:text-primary transition-colors px-1 truncate w-full text-center">Mở rộng</span>
+              <span className="text-[7px] font-black uppercase tracking-widest text-primary/60 group-hover:text-primary transition-colors px-1 truncate w-full text-center">{t('homes.expand_dock')}</span>
             </Button>
           </div>
 
@@ -500,15 +500,18 @@ function FamilyHomePage() {
         </div>
       </div>
 
-      {/* All Apps Launcher Overlay (Magnified DOCK style) */}
       <div className={`fixed inset-0 z-[110] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${isAllAppsOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"}`}>
-        <div className="absolute inset-0 bg-black/10 backdrop-blur-sm" onClick={() => {
-           setIsAllAppsOpen(false);
-           setSearchQuery('');
-        }} />
-        
-        <div className={`absolute inset-0 flex items-center justify-center p-4 transition-all duration-500 transform-gpu ease-[cubic-bezier(0.34,1.56,0.64,1)] will-change-transform ${isAllAppsOpen ? "scale-100 opacity-100 translate-y-0" : "scale-75 opacity-0 translate-y-20"}`}>
-          <div className="bg-background/40 backdrop-blur-2xl border border-white/20 rounded-[3rem] p-8 shadow-2xl relative w-full max-w-4xl max-h-[85vh] overflow-hidden flex flex-col items-center ring-1 ring-black/5 transform-gpu backface-visibility-hidden">
+        <div 
+          className="absolute inset-0 bg-black/10 backdrop-blur-sm flex items-center justify-center p-4 transition-all duration-500 transform-gpu ease-[cubic-bezier(0.34,1.56,0.64,1)] will-change-transform origin-bottom"
+          onClick={() => {
+             setIsAllAppsOpen(false);
+             setSearchQuery('');
+          }}
+        >
+          <div 
+            className={`bg-background/40 backdrop-blur-2xl border border-white/20 rounded-[2.5rem] p-8 shadow-2xl relative w-full max-w-5xl max-h-[85vh] overflow-hidden flex flex-col items-center ring-1 ring-black/5 transform-gpu backface-visibility-hidden ${isAllAppsOpen ? "scale-100 opacity-100 translate-y-0" : "scale-50 opacity-0 translate-y-32"}`}
+            onClick={(e) => e.stopPropagation()}
+          >
             {/* Close Button */}
             <Button 
               variant="ghost" 
@@ -521,12 +524,13 @@ function FamilyHomePage() {
 
             {/* Search Header */}
             <div className="w-full max-w-xl mb-10 animate-reveal relative z-10">
+              <h2 className="text-xl font-black tracking-widest text-center mb-6 uppercase opacity-40">{t('homes.all_apps')}</h2>
               <div className="relative group">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
                 <input 
                   type="text" 
                   autoFocus={isAllAppsOpen}
-                  placeholder={t('homes.search_apps') || 'Tìm kiếm nhanh...'}
+                  placeholder={t('homes.search_apps')}
                   className="w-full h-14 pl-12 pr-4 bg-background/20 border-2 border-white/10 rounded-2xl outline-none focus:border-primary/40 focus:bg-background/40 transition-all text-lg font-medium shadow-xl backdrop-blur-md"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -536,22 +540,22 @@ function FamilyHomePage() {
 
             {/* App Grid inside the expanded DOCK */}
             <div className="w-full overflow-y-auto px-4 custom-scrollbar relative z-10">
-              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-6 md:gap-10 pb-4">
+              <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-x-4 gap-y-8 pb-4">
                 {filteredApps.map((app, idx) => (
                   <button
                     key={app.id}
-                    className="flex flex-col items-center gap-3 group animate-reveal transition-transform hover:scale-105 active:scale-95"
-                    style={{ animationDelay: `${idx * 20}ms` }}
+                    className="flex flex-col items-center gap-2 group animate-reveal transition-transform hover:scale-110 active:scale-95"
+                    style={{ animationDelay: `${idx * 15}ms` }}
                     onClick={() => {
                       setIsAllAppsOpen(false);
                       // Handle app click...
                     }}
                   >
-                    <div className={`h-20 w-20 md:h-24 md:w-24 rounded-[2rem] ${app.color} flex items-center justify-center text-white shadow-2xl relative overflow-hidden ring-4 ring-white/10`}>
+                    <div className={`h-14 w-14 rounded-2xl ${app.color} flex items-center justify-center text-white shadow-xl relative overflow-hidden ring-2 ring-white/10 group-hover:ring-primary/40 transition-all`}>
                       <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-                      <app.icon className="h-10 w-10 md:h-12 md:w-12 drop-shadow-xl" />
+                      <app.icon className="h-6 w-6 drop-shadow-lg" />
                     </div>
-                    <span className="text-[10px] md:text-xs font-black uppercase tracking-widest text-muted-foreground group-hover:text-foreground transition-colors text-center w-full truncate">
+                    <span className="text-[8px] font-bold uppercase tracking-wider text-muted-foreground group-hover:text-foreground transition-colors text-center w-full truncate px-1">
                       {app.label}
                     </span>
                   </button>
@@ -559,7 +563,7 @@ function FamilyHomePage() {
               </div>
               {filteredApps.length === 0 && (
                 <div className="py-20 text-center">
-                  <p className="text-muted-foreground font-bold">{t('homes.no_apps_found') || 'Không có ứng dụng này'}</p>
+                  <p className="text-muted-foreground font-bold">{t('homes.no_apps_found')}</p>
                 </div>
               )}
             </div>
@@ -567,7 +571,16 @@ function FamilyHomePage() {
         </div>
       </div>
 
-      {isDockOpen && !isAllAppsOpen && <div className="fixed inset-0 z-[80] bg-black/5 backdrop-blur-[2px]" onClick={() => setIsDockOpen(false)} />}
+      {isDockOpen && (
+        <div 
+          className="fixed inset-0 z-[80] bg-black/5 backdrop-blur-[2px]" 
+          onClick={() => {
+            setIsDockOpen(false);
+            setIsAllAppsOpen(false);
+            setSearchQuery('');
+          }} 
+        />
+      )}
     </div>
   )
 }

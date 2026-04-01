@@ -142,6 +142,10 @@
     "no_events": "No shared schedule yet",
     "members_list": "Members List",
     "members_list_desc": "Relatives who are managing this home with you.",
-    "badge_me": "Me"
+    "badge_me": "Me",
+    "all_apps": "All Applications",
+    "search_apps": "Quick Search...",
+    "no_apps_found": "No matching apps found",
+    "expand_dock": "Expand"
   }
 }
