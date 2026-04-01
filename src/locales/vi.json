@@ -6,7 +6,8 @@
     "register": "Đăng ký",
     "logout": "Đăng xuất",
     "dashboard": {
-      "welcome": "Chào mừng đến với {name}",
+      "welcome": "Chào mừng đến với {{name}}",
+      "subtitle": "Bạn muốn ghé thăm tổ ấm nào hôm nay?",
       "enter": "Vào nhà"
     },
     "users": "Người dùng",

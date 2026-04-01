@@ -58,7 +58,8 @@
     "features_section_title": "Powerful Features for Your Family",
     "features_section_subtitle": "Everything you need to keep your home happy and organized.",
     "dashboard": {
-      "welcome": "Welcome to {name}",
+      "welcome": "Welcome to {{name}}",
+      "subtitle": "Which home do you want to visit today?",
       "enter": "Enter Home"
     },
     "users": "Users",

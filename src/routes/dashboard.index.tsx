@@ -60,7 +60,7 @@ function DashboardPage() {
             {t('common.dashboard.welcome', { name: user?.name })} 👋
           </h1>
           <p className="text-xl text-muted-foreground font-medium">
-            Bạn muốn ghé thăm tổ ấm nào hôm nay?
+            {t('common.dashboard.subtitle')}
           </p>
         </div>
         <div className="flex gap-2 bg-muted p-1 rounded-lg">
