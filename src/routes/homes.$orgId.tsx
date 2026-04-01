@@ -48,6 +48,7 @@ function FamilyHomePage() {
   const [isDockOpen, setIsDockOpen] = useState(false)
   const [pos, setPos] = useState({ x: window.innerWidth - 80, y: window.innerHeight - 150 })
   const [isDragging, setIsDragging] = useState(false)
+  const [currentPage, setCurrentPage] = useState(0)
 
   const apps = [
     { id: 'dashboard', icon: LayoutGrid, label: t('org.context_global'), color: 'bg-blue-500' },
@@ -56,7 +57,20 @@ function FamilyHomePage() {
     { id: 'calendar', icon: Calendar, label: t('common.features.calendar.title'), color: 'bg-purple-500' },
     { id: 'tasks', icon: CheckSquare, label: t('common.features.todo.title'), color: 'bg-pink-500' },
     { id: 'settings', icon: Settings, label: t('homes.settings'), color: 'bg-gray-500' },
+    { id: 'devices', icon: Layout, label: t('common.features.devices.title') || 'Thiết bị', color: 'bg-cyan-500' },
+    { id: 'more', icon: LayoutDashboard, label: 'Thêm...', color: 'bg-indigo-500' },
   ]
+
+  // Pagination config (4 apps per page for mobile feel)
+  const itemsPerPage = 4
+  const totalPages = Math.ceil(apps.length / itemsPerPage)
+
+  const handleScroll = (e: any) => {
+    const scrollLeft = e.target.scrollLeft
+    const width = e.target.clientWidth
+    const newPage = Math.round(scrollLeft / width)
+    if (newPage !== currentPage) setCurrentPage(newPage)
+  }
 
   const handleMouseDown = (e: any) => {
     setIsDragging(false)
@@ -345,32 +359,55 @@ function FamilyHomePage() {
         )}
       </Button>
 
-      {/* Glassmorphism Home DOCK */}
+      {/* Glassmorphism Home DOCK with Pagination */}
       <div 
-        className={`fixed inset-x-0 bottom-6 z-[90] flex justify-center px-4 transition-all duration-500 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] ${isDockOpen ? 'translate-y-0 opacity-100' : 'translate-y-24 opacity-0 pointer-events-none'}`}
-        onClick={() => setIsDockOpen(false)}
+        className={`fixed inset-x-0 bottom-6 z-[90] flex flex-col items-center gap-3 transition-all duration-500 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] ${isDockOpen ? 'translate-y-0 opacity-100' : 'translate-y-32 opacity-0 pointer-events-none'}`}
       >
         <div 
-          className="bg-background/40 backdrop-blur-2xl border border-white/20 rounded-[2.5rem] p-3 shadow-2xl flex items-center gap-2 max-w-full overflow-x-auto no-scrollbar ring-1 ring-black/5"
-          onClick={(e) => e.stopPropagation()}
+          className="bg-background/40 backdrop-blur-2xl border border-white/20 rounded-[2.5rem] p-3 shadow-2xl relative w-[340px] overflow-hidden flex flex-col items-center ring-1 ring-black/5"
         >
-          {apps.map((app) => (
-            <Button
-               key={app.id}
-               variant="ghost"
-               className="h-auto flex flex-col items-center gap-1.5 p-1 group ring-offset-background transition-all hover:bg-transparent"
-               onClick={() => setIsDockOpen(false)}
-            >
-              <div className={`h-14 w-14 rounded-2xl ${app.color} flex items-center justify-center text-white shadow-lg group-hover:scale-110 group-active:scale-90 transition-all duration-300 relative overflow-hidden`}>
-                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                <app.icon className="h-6 w-6 shadow-sm" />
-              </div>
-              <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground group-hover:text-foreground transition-colors px-1">
-                {app.label}
-              </span>
-            </Button>
-          ))}
-          
+          {/* Draggable/Scrollable Container */}
+          <div 
+            className="flex items-center w-full overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth"
+            onScroll={handleScroll}
+          >
+            {/* Pages of Apps */}
+            {[...Array(totalPages)].map((_, pageIdx) => (
+               <div 
+                 key={pageIdx} 
+                 className="flex-none w-full grid grid-cols-4 gap-2 px-1 snap-start"
+               >
+                 {apps.slice(pageIdx * itemsPerPage, (pageIdx + 1) * itemsPerPage).map((app) => (
+                   <Button
+                      key={app.id}
+                      variant="ghost"
+                      className="h-auto flex flex-col items-center gap-1.5 p-1 group ring-offset-background transition-all hover:bg-transparent"
+                      onClick={() => setIsDockOpen(false)}
+                   >
+                     <div className={`h-14 w-14 rounded-2xl ${app.color} flex items-center justify-center text-white shadow-lg group-hover:scale-105 group-active:scale-95 transition-all duration-300 relative overflow-hidden`}>
+                       <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                       <app.icon className="h-6 w-6 shadow-sm" />
+                     </div>
+                     <span className="text-[8px] font-black uppercase tracking-widest text-muted-foreground group-hover:text-foreground transition-colors px-1 truncate w-full text-center">
+                       {app.label}
+                     </span>
+                   </Button>
+                 ))}
+               </div>
+            ))}
+          </div>
+
+          {/* Pagination Dots */}
+          {totalPages > 1 && (
+            <div className="flex gap-1.5 mt-1 pb-1">
+              {[...Array(totalPages)].map((_, i) => (
+                <div 
+                  key={i} 
+                  className={`h-1.5 w-1.5 rounded-full transition-all duration-300 ${currentPage === i ? 'bg-primary w-3' : 'bg-muted-foreground/30'}`}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
