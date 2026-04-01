@@ -42,7 +42,9 @@ import {
   Palette,
   Search,
   ShoppingCart,
-  Wind
+  Wind,
+  ChevronUp,
+  X
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -73,6 +75,8 @@ function FamilyHomePage() {
 
   // --- Assistive DOCK Logic ---
   const [isDockOpen, setIsDockOpen] = useState(false)
+  const [isAllAppsOpen, setIsAllAppsOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
   const [pos, setPos] = useState({ x: window.innerWidth - 80, y: window.innerHeight - 150 })
   const [isDragging, setIsDragging] = useState(false)
   const [currentPage, setCurrentPage] = useState(0)
@@ -115,6 +119,11 @@ function FamilyHomePage() {
     { id: 'wind', icon: Wind, label: 'Thời tiết', color: 'bg-blue-200' },
   ]
 
+  const filteredApps = apps.filter(app => 
+    app.label.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    app.id.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+
   // Pagination config (6 apps per page)
   const itemsPerPage = 6
   const totalPages = Math.ceil(apps.length / itemsPerPage)
@@ -147,6 +156,17 @@ function FamilyHomePage() {
     el.addEventListener('wheel', wheelHandler, { passive: false })
     return () => el.removeEventListener('wheel', wheelHandler)
   }, [isDockOpen])
+
+  const scrollToPage = (pageIdx: number) => {
+    if (scrollRef.current) {
+      const width = scrollRef.current.clientWidth
+      scrollRef.current.scrollTo({
+        left: pageIdx * width,
+        behavior: 'smooth'
+      })
+      setCurrentPage(pageIdx)
+    }
+  }
 
   const handleMouseDown = (e: any) => {
     setIsDragging(false)
@@ -405,23 +425,38 @@ function FamilyHomePage() {
         </div>
       </main>
 
-      <Button 
-        variant="ghost"
-        className={`fixed z-[100] h-14 w-14 p-0 rounded-full cursor-pointer group transition-transform ${isDragging ? "" : "duration-500 ease-out"} active:scale-95 border-2 border-white/20 shadow-2xl overflow-hidden hover:bg-background/60`}
+      <div 
+        className={`fixed z-[100] flex flex-col items-center group transition-transform ${isDragging ? "" : "duration-500 ease-out"}`}
         style={{ left: pos.x, top: pos.y, touchAction: 'none' }}
-        onMouseDown={handleMouseDown}
-        onTouchStart={handleMouseDown}
-        onClick={() => !isDragging && setIsDockOpen(!isDockOpen)}
       >
-        <div className="absolute inset-0 bg-background/40 backdrop-blur-xl" />
-        <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-        <LayoutGrid className={`relative z-10 h-6 w-6 transition-transform duration-500 will-change-transform transform-gpu ease-[cubic-bezier(0.34,1.56,0.64,1)] ${isDockOpen ? "rotate-90 text-primary scale-110" : "text-muted-foreground"}`} />
-        {!isDockOpen && <div className="absolute inset-0 rounded-full border-2 border-primary/30 animate-ping opacity-20" />}
-      </Button>
+        {/* Launcher Trigger Button (Up Arrow) */}
+        {!isDragging && (
+          <Button
+            variant="ghost"
+            className={`mb-2 h-8 w-14 p-0 rounded-2xl bg-background/40 backdrop-blur-xl border border-white/20 shadow-xl transition-all duration-500 hover:bg-background/60 hover:scale-110 active:scale-90 flex items-center justify-center ${isDockOpen || isAllAppsOpen ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0 pointer-events-none"}`}
+            onClick={() => setIsAllAppsOpen(true)}
+          >
+            <ChevronUp className="h-4 w-4 text-primary animate-bounce-slow" />
+          </Button>
+        )}
+
+        <Button 
+          variant="ghost"
+          className={`h-14 w-14 p-0 rounded-full cursor-pointer transition-transform active:scale-95 border-2 border-white/20 shadow-2xl overflow-hidden hover:bg-background/60 relative`}
+          onMouseDown={handleMouseDown}
+          onTouchStart={handleMouseDown}
+          onClick={() => !isDragging && setIsDockOpen(!isDockOpen)}
+        >
+          <div className="absolute inset-0 bg-background/40 backdrop-blur-xl" />
+          <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+          <LayoutGrid className={`relative z-10 h-6 w-6 transition-transform duration-500 will-change-transform transform-gpu ease-[cubic-bezier(0.34,1.56,0.64,1)] ${isDockOpen ? "rotate-90 text-primary scale-110" : "text-muted-foreground"}`} />
+          {!isDockOpen && !isAllAppsOpen && <div className="absolute inset-0 rounded-full border-2 border-primary/30 animate-ping opacity-20" />}
+        </Button>
+      </div>
 
       <div className={`fixed inset-x-0 bottom-6 z-[90] flex flex-col items-center gap-3 transition-all duration-500 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] ${isDockOpen ? "translate-y-0 opacity-100" : "translate-y-32 opacity-0 pointer-events-none"}`}>
         <div className="bg-background/40 backdrop-blur-2xl border border-white/20 rounded-[2.5rem] p-3 shadow-2xl relative w-[500px] max-w-[calc(100vw-48px)] overflow-hidden flex flex-col items-center ring-1 ring-black/5">
-          <div ref={scrollRef} className="flex items-center w-full overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth" onScroll={handleScroll}>
+          <div ref={scrollRef} className="flex items-center w-full overflow-x-auto snap-x snap-mandatory no-scrollbar" onScroll={handleScroll}>
             {[...Array(totalPages)].map((_, pageIdx) => (
                <div key={pageIdx} className="flex-none w-full grid grid-cols-6 gap-2 px-1 snap-start">
                  {apps.slice(pageIdx * itemsPerPage, (pageIdx + 1) * itemsPerPage).map((app) => (
@@ -438,16 +473,85 @@ function FamilyHomePage() {
           </div>
 
           {totalPages > 1 && (
-            <div className="flex gap-1.5 mt-1 pb-1">
+            <div className="flex gap-1.5 mt-2 pb-1.5">
               {[...Array(totalPages)].map((_, i) => (
-                <div key={i} className={`h-1.5 w-1.5 rounded-full transition-all duration-300 ${currentPage === i ? "bg-primary w-3" : "bg-muted-foreground/30"}`} />
+                <button 
+                  key={i} 
+                  onClick={() => scrollToPage(i)}
+                  className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer hover:bg-primary/50 relative group ${currentPage === i ? "bg-primary w-4" : "bg-muted-foreground/30 w-1.5"}`}
+                >
+                  <span className="absolute -inset-2" title={`Page ${i + 1}`} />
+                </button>
               ))}
             </div>
           )}
         </div>
       </div>
 
-      {isDockOpen && <div className="fixed inset-0 z-[80] bg-black/5 backdrop-blur-[2px]" onClick={() => setIsDockOpen(false)} />}
+      {/* All Apps Launcher Overlay */}
+      <div className={`fixed inset-0 z-[110] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${isAllAppsOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"}`}>
+        <div className="absolute inset-0 bg-background/20 backdrop-blur-3xl" onClick={() => setIsAllAppsOpen(false)} />
+        
+        <div className={`absolute inset-0 flex flex-col items-center justify-start pt-20 px-6 transition-transform duration-500 ${isAllAppsOpen ? "translate-y-0" : "translate-y-20"}`}>
+          {/* Close Button */}
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="absolute top-6 right-6 h-10 w-10 rounded-full bg-muted/20 hover:bg-muted/40 border transition-all hover:rotate-90"
+            onClick={() => setIsAllAppsOpen(false)}
+          >
+            <X className="h-5 w-5" />
+          </Button>
+
+          {/* Search Header */}
+          <div className="w-full max-w-2xl mb-12 animate-reveal">
+            <h2 className="text-3xl font-black tracking-tighter text-center mb-8 uppercase opacity-80">{t('homes.all_apps') || 'Tất cả ứng dụng'}</h2>
+            <div className="relative group">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+              <input 
+                type="text" 
+                autoFocus={isAllAppsOpen}
+                placeholder={t('homes.search_apps') || 'Tìm kiếm ứng dụng...'}
+                className="w-full h-14 pl-12 pr-4 bg-muted/30 border-2 border-white/10 rounded-2xl outline-none focus:border-primary/40 focus:bg-muted/50 transition-all text-lg font-medium shadow-2xl backdrop-blur-md"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+          </div>
+
+          {/* App Grid */}
+          <div className="w-full max-w-5xl overflow-y-auto pb-12 custom-scrollbar">
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-6 md:gap-8">
+              {filteredApps.map((app, idx) => (
+                <button
+                  key={app.id}
+                  className="flex flex-col items-center gap-3 group animate-reveal"
+                  style={{ animationDelay: `${idx * 20}ms` }}
+                  onClick={() => {
+                    setIsAllAppsOpen(false);
+                    // Handle app click...
+                  }}
+                >
+                  <div className={`h-16 w-16 md:h-20 md:w-20 rounded-[1.75rem] ${app.color} flex items-center justify-center text-white shadow-xl group-hover:scale-110 group-active:scale-95 transition-all duration-300 relative overflow-hidden`}>
+                    <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <app.icon className="h-8 w-8 md:h-10 md:w-10 drop-shadow-lg" />
+                  </div>
+                  <span className="text-[10px] md:text-xs font-black uppercase tracking-widest text-muted-foreground group-hover:text-foreground transition-colors text-center w-full truncate">
+                    {app.label}
+                  </span>
+                </button>
+              ))}
+              {filteredApps.length === 0 && (
+                <div className="col-span-full py-20 text-center">
+                  <p className="text-muted-foreground font-bold">{t('homes.no_apps_found') || 'Không tìm thấy ứng dụng nào'}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {isDockOpen && !isAllAppsOpen && <div className="fixed inset-0 z-[80] bg-black/5 backdrop-blur-[2px]" onClick={() => setIsDockOpen(false)} />}
     </div>
   )
 }
