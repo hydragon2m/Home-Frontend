@@ -494,10 +494,11 @@ function FamilyHomePage() {
         </div>
       </div>
 
+      {/* All Apps Launcher (Magnified DOCK only, no backdrop) */}
       <div className={`fixed inset-0 z-[110] ${isAllAppsOpen ? "visible" : "invisible pointer-events-none"}`}>
-        {/* Faster Backdrop Fade */}
+        {/* Transparent click-to-close area (No visual backdrop) */}
         <div 
-          className={`absolute inset-0 bg-black/10 transition-opacity duration-200 ease-out ${isAllAppsOpen ? "opacity-100" : "opacity-0"}`}
+          className="absolute inset-0"
           onClick={() => {
              setIsAllAppsOpen(false);
              setSearchQuery('');
@@ -506,7 +507,7 @@ function FamilyHomePage() {
         
         {/* Pro Launcher Zoom Expansion (Optimized for GPU) */}
         <div 
-          className={`absolute inset-0 flex items-center justify-center p-4 transition-all duration-500 transform-gpu ease-[cubic-bezier(0.23,1,0.32,1)] will-change-transform origin-bottom ${isAllAppsOpen ? "scale-100 opacity-100 translate-y-0" : "scale-50 opacity-0 translate-y-24"}`}
+          className={`absolute inset-0 flex items-center justify-center p-4 transition-all duration-400 transform-gpu ease-[cubic-bezier(0.23,1,0.32,1)] will-change-transform origin-bottom ${isAllAppsOpen ? "scale-100 opacity-100 translate-y-0" : "scale-50 opacity-0 translate-y-24"}`}
           style={{ pointerEvents: isAllAppsOpen ? "auto" : "none", transform: isAllAppsOpen ? 'translateZ(0) scale(1)' : 'translateZ(0) scale(0.5) translateY(24px)' }}
           onClick={() => {
              setIsAllAppsOpen(false);
