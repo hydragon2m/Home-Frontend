@@ -449,8 +449,8 @@ function FamilyHomePage() {
         </Button>
       </div>
 
-      <div className={`fixed inset-x-0 bottom-6 z-[90] flex flex-col items-center gap-3 transition-all ease-[cubic-bezier(0.175,0.885,0.32,1.275)] ${isDockOpen ? "translate-y-0 opacity-100 visible" : "translate-y-32 opacity-0 invisible pointer-events-none"} ${isAllAppsOpen ? "!opacity-0 !invisible !duration-0 pointer-events-none" : "duration-300"}`}>
-        <div className="bg-background/40 backdrop-blur-2xl border border-white/20 rounded-[2.5rem] p-2.5 shadow-2xl relative w-[500px] max-w-[calc(100vw-48px)] flex flex-col items-center ring-1 ring-black/5">
+      <div className={`fixed inset-x-0 bottom-6 z-[90] flex flex-col items-center gap-3 transition-all ease-[cubic-bezier(0.175,0.885,0.32,1.275)] ${isDockOpen && !isAllAppsOpen ? "translate-y-0 opacity-100 visible" : "translate-y-32 opacity-0 invisible pointer-events-none"} ${isAllAppsOpen ? "hidden" : "duration-300"}`}>
+        <div className="bg-background/40 backdrop-blur-2xl border border-white/20 rounded-[2.5rem] p-2.5 shadow-2xl relative w-[500px] max-w-[calc(100vw-48px)] flex flex-col items-center ring-1 ring-black/5 transform-gpu">
           {/* Subtle Expand Trigger Button (Center-Top) */}
           <Button 
             variant="ghost" 
@@ -494,28 +494,27 @@ function FamilyHomePage() {
         </div>
       </div>
 
-      {/* All Apps Launcher Overlay (Magnified DOCK style) */}
       <div className={`fixed inset-0 z-[110] ${isAllAppsOpen ? "visible" : "invisible pointer-events-none"}`}>
         {/* Faster Backdrop Fade */}
         <div 
-          className={`absolute inset-0 bg-black/15 transition-opacity duration-200 ease-out ${isAllAppsOpen ? "opacity-100" : "opacity-0"}`}
+          className={`absolute inset-0 bg-black/10 transition-opacity duration-200 ease-out ${isAllAppsOpen ? "opacity-100" : "opacity-0"}`}
           onClick={() => {
              setIsAllAppsOpen(false);
              setSearchQuery('');
           }}
         />
         
-        {/* Smooth Launcher Zoom Expansion */}
+        {/* Pro Launcher Zoom Expansion (Optimized for GPU) */}
         <div 
-          className={`absolute inset-0 flex items-center justify-center p-4 transition-all duration-400 transform-gpu ease-[cubic-bezier(0.34,1.56,0.64,1)] will-change-transform origin-bottom ${isAllAppsOpen ? "scale-100 opacity-100 translate-y-0" : "scale-50 opacity-0 translate-y-32"}`}
-          style={{ pointerEvents: isAllAppsOpen ? "auto" : "none" }}
+          className={`absolute inset-0 flex items-center justify-center p-4 transition-all duration-500 transform-gpu ease-[cubic-bezier(0.23,1,0.32,1)] will-change-transform origin-bottom ${isAllAppsOpen ? "scale-100 opacity-100 translate-y-0" : "scale-50 opacity-0 translate-y-24"}`}
+          style={{ pointerEvents: isAllAppsOpen ? "auto" : "none", transform: isAllAppsOpen ? 'translateZ(0) scale(1)' : 'translateZ(0) scale(0.5) translateY(24px)' }}
           onClick={() => {
              setIsAllAppsOpen(false);
              setSearchQuery('');
           }}
         >
           <div 
-            className="bg-background/40 backdrop-blur-2xl border border-white/20 rounded-[2.5rem] p-8 shadow-2xl relative w-full max-w-5xl max-h-[85vh] overflow-hidden flex flex-col items-center ring-1 ring-black/5 transform-gpu backface-visibility-hidden"
+            className="bg-background/40 backdrop-blur-2xl border border-white/20 rounded-[2.5rem] p-8 shadow-xl relative w-full max-w-5xl max-h-[85vh] overflow-hidden flex flex-col items-center ring-1 ring-black/5 transform-gpu backface-visibility-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button */}
@@ -550,8 +549,8 @@ function FamilyHomePage() {
                 {filteredApps.map((app, idx) => (
                   <button
                     key={app.id}
-                    className="flex flex-col items-center gap-2 group animate-reveal transition-transform hover:scale-110 active:scale-95"
-                    style={{ animationDelay: `${idx * 15}ms` }}
+                    className={`flex flex-col items-center gap-2 group transition-all hover:scale-110 active:scale-95 ${isAllAppsOpen ? "animate-reveal opacity-100" : "opacity-0"}`}
+                    style={{ animationDelay: `${250 + idx * 10}ms` }}
                     onClick={() => {
                       setIsAllAppsOpen(false);
                       // Handle app click...
