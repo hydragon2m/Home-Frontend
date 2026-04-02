@@ -24,9 +24,14 @@ function NotePage() {
     queryFn: () => api.get(`/organizations/${orgId}/notes/${noteId}`),
   })
 
+  const { data: allNotesRes } = useQuery({
+    queryKey: ['notes', orgId],
+    queryFn: () => api.get(`/organizations/${orgId}/notes`),
+  })
+
   useEffect(() => {
-    if (noteRes?.data?.data) {
-      setTitle(noteRes.data.data.title || '')
+    if (noteRes?.data) {
+      setTitle(noteRes.data.title || '')
     }
   }, [noteRes])
 
@@ -66,11 +71,7 @@ function NotePage() {
   }
 
   const note = noteRes?.data
-  const allNotesRes = useQuery({
-    queryKey: ['notes', orgId],
-    queryFn: () => api.get(`/organizations/${orgId}/notes`),
-  })
-  const allNotes = allNotesRes?.data?.data || []
+  const allNotes = allNotesRes?.data || []
 
   if (!note) return null
 
