@@ -24,6 +24,7 @@ import { Route as HomesOrgIdNotesRouteImport } from './routes/homes.$orgId.notes
 import { Route as DashboardSettingsOrganizationRouteImport } from './routes/dashboard.settings.organization'
 import { Route as HomesOrgIdNotesIndexRouteImport } from './routes/homes.$orgId.notes.index'
 import { Route as HomesOrgIdNotesNoteIdRouteImport } from './routes/homes.$orgId.notes.$noteId'
+import { Route as HomesOrgIdNotesFolderFolderIdRouteImport } from './routes/homes.$orgId.notes.folder.$folderId'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -101,6 +102,12 @@ const HomesOrgIdNotesNoteIdRoute = HomesOrgIdNotesNoteIdRouteImport.update({
   path: '/$noteId',
   getParentRoute: () => HomesOrgIdNotesRoute,
 } as any)
+const HomesOrgIdNotesFolderFolderIdRoute =
+  HomesOrgIdNotesFolderFolderIdRouteImport.update({
+    id: '/folder/$folderId',
+    path: '/folder/$folderId',
+    getParentRoute: () => HomesOrgIdNotesRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -118,6 +125,7 @@ export interface FileRoutesByFullPath {
   '/homes/$orgId/': typeof HomesOrgIdIndexRoute
   '/homes/$orgId/notes/$noteId': typeof HomesOrgIdNotesNoteIdRoute
   '/homes/$orgId/notes/': typeof HomesOrgIdNotesIndexRoute
+  '/homes/$orgId/notes/folder/$folderId': typeof HomesOrgIdNotesFolderFolderIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -132,6 +140,7 @@ export interface FileRoutesByTo {
   '/homes/$orgId': typeof HomesOrgIdIndexRoute
   '/homes/$orgId/notes/$noteId': typeof HomesOrgIdNotesNoteIdRoute
   '/homes/$orgId/notes': typeof HomesOrgIdNotesIndexRoute
+  '/homes/$orgId/notes/folder/$folderId': typeof HomesOrgIdNotesFolderFolderIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -150,6 +159,7 @@ export interface FileRoutesById {
   '/homes/$orgId/': typeof HomesOrgIdIndexRoute
   '/homes/$orgId/notes/$noteId': typeof HomesOrgIdNotesNoteIdRoute
   '/homes/$orgId/notes/': typeof HomesOrgIdNotesIndexRoute
+  '/homes/$orgId/notes/folder/$folderId': typeof HomesOrgIdNotesFolderFolderIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -169,6 +179,7 @@ export interface FileRouteTypes {
     | '/homes/$orgId/'
     | '/homes/$orgId/notes/$noteId'
     | '/homes/$orgId/notes/'
+    | '/homes/$orgId/notes/folder/$folderId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -183,6 +194,7 @@ export interface FileRouteTypes {
     | '/homes/$orgId'
     | '/homes/$orgId/notes/$noteId'
     | '/homes/$orgId/notes'
+    | '/homes/$orgId/notes/folder/$folderId'
   id:
     | '__root__'
     | '/'
@@ -200,6 +212,7 @@ export interface FileRouteTypes {
     | '/homes/$orgId/'
     | '/homes/$orgId/notes/$noteId'
     | '/homes/$orgId/notes/'
+    | '/homes/$orgId/notes/folder/$folderId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -319,6 +332,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HomesOrgIdNotesNoteIdRouteImport
       parentRoute: typeof HomesOrgIdNotesRoute
     }
+    '/homes/$orgId/notes/folder/$folderId': {
+      id: '/homes/$orgId/notes/folder/$folderId'
+      path: '/folder/$folderId'
+      fullPath: '/homes/$orgId/notes/folder/$folderId'
+      preLoaderRoute: typeof HomesOrgIdNotesFolderFolderIdRouteImport
+      parentRoute: typeof HomesOrgIdNotesRoute
+    }
   }
 }
 
@@ -341,11 +361,13 @@ const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
 interface HomesOrgIdNotesRouteChildren {
   HomesOrgIdNotesNoteIdRoute: typeof HomesOrgIdNotesNoteIdRoute
   HomesOrgIdNotesIndexRoute: typeof HomesOrgIdNotesIndexRoute
+  HomesOrgIdNotesFolderFolderIdRoute: typeof HomesOrgIdNotesFolderFolderIdRoute
 }
 
 const HomesOrgIdNotesRouteChildren: HomesOrgIdNotesRouteChildren = {
   HomesOrgIdNotesNoteIdRoute: HomesOrgIdNotesNoteIdRoute,
   HomesOrgIdNotesIndexRoute: HomesOrgIdNotesIndexRoute,
+  HomesOrgIdNotesFolderFolderIdRoute: HomesOrgIdNotesFolderFolderIdRoute,
 }
 
 const HomesOrgIdNotesRouteWithChildren = HomesOrgIdNotesRoute._addFileChildren(

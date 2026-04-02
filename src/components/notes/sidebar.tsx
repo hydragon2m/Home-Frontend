@@ -152,9 +152,11 @@ function NoteItem({
   const handleSelect = () => {
     if (isRenaming) return
     if (!note.isFolder) {
-      navigate({ to: `/homes/${orgId}/notes/${note.id}` })
+      navigate({ to: `/homes/${orgId}/notes/${note.id}` as any })
     } else {
+      // Toggle sidebar expansion AND navigate to folder view
       setIsOpen(!isOpen)
+      navigate({ to: `/homes/${orgId}/notes/folder/${note.id}` as any })
     }
   }
 
