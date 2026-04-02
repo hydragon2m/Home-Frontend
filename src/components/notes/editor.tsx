@@ -20,7 +20,6 @@ import {
   Heading1, 
   Heading2, 
   Quote, 
-  Code,
   Link as LinkIcon,
   CheckSquare,
   Table as TableIcon
@@ -30,9 +29,10 @@ import { Button } from '@/components/ui/button'
 interface TiptapEditorProps {
   content: string
   onChange: (json: any) => void
+  onBlur?: () => void
 }
 
-export function TiptapEditor({ content, onChange }: TiptapEditorProps) {
+export function TiptapEditor({ content, onChange, onBlur }: TiptapEditorProps) {
   const { t } = useTranslation()
   const editor = useEditor({
     extensions: [
@@ -64,7 +64,13 @@ export function TiptapEditor({ content, onChange }: TiptapEditorProps) {
     },
     editorProps: {
       attributes: {
-        class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl focus:outline-none max-w-none min-h-[500px]',
+        class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl focus:outline-none max-w-none min-h-[500px] pb-32',
+      },
+      handleDOMEvents: {
+        blur: () => {
+          if (onBlur) onBlur()
+          return false
+        },
       },
     },
   })
@@ -84,7 +90,7 @@ export function TiptapEditor({ content, onChange }: TiptapEditorProps) {
   return (
     <div className="flex flex-col w-full max-w-4xl mx-auto">
       {/* Floating/Sticky Toolbar */}
-      <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-md border-b py-2 flex items-center gap-1 overflow-x-auto no-scrollbar mb-8 px-4">
+      <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-md border-b py-1.5 flex items-center gap-1 overflow-x-auto no-scrollbar mb-10 px-0">
         <ToolbarButton 
           onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()} 
           isActive={editor.isActive('heading', { level: 1 })}
@@ -128,11 +134,6 @@ export function TiptapEditor({ content, onChange }: TiptapEditorProps) {
           isActive={editor.isActive('blockquote')}
           icon={Quote}
         />
-        <ToolbarButton 
-          onClick={() => editor.chain().focus().toggleCodeBlock().run()} 
-          isActive={editor.isActive('codeBlock')}
-          icon={Code}
-        />
         <div className="h-4 w-px bg-border mx-1" />
         <ToolbarButton 
           onClick={() => {
@@ -149,7 +150,7 @@ export function TiptapEditor({ content, onChange }: TiptapEditorProps) {
         />
       </div>
 
-      <div className="px-4 pb-20">
+      <div className="pb-20">
         <EditorContent editor={editor} />
       </div>
 

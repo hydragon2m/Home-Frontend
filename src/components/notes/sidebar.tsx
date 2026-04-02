@@ -154,9 +154,15 @@ function NoteItem({
     if (!note.isFolder) {
       navigate({ to: `/homes/${orgId}/notes/${note.id}` as any })
     } else {
+      // For folders, clicking the name now ONLY toggles expansion
+      // This prevents the user from accidentally leaving their current note
       setIsOpen(!isOpen)
-      navigate({ to: `/homes/${orgId}/notes/folder/${note.id}` as any })
     }
+  }
+
+  const handleOpenFolderView = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    navigate({ to: `/homes/${orgId}/notes/folder/${note.id}` as any })
   }
 
   const handleRename = () => {
@@ -203,8 +209,22 @@ function NoteItem({
               onClick={(e) => e.stopPropagation()}
             />
           ) : (
-            <div className="truncate font-bold tracking-tight text-xs">
-               {note.title || (note.isFolder ? t('notes.untitled_folder') : t('notes.untitled'))}
+            <div className="flex items-center justify-between w-full min-w-0">
+               <div className="truncate font-bold tracking-tight text-xs">
+                  {note.title || (note.isFolder ? t('notes.untitled_folder') : t('notes.untitled'))}
+               </div>
+               
+               {note.isFolder && (
+                 <Button 
+                   variant="ghost" 
+                   size="icon" 
+                   className="h-5 w-5 rounded-md hover:bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity ml-1 shrink-0"
+                   onClick={handleOpenFolderView}
+                   title={t('notes.open_folder_view') || "Open Folder Dashboard"}
+                 >
+                   <LayoutGrid className="h-3 w-3 text-primary/60" />
+                 </Button>
+               )}
             </div>
           )}
         </div>
@@ -262,7 +282,7 @@ function NoteItem({
       </div>
 
       {note.isFolder && isOpen && (
-        <div className="flex flex-col">
+        <div className="flex flex-col relative ml-[23px] before:content-[''] before:absolute before:left-0 before:top-0 before:bottom-0 before:w-px before:bg-primary/5 before:hover:bg-primary/20 before:transition-colors">
           {children.length > 0 ? (
             children.map(child => (
               <NoteItem 
