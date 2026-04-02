@@ -83,40 +83,40 @@ function FamilyHomePage() {
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const apps = [
-    { id: 'dashboard', icon: LayoutGrid, label: t('org.context_global'), color: 'bg-blue-500' },
-    { id: 'members', icon: Users, label: t('homes.members_title'), color: 'bg-green-500' },
-    { id: 'finance', icon: Wallet, label: t('common.features.finance.title'), color: 'bg-orange-500' },
-    { id: 'calendar', icon: Calendar, label: t('common.features.calendar.title'), color: 'bg-purple-500' },
-    { id: 'tasks', icon: CheckSquare, label: t('common.features.todo.title'), color: 'bg-pink-500' },
-    { id: 'settings', icon: Settings, label: t('homes.settings'), color: 'bg-gray-500' },
-    { id: 'devices', icon: Layout, label: t('common.features.devices.title') || 'Thiết bị', color: 'bg-cyan-500' },
-    { id: 'music', icon: Music, label: 'Nhạc', color: 'bg-rose-500' },
-    { id: 'camera', icon: Camera, label: 'Ảnh', color: 'bg-orange-400' },
-    { id: 'folder', icon: Folder, label: 'Tệp', color: 'bg-blue-400' },
-    { id: 'phone', icon: Phone, label: 'Gọi điện', color: 'bg-emerald-500' },
-    { id: 'mail', icon: Mail, label: 'Email', color: 'bg-sky-500' },
-    { id: 'message', icon: MessageSquare, label: 'Tin nhắn', color: 'bg-green-400' },
-    { id: 'health', icon: Heart, label: 'Sức khỏe', color: 'bg-red-500' },
-    { id: 'security', icon: Shield, label: 'Bảo mật', color: 'bg-indigo-600' },
-    { id: 'shop', icon: ShoppingBag, label: 'Cửa hàng', color: 'bg-amber-500' },
-    { id: 'energy', icon: Zap, label: 'Điện năng', color: 'bg-yellow-400' },
-    { id: 'games', icon: Gamepad2, label: 'Trò chơi', color: 'bg-purple-400' },
-    { id: 'cloud', icon: Cloud, label: 'Lưu trữ', color: 'bg-blue-300' },
-    { id: 'video', icon: Video, label: 'Video', color: 'bg-red-400' },
-    { id: 'map', icon: Map, label: 'Bản đồ', color: 'bg-emerald-400' },
-    { id: 'mic', icon: Mic, label: 'Ghi âm', color: 'bg-orange-600' },
-    { id: 'lang', icon: Languages, label: 'Ngôn ngữ', color: 'bg-teal-500' },
-    { id: 'activity', icon: Activity, label: 'Hoạt động', color: 'bg-fuchsia-500' },
-    { id: 'package', icon: Package, label: 'Kiện hàng', color: 'bg-amber-600' },
-    { id: 'coffee', icon: Coffee, label: 'Cà phê', color: 'bg-amber-800' },
-    { id: 'car', icon: Car, label: 'Xe cộ', color: 'bg-slate-700' },
-    { id: 'plane', icon: Plane, label: 'Du lịch', color: 'bg-sky-400' },
-    { id: 'target', icon: Target, label: 'Mục tiêu', color: 'bg-rose-600' },
-    { id: 'star', icon: Star, label: 'Yêu thích', color: 'bg-yellow-500' },
-    { id: 'paint', icon: Palette, label: 'Chủ đề', color: 'bg-indigo-400' },
-    { id: 'search', icon: Search, label: 'Tìm kiếm', color: 'bg-gray-400' },
-    { id: 'cart', icon: ShoppingCart, label: 'Giỏ hàng', color: 'bg-orange-500' },
-    { id: 'wind', icon: Wind, label: 'Thời tiết', color: 'bg-blue-200' },
+    { id: 'dashboard', icon: LayoutGrid, label: t('org.context_global'), color: 'bg-blue-500', path: '/dashboard', badge: 0 },
+    { id: 'members', icon: Users, label: t('homes.members_title'), color: 'bg-green-500', path: `/homes/${orgId}/members`, badge: members.length },
+    { id: 'finance', icon: Wallet, label: t('common.features.finance.title'), color: 'bg-orange-500', path: `/homes/${orgId}/finance`, badge: 0 },
+    { id: 'calendar', icon: Calendar, label: t('common.features.calendar.title'), color: 'bg-purple-500', path: `/homes/${orgId}/calendar`, badge: 2 },
+    { id: 'tasks', icon: CheckSquare, label: t('common.features.todo.title'), color: 'bg-pink-500', path: `/homes/${orgId}/tasks`, badge: 5 },
+    { id: 'settings', icon: Settings, label: t('homes.settings'), color: 'bg-gray-500', path: `/homes/${orgId}/settings`, badge: 0 },
+    { id: 'devices', icon: Layout, label: t('common.features.devices.title') || 'Thiết bị', color: 'bg-cyan-500', path: `/homes/${orgId}/devices`, badge: 1 },
+    { id: 'music', icon: Music, label: 'Nhạc', color: 'bg-rose-500', path: `/homes/${orgId}/music`, badge: 0 },
+    { id: 'camera', icon: Camera, label: 'Ảnh', color: 'bg-orange-400', path: `/homes/${orgId}/camera`, badge: 0 },
+    { id: 'folder', icon: Folder, label: 'Tệp', color: 'bg-blue-400', path: `/homes/${orgId}/files`, badge: 0 },
+    { id: 'phone', icon: Phone, label: 'Gọi điện', color: 'bg-emerald-500', path: `/homes/${orgId}/phone`, badge: 0 },
+    { id: 'mail', icon: Mail, label: 'Email', color: 'bg-sky-500', path: `/homes/${orgId}/mail`, badge: 12 },
+    { id: 'message', icon: MessageSquare, label: 'Tin nhắn', color: 'bg-green-400', path: `/homes/${orgId}/messages`, badge: 3 },
+    { id: 'health', icon: Heart, label: 'Sức khỏe', color: 'bg-red-500', path: `/homes/${orgId}/health`, badge: 0 },
+    { id: 'security', icon: Shield, label: 'Bảo mật', color: 'bg-indigo-600', path: `/homes/${orgId}/security`, badge: 0 },
+    { id: 'shop', icon: ShoppingBag, label: 'Cửa hàng', color: 'bg-amber-500', path: `/homes/${orgId}/shop`, badge: 0 },
+    { id: 'energy', icon: Zap, label: 'Điện năng', color: 'bg-yellow-400', path: `/homes/${orgId}/energy`, badge: 0 },
+    { id: 'games', icon: Gamepad2, label: 'Trò chơi', color: 'bg-purple-400', path: `/homes/${orgId}/games`, badge: 0 },
+    { id: 'cloud', icon: Cloud, label: 'Lưu trữ', color: 'bg-blue-300', path: `/homes/${orgId}/cloud`, badge: 0 },
+    { id: 'video', icon: Video, label: 'Video', color: 'bg-red-400', path: `/homes/${orgId}/video`, badge: 0 },
+    { id: 'map', icon: Map, label: 'Bản đồ', color: 'bg-emerald-400', path: `/homes/${orgId}/map`, badge: 0 },
+    { id: 'mic', icon: Mic, label: 'Ghi âm', color: 'bg-orange-600', path: `/homes/${orgId}/recorder`, badge: 0 },
+    { id: 'lang', icon: Languages, label: 'Ngôn ngữ', color: 'bg-teal-500', path: `/homes/${orgId}/language`, badge: 0 },
+    { id: 'activity', icon: Activity, label: 'Hoạt động', color: 'bg-fuchsia-500', path: `/homes/${orgId}/activity`, badge: 0 },
+    { id: 'package', icon: Package, label: 'Kiện hàng', color: 'bg-amber-600', path: `/homes/${orgId}/shipping`, badge: 0 },
+    { id: 'coffee', icon: Coffee, label: 'Cà phê', color: 'bg-amber-800', path: `/homes/${orgId}/coffee`, badge: 0 },
+    { id: 'car', icon: Car, label: 'Xe cộ', color: 'bg-slate-700', path: `/homes/${orgId}/car`, badge: 0 },
+    { id: 'plane', icon: Plane, label: 'Du lịch', color: 'bg-sky-400', path: `/homes/${orgId}/travel`, badge: 0 },
+    { id: 'target', icon: Target, label: 'Mục tiêu', color: 'bg-rose-600', path: `/homes/${orgId}/goals`, badge: 0 },
+    { id: 'star', icon: Star, label: 'Yêu thích', color: 'bg-yellow-500', path: `/homes/${orgId}/favorites`, badge: 0 },
+    { id: 'paint', icon: Palette, label: 'Chủ đề', color: 'bg-indigo-400', path: `/homes/${orgId}/themes`, badge: 0 },
+    { id: 'search', icon: Search, label: 'Tìm kiếm', color: 'bg-gray-400', path: `/homes/${orgId}/search`, badge: 0 },
+    { id: 'cart', icon: ShoppingCart, label: 'Giỏ hàng', color: 'bg-orange-500', path: `/homes/${orgId}/cart`, badge: 0 },
+    { id: 'wind', icon: Wind, label: 'Thời tiết', color: 'bg-blue-200', path: `/homes/${orgId}/weather`, badge: 0 },
   ]
 
   const filteredApps = apps.filter(app => 
@@ -465,23 +465,45 @@ function FamilyHomePage() {
               {[...Array(totalPages)].map((_, pageIdx) => (
                 <div key={pageIdx} className="flex-none w-full grid grid-cols-6 gap-2 px-1 snap-start">
                   {apps.slice(pageIdx * 6, (pageIdx + 1) * 6).map((app) => (
-                    <Button 
-                      key={app.id} 
-                      variant="ghost" 
-                      className="h-auto flex flex-col items-center gap-1.5 p-1 group ring-offset-background transition-all hover:bg-transparent" 
-                      onClick={() => {
-                        setIsDockOpen(false);
-                        if (app.id === 'dashboard') navigate({ to: '/dashboard' });
-                        else if (app.id === 'settings') navigate({ to: `/homes/${orgId}/settings` as any });
-                        // Add more navigation routes as needed
-                      }}
-                    >
-                      <div className={`h-14 w-14 rounded-2xl ${app.color} flex items-center justify-center text-white shadow-lg group-hover:scale-105 group-active:scale-95 transition-all duration-300 relative overflow-hidden`}>
-                        <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                        <app.icon className="h-6 w-6 shadow-sm" />
-                      </div>
-                      <span className="text-[8px] font-black uppercase tracking-widest text-muted-foreground group-hover:text-foreground transition-colors px-1 truncate w-full text-center">{app.label}</span>
-                    </Button>
+                    <DropdownMenu key={app.id}>
+                      <DropdownMenuTrigger asChild>
+                        <Button 
+                          variant="ghost" 
+                          className="h-auto flex flex-col items-center gap-1.5 p-1 group ring-offset-background transition-all hover:bg-transparent" 
+                          onClick={() => {
+                            setIsDockOpen(false);
+                            navigate({ to: app.path as any });
+                          }}
+                        >
+                          <div className={`h-14 w-14 rounded-2xl ${app.color} flex items-center justify-center text-white shadow-lg group-hover:scale-105 group-active:scale-95 transition-all duration-300 relative overflow-visible`}>
+                            <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl" />
+                            <app.icon className="h-6 w-6 shadow-sm" />
+                            {app.badge > 0 && (
+                              <div className="absolute -top-1 -right-1 bg-red-500 text-white text-[9px] font-black min-w-[18px] h-[18px] flex items-center justify-center rounded-full border-2 border-background shadow-lg px-1 animate-in zoom-in slide-in-from-bottom-1 blur-none">
+                                {app.badge > 99 ? '99+' : app.badge}
+                              </div>
+                            )}
+                          </div>
+                          <span className="text-[8px] font-black uppercase tracking-widest text-muted-foreground group-hover:text-foreground transition-colors px-1 truncate w-full text-center">{app.label}</span>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent blur-md align="center" className="w-48 bg-background/80 backdrop-blur-md border-white/20">
+                         <DropdownMenuLabel className="text-[10px] font-black uppercase tracking-widest opacity-50">{app.label}</DropdownMenuLabel>
+                         <DropdownMenuSeparator />
+                         <DropdownMenuItem onClick={() => navigate({ to: app.path as any })}>
+                            <div className="flex items-center gap-2">
+                               <app.icon className="h-4 w-4" />
+                               <span className="text-sm font-medium">Mở ứng dụng</span>
+                            </div>
+                         </DropdownMenuItem>
+                         <DropdownMenuItem>
+                            <span className="text-sm font-medium">Ghim vào thanh dock</span>
+                         </DropdownMenuItem>
+                         <DropdownMenuItem className="text-destructive focus:text-destructive focus:bg-destructive/10">
+                            <span className="text-sm font-medium">Gỡ ứng dụng</span>
+                         </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   ))}
                 </div>
               ))}
@@ -558,24 +580,43 @@ function FamilyHomePage() {
             <div className="w-full overflow-y-auto px-4 custom-scrollbar relative z-10">
               <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-x-4 gap-y-8 pb-4">
                 {filteredApps.map((app) => (
-                  <button
-                    key={app.id}
-                    className="flex flex-col items-center gap-2 group transition-all hover:scale-110 active:scale-95"
-                    onClick={() => {
-                      setIsAllAppsOpen(false);
-                      if (app.id === 'dashboard') navigate({ to: '/dashboard' });
-                      else if (app.id === 'settings') navigate({ to: `/homes/${orgId}/settings` as any });
-                      // Add more navigation routes as needed
-                    }}
-                  >
-                    <div className={`h-14 w-14 rounded-2xl ${app.color} flex items-center justify-center text-white shadow-xl relative overflow-hidden ring-2 ring-white/10 group-hover:ring-primary/40 transition-all`}>
-                      <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-                      <app.icon className="h-6 w-6 drop-shadow-lg" />
-                    </div>
-                    <span className="text-[8px] font-bold uppercase tracking-wider text-muted-foreground group-hover:text-foreground transition-colors text-center w-full truncate px-1">
-                      {app.label}
-                    </span>
-                  </button>
+                  <DropdownMenu key={app.id}>
+                    <DropdownMenuTrigger asChild>
+                      <button
+                        className="flex flex-col items-center gap-2 group transition-all hover:scale-110 active:scale-95 outline-none"
+                        onClick={() => {
+                          setIsAllAppsOpen(false);
+                          navigate({ to: app.path as any });
+                        }}
+                      >
+                        <div className={`h-14 w-14 rounded-2xl ${app.color} flex items-center justify-center text-white shadow-xl relative overflow-visible ring-2 ring-white/10 group-hover:ring-primary/40 transition-all`}>
+                          <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl" />
+                          <app.icon className="h-6 w-6 drop-shadow-lg" />
+                          {app.badge > 0 && (
+                            <div className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-black min-w-[20px] h-[20px] flex items-center justify-center rounded-full border-2 border-background shadow-lg px-1 animate-in zoom-in slide-in-from-bottom-1">
+                              {app.badge > 99 ? '99+' : app.badge}
+                            </div>
+                          )}
+                        </div>
+                        <span className="text-[8px] font-bold uppercase tracking-wider text-muted-foreground group-hover:text-foreground transition-colors text-center w-full truncate px-1">
+                          {app.label}
+                        </span>
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent blur-md align="center" className="w-48 bg-background/80 backdrop-blur-md border-white/20">
+                      <DropdownMenuLabel className="text-[10px] font-black uppercase tracking-widest opacity-50">{app.label}</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={() => navigate({ to: app.path as any })}>
+                        <div className="flex items-center gap-2">
+                          <app.icon className="h-4 w-4" />
+                          <span className="text-sm font-medium">Mở ứng dụng</span>
+                        </div>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <span className="text-sm font-medium">Xem chi tiết</span>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 ))}
               </div>
               {filteredApps.length === 0 && (
