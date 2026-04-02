@@ -44,7 +44,8 @@ import {
   ShoppingCart,
   Wind,
   ChevronUp,
-  X
+  X,
+  FileText
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -115,8 +116,9 @@ function FamilyHomePage() {
     { id: 'star', icon: Star, label: 'Yêu thích', color: 'bg-yellow-500', path: `/homes/${orgId}/favorites`, badge: 0 },
     { id: 'paint', icon: Palette, label: 'Chủ đề', color: 'bg-indigo-400', path: `/homes/${orgId}/themes`, badge: 0 },
     { id: 'search', icon: Search, label: 'Tìm kiếm', color: 'bg-gray-400', path: `/homes/${orgId}/search`, badge: 0 },
-    { id: 'cart', icon: ShoppingCart, label: 'Giỏ hàng', color: 'bg-orange-500', path: `/homes/${orgId}/cart`, badge: 0 },
-    { id: 'wind', icon: Wind, label: 'Thời tiết', color: 'bg-blue-200', path: `/homes/${orgId}/weather`, badge: 0 },
+    { id: 'cart', icon: ShoppingCart, label: t('common.features.cart.title') || 'Giỏ hàng', color: 'bg-orange-500', path: `/homes/${orgId}/cart`, badge: 0 },
+    { id: 'notes', icon: FileText, label: t('common.features.notes.title') || 'Ghi chú', color: 'bg-indigo-500', path: `/homes/${orgId}/notes`, badge: 1 },
+    { id: 'wind', icon: Wind, label: t('common.features.weather.title') || 'Thời tiết', color: 'bg-blue-200', path: `/homes/${orgId}/weather`, badge: 0 },
   ]
 
   const filteredApps = apps.filter(app => 
