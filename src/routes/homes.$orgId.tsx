@@ -465,45 +465,26 @@ function FamilyHomePage() {
               {[...Array(totalPages)].map((_, pageIdx) => (
                 <div key={pageIdx} className="flex-none w-full grid grid-cols-6 gap-2 px-1 snap-start">
                   {apps.slice(pageIdx * 6, (pageIdx + 1) * 6).map((app) => (
-                    <DropdownMenu key={app.id}>
-                      <DropdownMenuTrigger asChild>
-                        <Button 
-                          variant="ghost" 
-                          className="h-auto flex flex-col items-center gap-1.5 p-1 group ring-offset-background transition-all hover:bg-transparent" 
-                          onClick={() => {
-                            setIsDockOpen(false);
-                            navigate({ to: app.path as any });
-                          }}
-                        >
-                          <div className={`h-14 w-14 rounded-2xl ${app.color} flex items-center justify-center text-white shadow-lg group-hover:scale-105 group-active:scale-95 transition-all duration-300 relative overflow-visible`}>
-                            <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl" />
-                            <app.icon className="h-6 w-6 shadow-sm" />
-                            {app.badge > 0 && (
-                              <div className="absolute -top-1 -right-1 bg-red-500 text-white text-[9px] font-black min-w-[18px] h-[18px] flex items-center justify-center rounded-full border-2 border-background shadow-lg px-1 animate-in zoom-in slide-in-from-bottom-1 blur-none">
-                                {app.badge > 99 ? '99+' : app.badge}
-                              </div>
-                            )}
+                    <Button 
+                      key={app.id} 
+                      variant="ghost" 
+                      className="h-auto flex flex-col items-center gap-1.5 p-1 group ring-offset-background transition-all hover:bg-transparent" 
+                      onClick={() => {
+                        setIsDockOpen(false);
+                        navigate({ to: app.path as any });
+                      }}
+                    >
+                      <div className={`h-14 w-14 rounded-2xl ${app.color} flex items-center justify-center text-white shadow-lg group-hover:scale-105 group-active:scale-95 transition-all duration-300 relative overflow-visible`}>
+                        <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl" />
+                        <app.icon className="h-6 w-6 shadow-sm" />
+                        {app.badge > 0 && (
+                          <div className="absolute -top-1 -right-1 bg-red-500 text-white text-[9px] font-black min-w-[18px] h-[18px] flex items-center justify-center rounded-full border-2 border-background shadow-lg px-1 animate-in zoom-in slide-in-from-bottom-1 blur-none">
+                            {app.badge > 99 ? '99+' : app.badge}
                           </div>
-                          <span className="text-[8px] font-black uppercase tracking-widest text-muted-foreground group-hover:text-foreground transition-colors px-1 truncate w-full text-center">{app.label}</span>
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent blur-md align="center" className="w-48 bg-background/80 backdrop-blur-md border-white/20">
-                         <DropdownMenuLabel className="text-[10px] font-black uppercase tracking-widest opacity-50">{app.label}</DropdownMenuLabel>
-                         <DropdownMenuSeparator />
-                         <DropdownMenuItem onClick={() => navigate({ to: app.path as any })}>
-                            <div className="flex items-center gap-2">
-                               <app.icon className="h-4 w-4" />
-                               <span className="text-sm font-medium">Mở ứng dụng</span>
-                            </div>
-                         </DropdownMenuItem>
-                         <DropdownMenuItem>
-                            <span className="text-sm font-medium">Ghim vào thanh dock</span>
-                         </DropdownMenuItem>
-                         <DropdownMenuItem className="text-destructive focus:text-destructive focus:bg-destructive/10">
-                            <span className="text-sm font-medium">Gỡ ứng dụng</span>
-                         </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                        )}
+                      </div>
+                      <span className="text-[8px] font-black uppercase tracking-widest text-muted-foreground group-hover:text-foreground transition-colors px-1 truncate w-full text-center">{app.label}</span>
+                    </Button>
                   ))}
                 </div>
               ))}
@@ -580,43 +561,27 @@ function FamilyHomePage() {
             <div className="w-full overflow-y-auto px-4 custom-scrollbar relative z-10">
               <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-x-4 gap-y-8 pb-4">
                 {filteredApps.map((app) => (
-                  <DropdownMenu key={app.id}>
-                    <DropdownMenuTrigger asChild>
-                      <button
-                        className="flex flex-col items-center gap-2 group transition-all hover:scale-110 active:scale-95 outline-none"
-                        onClick={() => {
-                          setIsAllAppsOpen(false);
-                          navigate({ to: app.path as any });
-                        }}
-                      >
-                        <div className={`h-14 w-14 rounded-2xl ${app.color} flex items-center justify-center text-white shadow-xl relative overflow-visible ring-2 ring-white/10 group-hover:ring-primary/40 transition-all`}>
-                          <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl" />
-                          <app.icon className="h-6 w-6 drop-shadow-lg" />
-                          {app.badge > 0 && (
-                            <div className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-black min-w-[20px] h-[20px] flex items-center justify-center rounded-full border-2 border-background shadow-lg px-1 animate-in zoom-in slide-in-from-bottom-1">
-                              {app.badge > 99 ? '99+' : app.badge}
-                            </div>
-                          )}
+                  <button
+                    key={app.id}
+                    className="flex flex-col items-center gap-2 group transition-all hover:scale-110 active:scale-95 outline-none"
+                    onClick={() => {
+                      setIsAllAppsOpen(false);
+                      navigate({ to: app.path as any });
+                    }}
+                  >
+                    <div className={`h-14 w-14 rounded-2xl ${app.color} flex items-center justify-center text-white shadow-xl relative overflow-visible ring-2 ring-white/10 group-hover:ring-primary/40 transition-all`}>
+                      <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl" />
+                      <app.icon className="h-6 w-6 drop-shadow-lg" />
+                      {app.badge > 0 && (
+                        <div className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-black min-w-[20px] h-[20px] flex items-center justify-center rounded-full border-2 border-background shadow-lg px-1 animate-in zoom-in slide-in-from-bottom-1">
+                          {app.badge > 99 ? '99+' : app.badge}
                         </div>
-                        <span className="text-[8px] font-bold uppercase tracking-wider text-muted-foreground group-hover:text-foreground transition-colors text-center w-full truncate px-1">
-                          {app.label}
-                        </span>
-                      </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent blur-md align="center" className="w-48 bg-background/80 backdrop-blur-md border-white/20">
-                      <DropdownMenuLabel className="text-[10px] font-black uppercase tracking-widest opacity-50">{app.label}</DropdownMenuLabel>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem onClick={() => navigate({ to: app.path as any })}>
-                        <div className="flex items-center gap-2">
-                          <app.icon className="h-4 w-4" />
-                          <span className="text-sm font-medium">Mở ứng dụng</span>
-                        </div>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <span className="text-sm font-medium">Xem chi tiết</span>
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                      )}
+                    </div>
+                    <span className="text-[8px] font-bold uppercase tracking-wider text-muted-foreground group-hover:text-foreground transition-colors text-center w-full truncate px-1">
+                      {app.label}
+                    </span>
+                  </button>
                 ))}
               </div>
               {filteredApps.length === 0 && (
