@@ -77,6 +77,7 @@ function NotePage() {
           </div>
 
           <input 
+            autoFocus={!title || title === 'Untitled'}
             className="text-4xl md:text-5xl font-black tracking-tight bg-transparent border-none outline-none mb-10 w-full placeholder:text-muted-foreground/20"
             placeholder={t('notes.untitled')}
             value={title}
