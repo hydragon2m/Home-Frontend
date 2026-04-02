@@ -23,7 +23,8 @@ function FolderView() {
     queryFn: () => api.get(`/organizations/${orgId}/notes`),
   })
 
-  const allNotes = notesRes?.data?.data || []
+  // IMPORTANT: The axios interceptor already returns 'response.data' which is { success, message, data }
+  const allNotes = notesRes?.data || []
   const folder = allNotes.find((n: any) => n.id === folderId)
   const children = allNotes.filter((n: any) => n.parentId === folderId)
   

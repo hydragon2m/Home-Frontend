@@ -154,7 +154,6 @@ function NoteItem({
     if (!note.isFolder) {
       navigate({ to: `/homes/${orgId}/notes/${note.id}` as any })
     } else {
-      // Toggle sidebar expansion AND navigate to folder view
       setIsOpen(!isOpen)
       navigate({ to: `/homes/${orgId}/notes/folder/${note.id}` as any })
     }
@@ -170,27 +169,27 @@ function NoteItem({
   return (
     <div className="flex flex-col overflow-visible">
       <div 
-        className={`group flex items-center gap-1.5 px-2 py-1.5 rounded-lg cursor-pointer transition-all duration-200 select-none ${isSelected ? 'bg-primary/10 text-primary shadow-sm' : 'hover:bg-muted/40 text-muted-foreground hover:text-foreground'}`}
-        style={{ paddingLeft: `${(level * 12) + 8}px` }}
+        className={`group flex items-center gap-2.5 px-3 py-2 rounded-xl cursor-pointer transition-all duration-300 select-none ${isSelected ? 'bg-primary text-white shadow-lg shadow-primary/20 scale-[1.02]' : 'hover:bg-primary/5 text-muted-foreground/70 hover:text-primary font-medium'}`}
+        style={{ paddingLeft: `${(level * 12) + 12}px` }}
         onClick={handleSelect}
       >
-        <div className="shrink-0">
+        <div className="shrink-0 transition-transform group-hover:scale-110">
           {note.isFolder ? (
-            <div className="h-4 w-4 flex items-center justify-center hover:bg-primary/10 rounded transition-colors" onClick={(e) => { e.stopPropagation(); setIsOpen(!isOpen); }}>
-               {isOpen ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
+            <div className={`h-4 w-4 flex items-center justify-center rounded transition-colors ${isSelected ? 'text-white/60' : 'text-primary/40'}`} onClick={(e) => { e.stopPropagation(); setIsOpen(!isOpen); }}>
+               {isOpen ? <ChevronDown className="h-3.5 w-3.5" /> : <ChevronRight className="h-3.5 w-3.5" />}
             </div>
           ) : (
-            <FileText className={`h-3.5 w-3.5 ${isSelected ? 'text-primary' : 'text-muted-foreground/60 group-hover:text-foreground'}`} />
+            <FileText className={`h-4 w-4 ${isSelected ? 'text-white' : 'text-primary/40'}`} />
           )}
         </div>
 
-        {note.isFolder && <Folder className={`h-3.5 w-3.5 shrink-0 fill-current opacity-40 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`} />}
+        {note.isFolder && <Folder className={`h-4 w-4 shrink-0 fill-current opacity-20 ${isSelected ? 'text-white' : 'text-primary'}`} />}
         
         <div className="flex-1 truncate py-0.5">
           {isRenaming ? (
             <input 
               autoFocus
-              className="w-full bg-background border-none px-1 text-xs font-bold focus:ring-1 ring-primary/30 rounded outline-none shadow-inner py-0.5"
+              className={`w-full bg-background border-none px-2 text-xs font-black ring-2 ring-primary/40 rounded-lg outline-none shadow-xl py-1 ${isSelected ? 'text-foreground' : ''}`}
               value={tempTitle}
               onChange={(e) => setTempTitle(e.target.value)}
               onBlur={handleRename}
