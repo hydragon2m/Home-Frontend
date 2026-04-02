@@ -44,6 +44,29 @@ function NotesLayout() {
     }
   })
 
+  const deleteNoteMutation = useMutation({
+    mutationFn: (id: string) => api.delete(`/organizations/${orgId}/notes/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['notes', orgId] })
+      // If we are currently viewing this note, navigate back to index
+      if (window.location.pathname.includes(orgId + '/notes/')) {
+        const parts = window.location.pathname.split('/')
+        if (parts[parts.length - 1] !== 'notes') {
+           navigate({ to: `/homes/${orgId}/notes` })
+        }
+      }
+    }
+  })
+
+  const renameNoteMutation = useMutation({
+    mutationFn: ({ id, title }: { id: string, title: string }) => 
+      api.patch(`/organizations/${orgId}/notes/${id}`, { title }),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['notes', orgId] })
+      queryClient.invalidateQueries({ queryKey: ['note', variables.id] })
+    }
+  })
+
   return (
     <div className="flex h-screen bg-background overflow-hidden">
       {/* Sidebar */}
@@ -80,6 +103,8 @@ function NotesLayout() {
             isLoading={isLoading} 
             onAddPage={(parentId) => createNoteMutation.mutate({ title: t('notes.untitled'), isFolder: false, parentId })}
             onAddFolder={(parentId) => createNoteMutation.mutate({ title: t('notes.untitled_folder'), isFolder: true, parentId })}
+            onRename={(id, title) => renameNoteMutation.mutate({ id, title })}
+            onDelete={(id) => deleteNoteMutation.mutate(id)}
           />
         </div>
 

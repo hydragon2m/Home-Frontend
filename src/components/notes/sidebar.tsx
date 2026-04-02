@@ -23,9 +23,11 @@ interface NoteSidebarProps {
   isLoading: boolean
   onAddPage: (parentId?: string) => void
   onAddFolder: (parentId?: string) => void
+  onRename: (id: string, title: string) => void
+  onDelete: (id: string) => void
 }
 
-export function NoteSidebar({ notes, isLoading, onAddPage, onAddFolder }: NoteSidebarProps) {
+export function NoteSidebar({ notes, isLoading, onAddPage, onAddFolder, onRename, onDelete }: NoteSidebarProps) {
   const { t } = useTranslation()
   
   const buildTree = (parentId: string | null = null) => {
@@ -72,6 +74,8 @@ export function NoteSidebar({ notes, isLoading, onAddPage, onAddFolder }: NoteSi
            allNotes={notes} 
            onAddPage={onAddPage} 
            onAddFolder={onAddFolder} 
+           onRename={onRename}
+           onDelete={onDelete}
         />
       ))}
     </div>
@@ -83,27 +87,41 @@ function NoteItem({
   level = 0, 
   onAddPage, 
   onAddFolder,
+  onRename,
+  onDelete,
   allNotes
 }: { 
   note: any, 
   level?: number, 
   onAddPage: (parentId: string) => void,
   onAddFolder: (parentId: string) => void,
+  onRename: (id: string, title: string) => void,
+  onDelete: (id: string) => void,
   allNotes: any[]
 }) {
   const { t } = useTranslation()
   const { orgId } = useParams({ from: '/homes/$orgId/notes' }) as any
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
+  const [isRenaming, setIsRenaming] = useState(false)
+  const [tempTitle, setTempTitle] = useState(note.title)
   const children = allNotes.filter(n => n.parentId === note.id)
   const isSelected = window.location.pathname.includes(note.id)
 
   const handleSelect = () => {
+    if (isRenaming) return
     if (!note.isFolder) {
       navigate({ to: `/homes/${orgId}/notes/${note.id}` })
     } else {
       setIsOpen(!isOpen)
     }
+  }
+
+  const handleRename = () => {
+    if (tempTitle.trim() && tempTitle !== note.title) {
+      onRename(note.id, tempTitle)
+    }
+    setIsRenaming(false)
   }
 
   return (
@@ -125,9 +143,27 @@ function NoteItem({
 
         {note.isFolder && <Folder className="h-3.5 w-3.5 shrink-0 fill-current opacity-40" />}
         <div className="flex-1 truncate py-1">
-          <div className="truncate font-bold tracking-tight">
-             {note.title || (note.isFolder ? t('notes.untitled_folder') : t('notes.untitled'))}
-          </div>
+          {isRenaming ? (
+            <input 
+              autoFocus
+              className="w-full bg-background border-none px-1 text-xs font-bold focus:ring-1 ring-primary/30 rounded outline-none"
+              value={tempTitle}
+              onChange={(e) => setTempTitle(e.target.value)}
+              onBlur={handleRename}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') handleRename()
+                if (e.key === 'Escape') {
+                  setIsRenaming(false)
+                  setTempTitle(note.title)
+                }
+              }}
+              onClick={(e) => e.stopPropagation()}
+            />
+          ) : (
+            <div className="truncate font-bold tracking-tight">
+               {note.title || (note.isFolder ? t('notes.untitled_folder') : t('notes.untitled'))}
+            </div>
+          )}
         </div>
 
         <div className="hidden group-hover:flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -143,7 +179,13 @@ function NoteItem({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-40 bg-background/80 backdrop-blur-md border-white/20">
-                <DropdownMenuItem className="text-[11px] font-bold py-2 focus:bg-primary/5" onClick={() => (window.location.href = `/homes/${orgId}/notes/${note.id}`)}>
+                <DropdownMenuItem 
+                  className="text-[11px] font-bold py-2 focus:bg-primary/5" 
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setIsRenaming(true)
+                  }}
+                >
                   <Edit2 className="mr-2 h-3.5 w-3.5" /> {t('notes.rename')}
                 </DropdownMenuItem>
                 
@@ -160,7 +202,15 @@ function NoteItem({
                 )}
 
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-[11px] font-bold py-2 text-destructive focus:bg-destructive/10">
+                <DropdownMenuItem 
+                  className="text-[11px] font-bold py-2 text-destructive focus:bg-destructive/10"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    if (window.confirm(t('notes.delete_confirm') || 'Are you sure you want to delete this note?')) {
+                      onDelete(note.id)
+                    }
+                  }}
+                >
                   <Trash className="mr-2 h-3.5 w-3.5" /> {t('notes.delete')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -178,6 +228,8 @@ function NoteItem({
                 level={level + 1} 
                 onAddPage={onAddPage} 
                 onAddFolder={onAddFolder} 
+                onRename={onRename}
+                onDelete={onDelete}
                 allNotes={allNotes} 
               />
             ))

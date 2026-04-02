@@ -166,6 +166,7 @@
     "delete": "Xóa",
     "new_subfolder": "Thư mục con mới",
     "empty_folder": "Thư mục trống",
+    "delete_confirm": "Bạn có chắc chắn muốn xóa ghi chú này không? Thao tác này không thể hoàn tác.",
     "characters": "ký tự",
     "write_placeholder": "Viết điều gì đó tuyệt vời..."
   }
