@@ -148,5 +148,25 @@
     "search_apps": "Tìm kiếm nhanh...",
     "no_apps_found": "Không tìm thấy kết quả phù hợp",
     "expand_dock": "Mở rộng"
+  },
+  "notes": {
+    "title": "Ghi chú của tôi",
+    "new_page": "Trang mới",
+    "new_folder": "Thư mục mới",
+    "search_placeholder": "Tìm kiếm ghi chú...",
+    "no_notes": "Chưa có ghi chú nào",
+    "create_first": "Tạo trang đầu tiên",
+    "welcome_title": "Chào mừng đến với Ghi chú",
+    "welcome_desc": "Chọn một ghi chú từ sidebar hoặc tạo cái mới để bắt đầu viết. Sắp xếp ý tưởng của bạn với các thư mục và trang con.",
+    "saving": "Đang lưu...",
+    "saved": "Đã lưu",
+    "untitled": "Không tiêu đề",
+    "untitled_folder": "Thư mục không tiêu đề",
+    "rename": "Đổi tên",
+    "delete": "Xóa",
+    "new_subfolder": "Thư mục con mới",
+    "empty_folder": "Thư mục trống",
+    "characters": "ký tự",
+    "write_placeholder": "Viết điều gì đó tuyệt vời..."
   }
 }

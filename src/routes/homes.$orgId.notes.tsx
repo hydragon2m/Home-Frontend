@@ -1,6 +1,7 @@
 import { createFileRoute, Outlet, useParams, useNavigate } from '@tanstack/react-router'
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { NoteSidebar } from '@/components/notes/sidebar'
+import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, Search, Plus, Settings } from 'lucide-react'
 import api from '@/lib/axios'
@@ -11,15 +12,26 @@ export const Route = createFileRoute('/homes/$orgId/notes')({
 })
 
 function NotesLayout() {
+  const { t } = useTranslation()
   const { orgId } = useParams({ from: '/homes/$orgId/notes' })
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+  const [searchQuery, setSearchQuery] = useState('')
 
   const { data: notesRes, isLoading } = useQuery({
     queryKey: ['notes', orgId],
     queryFn: () => api.get(`/organizations/${orgId}/notes`),
   })
+
+  const notes = notesRes?.data?.data || []
+
+  const filteredNotes = useMemo(() => {
+    if (!searchQuery.trim()) return notes
+    return notes.filter((note: any) => 
+      note.title.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  }, [notes, searchQuery])
 
   const createNoteMutation = useMutation({
     mutationFn: (data: { title: string, isFolder: boolean, parentId?: string }) => 
@@ -32,8 +44,6 @@ function NotesLayout() {
     }
   })
 
-  const notes = notesRes?.data?.data || []
-
   return (
     <div className="flex h-screen bg-background overflow-hidden">
       {/* Sidebar */}
@@ -45,7 +55,7 @@ function NotesLayout() {
             <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary font-black shadow-inner">
                N
             </div>
-            <span className="font-bold text-sm tracking-tight whitespace-nowrap">My Notes</span>
+            <span className="font-bold text-sm tracking-tight whitespace-nowrap">{t('notes.title')}</span>
           </div>
           <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" onClick={() => setIsSidebarOpen(false)}>
             <ChevronLeft className="h-4 w-4" />
@@ -57,17 +67,19 @@ function NotesLayout() {
              <div className="relative group/search">
                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground group-focus-within/search:text-primary transition-colors" />
                <input 
-                 placeholder="Search notes..." 
+                 placeholder={t('notes.search_placeholder')} 
                  className="w-full bg-muted/30 border-none h-8 pl-8 rounded-lg text-xs outline-none focus:ring-1 ring-primary/20 transition-all font-medium"
+                 value={searchQuery}
+                 onChange={(e) => setSearchQuery(e.target.value)}
                />
              </div>
           </div>
           
           <NoteSidebar 
-            notes={notes} 
+            notes={filteredNotes} 
             isLoading={isLoading} 
-            onAddPage={(parentId) => createNoteMutation.mutate({ title: 'New Page', isFolder: false, parentId })}
-            onAddFolder={(parentId) => createNoteMutation.mutate({ title: 'New Folder', isFolder: true, parentId })}
+            onAddPage={(parentId) => createNoteMutation.mutate({ title: t('notes.untitled'), isFolder: false, parentId })}
+            onAddFolder={(parentId) => createNoteMutation.mutate({ title: t('notes.untitled_folder'), isFolder: true, parentId })}
           />
         </div>
 
@@ -79,10 +91,10 @@ function NotesLayout() {
            <Button 
              variant="ghost" 
              className="flex-1 h-8 justify-start gap-2 text-xs font-bold px-2 rounded-lg hover:bg-primary/5"
-             onClick={() => createNoteMutation.mutate({ title: 'Untitled', isFolder: false })}
+             onClick={() => createNoteMutation.mutate({ title: t('notes.untitled'), isFolder: false })}
            >
              <Plus className="h-3.5 w-3.5 text-primary" />
-             New Page
+             {t('notes.new_page')}
            </Button>
         </div>
       </div>

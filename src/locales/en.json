@@ -147,5 +147,25 @@
     "search_apps": "Quick Search...",
     "no_apps_found": "No matching apps found",
     "expand_dock": "Expand"
+  },
+  "notes": {
+    "title": "My Notes",
+    "new_page": "New Page",
+    "new_folder": "New Folder",
+    "search_placeholder": "Search notes...",
+    "no_notes": "No notes yet",
+    "create_first": "Create first page",
+    "welcome_title": "Welcome to your Notes",
+    "welcome_desc": "Select a note from the sidebar or create a new one to start writing. Organize your thoughts with folders and sub-pages.",
+    "saving": "Saving...",
+    "saved": "Saved",
+    "untitled": "Untitled",
+    "untitled_folder": "Untitled Folder",
+    "rename": "Rename",
+    "delete": "Delete",
+    "new_subfolder": "New Subfolder",
+    "empty_folder": "Empty",
+    "characters": "characters",
+    "write_placeholder": "Write something amazing..."
   }
 }

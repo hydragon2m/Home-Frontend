@@ -11,6 +11,7 @@ import { TableRow } from '@tiptap/extension-table-row'
 import { TableCell } from '@tiptap/extension-table-cell'
 import { TableHeader } from '@tiptap/extension-table-header'
 import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { 
   Bold, 
   Italic, 
@@ -32,13 +33,14 @@ interface TiptapEditorProps {
 }
 
 export function TiptapEditor({ content, onChange }: TiptapEditorProps) {
+  const { t } = useTranslation()
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
         heading: { levels: [1, 2, 3] },
       }),
       Placeholder.configure({
-        placeholder: 'Write something amazing...',
+        placeholder: t('notes.write_placeholder'),
       }),
       CharacterCount,
       Image,
@@ -151,11 +153,13 @@ export function TiptapEditor({ content, onChange }: TiptapEditorProps) {
         <EditorContent editor={editor} />
       </div>
 
-      <div className="fixed bottom-6 right-6 flex items-center gap-2">
-         <div className="bg-background/80 backdrop-blur-md border rounded-full px-4 py-1.5 shadow-lg text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-           {editor.storage.characterCount.characters()} characters
-         </div>
-      </div>
+      {editor && (
+        <div className="mt-8 pt-8 border-t flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-muted-foreground/30">
+          <div className="flex items-center gap-4">
+             <span>{editor.storage.characterCount.characters()} {t('notes.characters')}</span>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
