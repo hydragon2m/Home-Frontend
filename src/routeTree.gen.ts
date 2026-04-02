@@ -19,6 +19,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard.index'
 import { Route as HomesOrgIdRouteImport } from './routes/homes.$orgId'
 import { Route as DashboardProfileRouteImport } from './routes/dashboard.profile'
+import { Route as HomesOrgIdIndexRouteImport } from './routes/homes.$orgId.index'
 import { Route as HomesOrgIdNotesRouteImport } from './routes/homes.$orgId.notes'
 import { Route as DashboardSettingsOrganizationRouteImport } from './routes/dashboard.settings.organization'
 import { Route as HomesOrgIdNotesIndexRouteImport } from './routes/homes.$orgId.notes.index'
@@ -74,6 +75,11 @@ const DashboardProfileRoute = DashboardProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => DashboardRoute,
 } as any)
+const HomesOrgIdIndexRoute = HomesOrgIdIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => HomesOrgIdRoute,
+} as any)
 const HomesOrgIdNotesRoute = HomesOrgIdNotesRouteImport.update({
   id: '/notes',
   path: '/notes',
@@ -109,6 +115,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/settings/organization': typeof DashboardSettingsOrganizationRoute
   '/homes/$orgId/notes': typeof HomesOrgIdNotesRouteWithChildren
+  '/homes/$orgId/': typeof HomesOrgIdIndexRoute
   '/homes/$orgId/notes/$noteId': typeof HomesOrgIdNotesNoteIdRoute
   '/homes/$orgId/notes/': typeof HomesOrgIdNotesIndexRoute
 }
@@ -120,9 +127,9 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/dashboard/profile': typeof DashboardProfileRoute
-  '/homes/$orgId': typeof HomesOrgIdRouteWithChildren
   '/dashboard': typeof DashboardIndexRoute
   '/dashboard/settings/organization': typeof DashboardSettingsOrganizationRoute
+  '/homes/$orgId': typeof HomesOrgIdIndexRoute
   '/homes/$orgId/notes/$noteId': typeof HomesOrgIdNotesNoteIdRoute
   '/homes/$orgId/notes': typeof HomesOrgIdNotesIndexRoute
 }
@@ -140,6 +147,7 @@ export interface FileRoutesById {
   '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/settings/organization': typeof DashboardSettingsOrganizationRoute
   '/homes/$orgId/notes': typeof HomesOrgIdNotesRouteWithChildren
+  '/homes/$orgId/': typeof HomesOrgIdIndexRoute
   '/homes/$orgId/notes/$noteId': typeof HomesOrgIdNotesNoteIdRoute
   '/homes/$orgId/notes/': typeof HomesOrgIdNotesIndexRoute
 }
@@ -158,6 +166,7 @@ export interface FileRouteTypes {
     | '/dashboard/'
     | '/dashboard/settings/organization'
     | '/homes/$orgId/notes'
+    | '/homes/$orgId/'
     | '/homes/$orgId/notes/$noteId'
     | '/homes/$orgId/notes/'
   fileRoutesByTo: FileRoutesByTo
@@ -169,9 +178,9 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/dashboard/profile'
-    | '/homes/$orgId'
     | '/dashboard'
     | '/dashboard/settings/organization'
+    | '/homes/$orgId'
     | '/homes/$orgId/notes/$noteId'
     | '/homes/$orgId/notes'
   id:
@@ -188,6 +197,7 @@ export interface FileRouteTypes {
     | '/dashboard/'
     | '/dashboard/settings/organization'
     | '/homes/$orgId/notes'
+    | '/homes/$orgId/'
     | '/homes/$orgId/notes/$noteId'
     | '/homes/$orgId/notes/'
   fileRoutesById: FileRoutesById
@@ -274,6 +284,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardProfileRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/homes/$orgId/': {
+      id: '/homes/$orgId/'
+      path: '/'
+      fullPath: '/homes/$orgId/'
+      preLoaderRoute: typeof HomesOrgIdIndexRouteImport
+      parentRoute: typeof HomesOrgIdRoute
+    }
     '/homes/$orgId/notes': {
       id: '/homes/$orgId/notes'
       path: '/notes'
@@ -337,10 +354,12 @@ const HomesOrgIdNotesRouteWithChildren = HomesOrgIdNotesRoute._addFileChildren(
 
 interface HomesOrgIdRouteChildren {
   HomesOrgIdNotesRoute: typeof HomesOrgIdNotesRouteWithChildren
+  HomesOrgIdIndexRoute: typeof HomesOrgIdIndexRoute
 }
 
 const HomesOrgIdRouteChildren: HomesOrgIdRouteChildren = {
   HomesOrgIdNotesRoute: HomesOrgIdNotesRouteWithChildren,
+  HomesOrgIdIndexRoute: HomesOrgIdIndexRoute,
 }
 
 const HomesOrgIdRouteWithChildren = HomesOrgIdRoute._addFileChildren(
