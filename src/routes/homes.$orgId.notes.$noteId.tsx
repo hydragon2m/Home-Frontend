@@ -100,7 +100,7 @@ function NotePage() {
                  className="text-5xl md:text-6xl font-black tracking-tighter bg-transparent border-none outline-none w-full placeholder:text-muted-foreground/10 focus:placeholder:opacity-0 transition-all"
                  placeholder={t('notes.untitled')}
                  value={title}
-                 onChange={(e) => setTitle(e.target.value)}
+                 onChange={(e) => handleTitleChange(e.target.value)}
                />
             </div>
 
