@@ -57,7 +57,7 @@ function FamilyHomePage() {
 
   const apps = [
     { id: 'dashboard', icon: LayoutGrid, label: t('org.context_global'), color: 'bg-blue-600', path: '/dashboard', badge: 0 },
-    { id: 'notes', icon: FileText, label: t('common.features.notes.title') || 'Ghi chú', color: 'bg-indigo-500', path: `/homes/${orgId}/notes`, badge: 1 },
+    { id: 'notes', icon: FileText, label: t('notes.title'), color: 'bg-indigo-500', path: `/homes/${orgId}/notes`, badge: 1 },
     { id: 'settings', icon: Settings, label: t('homes.settings'), color: 'bg-gray-500', path: `/homes/${orgId}/settings`, badge: 0 },
   ]
 
